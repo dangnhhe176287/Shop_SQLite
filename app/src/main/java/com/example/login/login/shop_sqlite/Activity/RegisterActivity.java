@@ -87,6 +87,10 @@ public class RegisterActivity extends AppCompatActivity {
                 etPassword.setError("Password must contain at least one digit");
                 etPassword.requestFocus();
                 return;
+            } else if (!password.matches(".*[!@#$%^&*()_+=\\[\\]{};':\"\\\\|,.<>/?-].*")) {
+                etPassword.setError("Password must contain at least one special character");
+                etPassword.requestFocus();
+                return;
             } else {
                 etPassword.setError(null);
             }
@@ -111,7 +115,9 @@ public class RegisterActivity extends AppCompatActivity {
             register(email, password, userName, phone, dob, address);
         });
 
-        btnBackToLogin.setOnClickListener(v -> finish());
+        btnBackToLogin.setOnClickListener(v ->
+
+        finish());
     }
 
     private void showDatePicker() {
