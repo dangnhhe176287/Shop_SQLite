@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Shop App</string>
+    <string name="login_title">Đăng nhập</string>
+    <string name="username_hint">Tên đăng nhập</string>
+    <string name="password_hint">Mật khẩu</string>
+    <string name="login_button">Đăng nhập</string>
+    <string name="register_link">Chưa có tài khoản? Đăng ký ngay</string>
+</resources>

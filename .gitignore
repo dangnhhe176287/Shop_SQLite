@@ -1,0 +1,26 @@
+# Android Studio
+.idea/
+*.iml
+*.iws
+.gradle/
+build/
+*/build/
+.cxx/
+.externalNativeBuild/
+captures/
+navigation/
+*.log
+*.apk
+*.ap_
+*.jks
+*.keystore
+fabric.properties
+crashlytics-build.properties
+local.properties
+
+# OS hệ điều hành
+.DS_Store
+Thumbs.db
+
+# IntelliJ / Java general
+out/
