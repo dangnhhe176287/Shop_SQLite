@@ -18,7 +18,7 @@ import retrofit2.Response;
 import java.util.Calendar;
 
 public class RegisterActivity extends AppCompatActivity {
-    private EditText etEmail, etPassword, etUserName, etPhone, etDateOfBirth, etAddress;
+    private EditText etEmail, etPassword, etConfirmPassword, etUserName, etPhone, etDateOfBirth, etAddress;
     private Button btnRegister, btnBackToLogin;
 
     @Override
@@ -27,6 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
+        etConfirmPassword = findViewById(R.id.etConfirmPassword);
         etUserName = findViewById(R.id.etUserName);
         etPhone = findViewById(R.id.etPhone);
         etDateOfBirth = findViewById(R.id.etDateOfBirth);
@@ -39,15 +40,67 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
+            String confirmPassword = etConfirmPassword.getText().toString().trim();
             String userName = etUserName.getText().toString().trim();
             String phone = etPhone.getText().toString().trim();
             String dob = etDateOfBirth.getText().toString().trim();
             String address = etAddress.getText().toString().trim();
 
             // Validate required fields
-            if (email.isEmpty() || password.isEmpty() || userName.isEmpty()) {
-                Toast.makeText(RegisterActivity.this, "Please fill all required fields", Toast.LENGTH_SHORT).show();
+            if (email.isEmpty()) {
+                etEmail.setError("Email is required");
+                etEmail.requestFocus();
                 return;
+            } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                etEmail.setError("Invalid email format");
+                etEmail.requestFocus();
+                return;
+            } else {
+                etEmail.setError(null);
+            }
+
+            if (userName.isEmpty()) {
+                etUserName.setError("User name is required");
+                etUserName.requestFocus();
+                return;
+            } else {
+                etUserName.setError(null);
+            }
+
+            if (password.isEmpty()) {
+                etPassword.setError("Password is required");
+                etPassword.requestFocus();
+                return;
+            } else if (password.length() < 6) {
+                etPassword.setError("Password must be at least 6 characters");
+                etPassword.requestFocus();
+                return;
+            } else if (!password.matches(".*[A-Z].*")) {
+                etPassword.setError("Password must contain at least one uppercase letter");
+                etPassword.requestFocus();
+                return;
+            } else if (!password.matches(".*[a-z].*")) {
+                etPassword.setError("Password must contain at least one lowercase letter");
+                etPassword.requestFocus();
+                return;
+            } else if (!password.matches(".*[0-9].*")) {
+                etPassword.setError("Password must contain at least one digit");
+                etPassword.requestFocus();
+                return;
+            } else {
+                etPassword.setError(null);
+            }
+
+            if (confirmPassword.isEmpty()) {
+                etConfirmPassword.setError("Please confirm your password");
+                etConfirmPassword.requestFocus();
+                return;
+            } else if (!confirmPassword.equals(password)) {
+                etConfirmPassword.setError("Passwords do not match");
+                etConfirmPassword.requestFocus();
+                return;
+            } else {
+                etConfirmPassword.setError(null);
             }
 
             // Set empty strings to null for optional fields
