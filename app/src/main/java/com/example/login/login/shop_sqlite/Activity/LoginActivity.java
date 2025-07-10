@@ -3,6 +3,7 @@ package com.example.login.login.shop_sqlite.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,10 +15,12 @@ import com.example.login.login.shop_sqlite.R;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import android.content.SharedPreferences;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText etEmail, etPassword;
     private Button btnLogin, btnRegister;
+    private CheckBox cbRememberMe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +28,19 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
+        cbRememberMe = findViewById(R.id.cbRememberMe);
         btnLogin = findViewById(R.id.btnLogin);
         btnRegister = findViewById(R.id.btnRegister);
+
+        // Khi mở màn hình, tự động điền lại nếu đã lưu
+        SharedPreferences prefs = getSharedPreferences("login_prefs", MODE_PRIVATE);
+        String savedEmail = prefs.getString("email", "");
+        String savedPassword = prefs.getString("password", "");
+        if (!savedEmail.isEmpty() && !savedPassword.isEmpty()) {
+            etEmail.setText(savedEmail);
+            etPassword.setText(savedPassword);
+            cbRememberMe.setChecked(true);
+        }
 
         btnLogin.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
@@ -34,6 +48,17 @@ public class LoginActivity extends AppCompatActivity {
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(LoginActivity.this, "Please enter email and password", Toast.LENGTH_SHORT).show();
                 return;
+            }
+            if (cbRememberMe.isChecked()) {
+                SharedPreferences.Editor editor = getSharedPreferences("login_prefs", MODE_PRIVATE).edit();
+                editor.putString("email", email);
+                editor.putString("password", password);
+                editor.apply();
+            } else {
+                SharedPreferences.Editor editor = getSharedPreferences("login_prefs", MODE_PRIVATE).edit();
+                editor.remove("email");
+                editor.remove("password");
+                editor.apply();
             }
             login(email, password);
         });
