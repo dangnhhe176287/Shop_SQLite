@@ -70,6 +70,24 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 etNewPassword.setError("Password must be at least 6 characters");
                 etNewPassword.requestFocus();
                 return;
+            } else if (!newPassword.matches(".*[A-Z].*")) {
+                etNewPassword.setError("Password must contain at least one uppercase letter");
+                etNewPassword.requestFocus();
+                return;
+            } else if (!newPassword.matches(".*[a-z].*")) {
+                etNewPassword.setError("Password must contain at least one lowercase letter");
+                etNewPassword.requestFocus();
+                return;
+            } else if (!newPassword.matches(".*[0-9].*")) {
+                etNewPassword.setError("Password must contain at least one digit");
+                etNewPassword.requestFocus();
+                return;
+            } else if (!newPassword.matches(".*[!@#$%^&*()_+=\\[\\]{};':\"\\\\|,.<>/?-].*")) {
+                etNewPassword.setError("Password must contain at least one special character");
+                etNewPassword.requestFocus();
+                return;
+            } else {
+                etNewPassword.setError(null);
             }
             ApiService apiService = ApiClient.getClient().create(ApiService.class);
             ResetPasswordRequestDto request = new ResetPasswordRequestDto(email, otp, newPassword);
