@@ -32,14 +32,17 @@
             android:exported="false" />
 
         <activity
-            android:name=".Activity.PostDetailActivity"
-            android:exported="false"
-            android:parentActivityName=".Activity.MainActivity">
-            <!-- Metadata cho nút back -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activity.MainActivity" />
-        </activity>
+            android:name=".Activity.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.VerifyOtpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.ResetPasswordActivity"
+            android:exported="false" />
+
+
+
 
     </application>
 
