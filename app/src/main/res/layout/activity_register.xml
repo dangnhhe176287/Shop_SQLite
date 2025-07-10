@@ -186,22 +186,25 @@
                 <Button
                     android:id="@+id/btnRegister"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="52dp"
                     android:text="Register"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:background="@drawable/fashion_button_background"
-                    android:layout_marginBottom="16dp" />
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#F48FB1"
+                    android:elevation="4dp"
+                    android:layout_marginBottom="14dp" />
 
+                <!-- Back to Login Button - Soft pink background with darker pink text -->
                 <Button
                     android:id="@+id/btnBackToLogin"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="52dp"
                     android:text="Back to Login"
-                    android:textSize="16sp"
-                    android:textColor="@color/fashion_primary"
-                    android:background="@drawable/fashion_outline_button_background" />
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#D81B60"
+                    android:backgroundTint="#FCE4EC" />
 
             </LinearLayout>
 

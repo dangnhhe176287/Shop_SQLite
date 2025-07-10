@@ -90,6 +90,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Login Button - Soft pink background with darker pink text -->
             <Button
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
@@ -97,11 +98,12 @@
                 android:text="Login"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@color/white"
-                android:background="@drawable/fashion_button_background"
+                android:textColor="#D81B60"
+                android:backgroundTint="#FCE4EC"
                 android:elevation="4dp"
                 android:layout_marginBottom="14dp" />
 
+            <!-- Register Button - Soft pink background with white text -->
             <Button
                 android:id="@+id/btnRegister"
                 android:layout_width="match_parent"
@@ -109,8 +111,8 @@
                 android:text="Register"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@color/fashion_primary"
-                android:background="@drawable/fashion_outline_button_background"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#F48FB1"
                 android:layout_marginBottom="10dp" />
 
             <CheckBox
