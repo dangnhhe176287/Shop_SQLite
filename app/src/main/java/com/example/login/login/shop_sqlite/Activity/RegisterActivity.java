@@ -3,6 +3,7 @@ package com.example.login.login.shop_sqlite.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -79,14 +80,25 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void register(String email, String password, String userName, String phone, String dob, String address) {
+        Log.d("RegisterActivity", "Attempting register with email: " + email);
+        Log.d("RegisterActivity", "API URL: http://10.0.2.2:5287/");
+        
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
         RegisterRequestDto registerRequest = new RegisterRequestDto(email, password, userName, phone, dob, address);
         Call<LoginResponseDto> call = apiService.register(registerRequest);
+        
+        Log.d("RegisterActivity", "Making API call...");
+        
         call.enqueue(new Callback<LoginResponseDto>() {
             @Override
             public void onResponse(Call<LoginResponseDto> call, Response<LoginResponseDto> response) {
+                Log.d("RegisterActivity", "Response received. Code: " + response.code());
+                Log.d("RegisterActivity", "Response body: " + response.body());
+                Log.d("RegisterActivity", "Error body: " + response.errorBody());
+                
                 if (response.isSuccessful() && response.body() != null) {
                     String token = response.body().token;
+                    Log.d("RegisterActivity", "Register successful. Token: " + token);
                     Toast.makeText(RegisterActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     intent.putExtra("token", token);
@@ -98,16 +110,26 @@ public class RegisterActivity extends AppCompatActivity {
                     if (response.errorBody() != null) {
                         try {
                             errorMsg = response.errorBody().string();
-                        } catch (Exception ignored) {
+                            Log.e("RegisterActivity", "Error response: " + errorMsg);
+                        } catch (Exception e) {
+                            Log.e("RegisterActivity", "Error reading error body", e);
                         }
                     }
-                    Toast.makeText(RegisterActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
+                    Log.e("RegisterActivity", "Register failed with code: " + response.code());
+                    Toast.makeText(RegisterActivity.this, errorMsg, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponseDto> call, Throwable t) {
-                Toast.makeText(RegisterActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("RegisterActivity", "Network error", t);
+                String errorMessage = "Network error: " + t.getMessage();
+                if (t instanceof java.net.SocketTimeoutException) {
+                    errorMessage = "Connection timeout. Please check your internet connection and try again.";
+                } else if (t instanceof java.net.ConnectException) {
+                    errorMessage = "Cannot connect to server. Please make sure the backend is running.";
+                }
+                Toast.makeText(RegisterActivity.this, errorMessage, Toast.LENGTH_LONG).show();
             }
         });
     }
