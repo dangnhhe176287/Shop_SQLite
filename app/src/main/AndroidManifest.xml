@@ -32,17 +32,48 @@
             android:exported="false" />
 
         <activity
-            android:name=".Activity.ForgotPasswordActivity"
+
+            android:name=".Activity.MainActivity"
             android:exported="false" />
+
         <activity
-            android:name=".Activity.VerifyOtpActivity"
+            android:name=".Activity.ProductListActivity"
             android:exported="false" />
+
         <activity
-            android:name=".Activity.ResetPasswordActivity"
+            android:name=".Activity.ProductDetailActivity"
+            android:exported="false"
+            android:parentActivityName=".Activity.ProductListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity.ProductListActivity" />
+        </activity>
+
+        <activity
+            android:name=".Activity.PostDetailActivity"
+            android:exported="false"
+            android:parentActivityName=".Activity.MainActivity">
+            <!-- Metadata cho nút back -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity.MainActivity" />
+        </activity>
+        <activity
+            android:name=".Activity.CartActivity"
+            android:exported="false"
+            android:parentActivityName=".Activity.ProductListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity.ProductListActivity" />
+        </activity>
+
+        <activity
+            android:name=".Activity.OrderActivity"
             android:exported="false" />
 
-
-
+        <activity
+            android:name=".Activity.OrderListActivity"
+            android:exported="false" />
 
     </application>
 
