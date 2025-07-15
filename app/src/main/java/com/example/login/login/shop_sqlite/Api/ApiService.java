@@ -1,5 +1,6 @@
 package com.example.login.login.shop_sqlite.Api;
 
+import com.example.login.login.shop_sqlite.Models.ForgotPasswordRequestDto;
 import com.example.login.login.shop_sqlite.Models.LoginRequestDto;
 import com.example.login.login.shop_sqlite.Models.LoginResponseDto;
 import com.example.login.login.shop_sqlite.Models.RegisterRequestDto;
@@ -9,6 +10,8 @@ import com.example.login.login.shop_sqlite.Models.CartResponse;
 import com.example.login.login.shop_sqlite.Models.CartItemDto;
 import com.example.login.login.shop_sqlite.Models.OrderRequest;
 import com.example.login.login.shop_sqlite.Models.OrderView;
+import com.example.login.login.shop_sqlite.Models.ResetPasswordRequestDto;
+import com.example.login.login.shop_sqlite.Models.VerifyOtpRequestDto;
 
 import java.util.List;
 import retrofit2.Call;
