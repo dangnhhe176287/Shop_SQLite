@@ -3,19 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="18dp"
-    app:cardElevation="6dp"
-    android:layout_marginBottom="12dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginStart="2dp"
-    android:layout_marginEnd="2dp"
+    app:cardCornerRadius="28dp"
+    app:cardElevation="8dp"
+    android:layout_marginBottom="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
     android:backgroundTint="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="18dp"
+        android:padding="24dp"
         android:gravity="center_vertical">
 
         <LinearLayout
@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Blog Title"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/fashion_primary"
                 android:layout_marginBottom="4dp"/>
@@ -39,29 +39,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Blog summary goes here..."
-                android:textSize="15sp"
+                android:textSize="16sp"
                 android:textColor="@color/secondary_text"/>
         </LinearLayout>
 
         <ImageButton
             android:id="@+id/btnEditBlog"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
             android:src="@drawable/ic_edit"
             android:background="@android:color/transparent"
             android:contentDescription="Edit Blog"
-            android:tint="@color/fashion_accent"
+            android:tint="#F48FB1"
             android:focusable="true"
             android:clickable="true" />
 
         <ImageButton
             android:id="@+id/btnDeleteBlog"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
             android:src="@drawable/ic_delete"
             android:background="@android:color/transparent"
             android:contentDescription="Delete Blog"
-            android:tint="@color/fashion_primary"
+            android:tint="#D81B60"
             android:focusable="true"
             android:clickable="true" />
     </LinearLayout>
