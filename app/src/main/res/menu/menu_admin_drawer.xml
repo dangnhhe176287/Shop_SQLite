@@ -8,4 +8,8 @@
         android:id="@+id/nav_blog_management"
         android:title="Quản lý Blog"
         android:icon="@drawable/ic_fashion_store" />
+    <item
+        android:id="@+id/nav_logout"
+        android:title="Đăng xuất"
+        android:icon="@android:drawable/ic_lock_power_off" />
 </menu> 

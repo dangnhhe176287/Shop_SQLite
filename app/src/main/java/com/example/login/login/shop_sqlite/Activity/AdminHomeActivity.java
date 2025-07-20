@@ -13,6 +13,8 @@ import com.example.login.login.shop_sqlite.R;
 import com.example.login.login.shop_sqlite.Fragment.UserManagementFragment;
 import com.example.login.login.shop_sqlite.Fragment.BlogManagementFragment;
 import androidx.fragment.app.Fragment;
+import android.content.SharedPreferences;
+import android.content.Intent;
 
 public class AdminHomeActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
@@ -43,6 +45,15 @@ public class AdminHomeActivity extends AppCompatActivity {
                     fragment = new UserManagementFragment();
                 } else if (id == R.id.nav_blog_management) {
                     fragment = new BlogManagementFragment();
+                } else if (id == R.id.nav_logout) {
+                    // Xóa thông tin đăng nhập
+                    SharedPreferences prefs = getSharedPreferences("login_prefs", MODE_PRIVATE);
+                    prefs.edit().clear().apply();
+                    Intent intent = new Intent(AdminHomeActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                    return true;
                 }
                 if (fragment != null) {
                     getSupportFragmentManager().beginTransaction()
