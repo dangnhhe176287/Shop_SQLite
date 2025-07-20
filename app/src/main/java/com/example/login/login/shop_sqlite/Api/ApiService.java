@@ -5,6 +5,7 @@ import com.example.login.login.shop_sqlite.Models.LoginRequestDto;
 import com.example.login.login.shop_sqlite.Models.LoginResponseDto;
 import com.example.login.login.shop_sqlite.Models.RegisterRequestDto;
 
+
 import com.example.login.login.shop_sqlite.Models.Product;
 import com.example.login.login.shop_sqlite.Models.CartResponse;
 import com.example.login.login.shop_sqlite.Models.CartItemDto;
@@ -16,6 +17,23 @@ import com.example.login.login.shop_sqlite.Models.VerifyOtpRequestDto;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.*;
+
+import com.example.login.login.shop_sqlite.Models.ForgotPasswordRequestDto;
+import com.example.login.login.shop_sqlite.Models.VerifyOtpRequestDto;
+import com.example.login.login.shop_sqlite.Models.ResetPasswordRequestDto;
+import com.example.login.login.shop_sqlite.Models.ResetPasswordRequestDto;
+import com.example.login.login.shop_sqlite.Models.VerifyOtpRequestDto;
+import com.example.login.login.shop_sqlite.Models.UserDto;
+
+import java.util.List;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.POST;
+import retrofit2.http.GET;
+import retrofit2.http.PUT;
+import retrofit2.http.DELETE;
+import retrofit2.http.Path;
+
 
 public interface ApiService {
     @POST("api/Auth/login")
@@ -32,6 +50,7 @@ public interface ApiService {
 
     @POST("api/Auth/reset-password")
     Call<Void> resetPassword(@Body ResetPasswordRequestDto request);
+
 
     @GET("api/Product")
     Call<List<Product>> getAllProducts(@Query("page") int page, @Query("pageSize") int pageSize);
@@ -71,4 +90,20 @@ public interface ApiService {
 
     @GET("api/users/{id}")
     Call<com.example.login.login.shop_sqlite.Models.UserProfileDto> getUserById(@Path("id") int userId);
+
+    @GET("api/Users")
+    Call<List<UserDto>> getAllUsers();
+
+    @GET("api/Users/{id}")
+    Call<UserDto> getUserById(@Path("id") int id);
+
+    @POST("api/Users")
+    Call<UserDto> addUser(@Body UserDto user);
+
+    @PUT("api/Users/{id}")
+    Call<Void> updateUser(@Path("id") int id, @Body UserDto user);
+
+    @DELETE("api/Users/{id}")
+    Call<Void> deleteUser(@Path("id") int id);
+
 }

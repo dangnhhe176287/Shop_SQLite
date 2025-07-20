@@ -101,12 +101,16 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("LoginActivity", "Login successful. Token: " + token);
                     Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
 
+
                     // Lưu userId và token vào SharedPreferences
                     android.content.SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
                     prefs.edit().putInt("current_user_id", userId).putString("token", token).apply();
 
                     // Navigate directly to ProductListActivity
                     Intent intent = new Intent(LoginActivity.this, ProductListActivity.class);
+
+
+
                     intent.putExtra("token", token);
                     intent.putExtra("userName", response.body().UserName);
                     startActivity(intent);

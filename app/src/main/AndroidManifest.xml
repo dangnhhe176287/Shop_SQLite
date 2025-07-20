@@ -32,6 +32,22 @@
             android:exported="false" />
 
 
+        <activity
+            android:name=".Activity.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.VerifyOtpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.ResetPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.UserManagementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.UserDetailActivity"
+            android:exported="false" />
+
 
         <activity
             android:name=".Activity.ProductListActivity"
