@@ -88,18 +88,18 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d("LoginActivity", "onResponse: code=" + response.code());
                 if (response.isSuccessful() && response.body() != null) {
                     String token = response.body().token;
-                    String role = response.body().RoleName;
-                    Log.d("LoginActivity", "Login thành công, token=" + token + ", role=" + role);
+                    String role = response.body().roleName;
+                    Log.d("LoginActivity", "Role nhận được: '" + role + "'");
                     Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                     try {
                         Intent intent;
-                        if (role != null && role.equalsIgnoreCase("admin")) {
+                        if (role != null && role.trim().equalsIgnoreCase("admin")) {
                             intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
                         } else {
-                            intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
+                            intent = new Intent(LoginActivity.this, ProductListActivity.class);
                         }
                         intent.putExtra("token", token);
-                        intent.putExtra("userName", response.body().UserName);
+                        intent.putExtra("userName", response.body().roleName);
                         Log.d("LoginActivity", "Bắt đầu startActivity " + intent.getComponent());
                         startActivity(intent);
                         Log.d("LoginActivity", "Đã gọi startActivity");
