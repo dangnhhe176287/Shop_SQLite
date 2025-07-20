@@ -2,7 +2,6 @@ package com.example.login.login.shop_sqlite.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -18,6 +17,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import android.content.SharedPreferences;
 import android.widget.TextView;
+import android.util.Log;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText etEmail, etPassword;
@@ -79,63 +79,51 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(String email, String password) {
-        Log.d("LoginActivity", "Attempting login with email: " + email);
-        Log.d("LoginActivity", "API URL: http://10.0.2.2:5287/");
-        
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
         LoginRequestDto loginRequest = new LoginRequestDto(email, password);
         Call<LoginResponseDto> call = apiService.login(loginRequest);
-        
-        Log.d("LoginActivity", "Making API call...");
-        
         call.enqueue(new Callback<LoginResponseDto>() {
             @Override
             public void onResponse(Call<LoginResponseDto> call, Response<LoginResponseDto> response) {
-                Log.d("LoginActivity", "Response received. Code: " + response.code());
-                Log.d("LoginActivity", "Response body: " + response.body());
-                Log.d("LoginActivity", "Error body: " + response.errorBody());
-                
+                Log.d("LoginActivity", "onResponse: code=" + response.code());
                 if (response.isSuccessful() && response.body() != null) {
                     String token = response.body().token;
-                    int userId = response.body().userId;
-                    Log.d("LoginActivity", "Login successful. Token: " + token);
+                    String role = response.body().roleName;
+                    Log.d("LoginActivity", "Role nhận được: '" + role + "'");
                     Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-
-                    // Lưu userId và token vào SharedPreferences
-                    android.content.SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
-                    prefs.edit().putInt("current_user_id", userId).putString("token", token).apply();
-
-                    // Navigate directly to ProductListActivity
-                    Intent intent = new Intent(LoginActivity.this, ProductListActivity.class);
-                    intent.putExtra("token", token);
-                    intent.putExtra("userName", response.body().UserName);
-                    startActivity(intent);
-                    finish();
+                    try {
+                        Intent intent;
+                        if (role != null && role.trim().equalsIgnoreCase("admin")) {
+                            intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
+                        } else {
+                            intent = new Intent(LoginActivity.this, ProductListActivity.class);
+                        }
+                        intent.putExtra("token", token);
+                        intent.putExtra("userName", response.body().roleName);
+                        Log.d("LoginActivity", "Bắt đầu startActivity " + intent.getComponent());
+                        startActivity(intent);
+                        Log.d("LoginActivity", "Đã gọi startActivity");
+                        finish();
+                    } catch (Exception e) {
+                        Log.e("LoginActivity", "Lỗi khi start Activity", e);
+                    }
                 } else {
                     String errorMsg = "Login failed";
                     if (response.errorBody() != null) {
                         try {
                             errorMsg = response.errorBody().string();
-                            Log.e("LoginActivity", "Error response: " + errorMsg);
-                        } catch (Exception e) {
-                            Log.e("LoginActivity", "Error reading error body", e);
+                        } catch (Exception ignored) {
                         }
                     }
-                    Log.e("LoginActivity", "Login failed with code: " + response.code());
-                    Toast.makeText(LoginActivity.this, errorMsg, Toast.LENGTH_LONG).show();
+                    Log.e("LoginActivity", "Login thất bại: " + errorMsg);
+                    Toast.makeText(LoginActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponseDto> call, Throwable t) {
-                Log.e("LoginActivity", "Network error", t);
-                String errorMessage = "Network error: " + t.getMessage();
-                if (t instanceof java.net.SocketTimeoutException) {
-                    errorMessage = "Connection timeout. Please check your internet connection and try again.";
-                } else if (t instanceof java.net.ConnectException) {
-                    errorMessage = "Cannot connect to server. Please make sure the backend is running.";
-                }
-                Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                Log.e("LoginActivity", "onFailure: ", t);
+                Toast.makeText(LoginActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

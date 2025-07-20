@@ -5,4 +5,6 @@
     <string name="password_hint">Mật khẩu</string>
     <string name="login_button">Đăng nhập</string>
     <string name="register_link">Chưa có tài khoản? Đăng ký ngay</string>
+    <string name="navigation_drawer_open">Mở menu</string>
+    <string name="navigation_drawer_close">Đóng menu</string>
 </resources>

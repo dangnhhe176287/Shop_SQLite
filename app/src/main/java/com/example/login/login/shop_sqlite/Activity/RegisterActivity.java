@@ -161,7 +161,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     intent.putExtra("token", token);
-                    intent.putExtra("userName", response.body().UserName);
+                    intent.putExtra("userName", response.body().userName);
                     startActivity(intent);
                     finish();
                 } else {

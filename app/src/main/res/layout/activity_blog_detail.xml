@@ -1,24 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@drawable/fashion_login_background"
+    android:padding="24dp">
 
-    <TextView
-        android:id="@+id/tvBlogTitle"
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:textColor="@color/fashion_primary"
+        android:background="@android:color/transparent"
+        android:layout_gravity="start"
+        android:layout_marginBottom="16dp" />
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Blog Title"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="12dp"/>
+        app:cardCornerRadius="18dp"
+        app:cardElevation="6dp"
+        android:backgroundTint="@color/white">
 
-    <TextView
-        android:id="@+id/tvBlogContent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Blog content goes here..."
-        android:textSize="16sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/tvBlogTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Blog Title"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/fashion_primary"
+                android:layout_marginBottom="12dp"/>
+
+            <TextView
+                android:id="@+id/tvBlogContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Blog content goes here..."
+                android:textSize="16sp"
+                android:textColor="@color/primary_text"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout> 
