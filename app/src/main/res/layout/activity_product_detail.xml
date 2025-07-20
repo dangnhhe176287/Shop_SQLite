@@ -30,7 +30,7 @@
             android:id="@+id/productPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="50k VNĐ"
+            android:text="50$"
             android:textSize="18sp"
             android:textColor="#FF5722"
             android:textStyle="bold"
@@ -116,6 +116,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Gửi đánh giá"/>
+
+        <!-- Phần chọn biến thể đặt lên trên -->
+        <LinearLayout
+            android:id="@+id/variantLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnAddToCart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thêm vào giỏ hàng"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp" />
 
     </LinearLayout>
 </ScrollView> 

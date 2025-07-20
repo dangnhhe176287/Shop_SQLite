@@ -410,8 +410,8 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
             if (values.size() >= 2) {
                 float minPrice = values.get(0);
                 float maxPrice = values.get(1);
-                minPriceText.setText(String.format("Min: %,.0f VNĐ", minPrice));
-                maxPriceText.setText(String.format("Max: %,.0f VNĐ", maxPrice));
+                minPriceText.setText(String.format("Min: $%,.2f", minPrice));
+                maxPriceText.setText(String.format("Max: $%,.2f", maxPrice));
             }
         });
         

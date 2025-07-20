@@ -38,7 +38,7 @@
             android:id="@+id/cartItemPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="50k VNĐ"
+            android:text="50$"
             android:textColor="#FF5722"
             android:textSize="14sp"
             android:layout_marginTop="4dp" />
@@ -47,7 +47,7 @@
             android:id="@+id/cartItemTotalPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thành tiền: 100k VNĐ"
+            android:text="Thành tiền: 100$"
             android:textColor="#388E3C"
             android:textSize="14sp"
             android:layout_marginTop="2dp" />

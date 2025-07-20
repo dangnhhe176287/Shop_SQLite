@@ -18,6 +18,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import java.util.LinkedHashSet;
 import java.util.List;
 import com.example.login.login.shop_sqlite.Api.RatingApiService;
 import com.example.login.login.shop_sqlite.Api.ReviewApiService;
@@ -26,6 +28,25 @@ import android.util.Log;
 import android.widget.Toast;
 import com.example.login.login.shop_sqlite.Models.RatingRequest;
 import com.example.login.login.shop_sqlite.Models.ReviewRequest;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.ArrayAdapter;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
+import com.example.login.login.shop_sqlite.Models.ProductVariantDto;
+import com.example.login.login.shop_sqlite.Models.Product;
+import com.example.login.login.shop_sqlite.Api.ApiClient;
+import com.example.login.login.shop_sqlite.Api.ApiService;
+import android.widget.AdapterView;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Set;
+import android.view.View;
+import com.example.login.login.shop_sqlite.Models.CartItemDto;
 
 public class ProductDetailActivity extends AppCompatActivity {
     private RatingBar ratingBarAverage, ratingBarInput;
@@ -35,6 +56,8 @@ public class ProductDetailActivity extends AppCompatActivity {
     private Button btnSubmitReview;
     private int productId;
     private int userId; // Không hardcode nữa
+    private Product product;
+    private TextView productPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +66,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         ImageView productImage = findViewById(R.id.productImage);
         TextView productName = findViewById(R.id.productName);
-        TextView productPrice = findViewById(R.id.productPrice);
+        productPrice = findViewById(R.id.productPrice);
         TextView productDescription = findViewById(R.id.productDescription);
         TextView productBrand = findViewById(R.id.productBrand);
         TextView productCategory = findViewById(R.id.productCategory);
@@ -81,22 +104,14 @@ public class ProductDetailActivity extends AppCompatActivity {
         if (productId != -1) {
             fetchAverageRating(productId);
             fetchReviews(productId);
+            fetchProductDetail(productId);
         }
         btnSubmitReview.setOnClickListener(v -> submitReview());
     }
 
-    private String formatPrice(double price) {
-        if (price >= 1_000_000) {
-            return String.format("%.2fM VNĐ", price / 1_000_000);
-        } else if (price >= 1_000) {
-            if (price % 1000 == 0) {
-                return String.format("%.0fk VNĐ", price / 1000);
-            } else {
-                return String.format("%.2fk VNĐ", price / 1000);
-            }
-        } else {
-            return String.format("%.0f VNĐ", price);
-        }
+    // Helper method to format price
+    public String formatPrice(double price) {
+        return String.format("$%.2f", price);
     }
 
     private void fetchAverageRating(int productId) {
@@ -138,6 +153,208 @@ public class ProductDetailActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Review>> call, Throwable t) { }
         });
+    }
+
+    private void fetchProductDetail(int productId) {
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        apiService.getProductById(productId).enqueue(new retrofit2.Callback<Product>() {
+            @Override
+            public void onResponse(Call<Product> call, retrofit2.Response<Product> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    product = response.body();
+                    setupVariantUI();
+                }
+            }
+            @Override
+            public void onFailure(Call<Product> call, Throwable t) {
+                // Xử lý lỗi
+            }
+        });
+    }
+
+    private void setupVariantUI() {
+        LinearLayout variantLayout = findViewById(R.id.variantLayout);
+        Button btnAddToCart = findViewById(R.id.btnAddToCart);
+        // Sử dụng LinkedHashMap để giữ thứ tự thuộc tính
+        Map<String, Spinner> attributeSpinners = new LinkedHashMap<>();
+        Map<String, ArrayAdapter<String>> attributeAdapters = new LinkedHashMap<>();
+        List<String> attributeOrder = new ArrayList<>();
+        List<Map<String, Object>> allVariants = new LinkedList<>();
+        if (product != null && product.getAvailableAttributes() != null) {
+            Type type = new TypeToken<Map<String, List<String>>>(){}.getType();
+            Map<String, List<String>> availableAttributes = new Gson().fromJson(product.getAvailableAttributes(), type);
+            attributeOrder.addAll(availableAttributes.keySet());
+            // Gộp tất cả variant value lại thành 1 list
+            if (product.getVariants() != null) {
+                for (com.example.login.login.shop_sqlite.Models.ProductVariantDto variant : product.getVariants()) {
+                    allVariants.addAll(variant.variants);
+                }
+            }
+            // Tạo Spinner và Adapter cho từng thuộc tính
+            for (String attr : attributeOrder) {
+                // Label
+                TextView attrLabel = new TextView(this);
+                attrLabel.setText(attr);
+                attrLabel.setTextSize(16);
+                attrLabel.setPadding(0, 8, 0, 4);
+                variantLayout.addView(attrLabel);
+                // Spinner
+                Spinner spinner = new Spinner(this);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new ArrayList<>(availableAttributes.get(attr)));
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner.setAdapter(adapter);
+                variantLayout.addView(spinner);
+                attributeSpinners.put(attr, spinner);
+                attributeAdapters.put(attr, adapter);
+            }
+            // Đăng ký sự kiện chọn cho từng Spinner
+            for (int i = 0; i < attributeOrder.size(); i++) {
+                final int index = i;
+                String attr = attributeOrder.get(i);
+                Spinner spinner = attributeSpinners.get(attr);
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        // Lấy lựa chọn trước đó
+                        Map<String, String> selected = new HashMap<>();
+                        for (int j = 0; j <= index; j++) {
+                            String prevAttr = attributeOrder.get(j);
+                            selected.put(prevAttr, attributeSpinners.get(prevAttr).getSelectedItem().toString());
+                        }
+                        // Cập nhật các Spinner phía sau
+                        for (int j = index + 1; j < attributeOrder.size(); j++) {
+                            String nextAttr = attributeOrder.get(j);
+                            List<String> validValues = getValidValuesForAttribute(allVariants, selected, nextAttr);
+                            ArrayAdapter<String> adapter = attributeAdapters.get(nextAttr);
+                            adapter.clear();
+                            adapter.addAll(validValues);
+                            adapter.notifyDataSetChanged();
+                            // Reset selection về vị trí đầu tiên
+                            attributeSpinners.get(nextAttr).setSelection(0);
+                        }
+                        // Cập nhật giá variant nếu đã chọn đủ
+                        boolean allSelected = true;
+                        Map<String, String> allSelectedMap = new HashMap<>();
+                        for (String key : attributeOrder) {
+                            Spinner sp = attributeSpinners.get(key);
+                            if (sp.getSelectedItem() == null) {
+                                allSelected = false;
+                                break;
+                            }
+                            allSelectedMap.put(key, sp.getSelectedItem().toString());
+                        }
+                        Log.d("VariantDebug", "Selected: " + allSelectedMap);
+                        if (allSelected) {
+                            boolean found = false;
+                            for (Map<String, Object> vMap : allVariants) {
+                                Log.d("VariantDebug", "Variant: " + vMap);
+                                boolean match = true;
+                                for (String attr : allSelectedMap.keySet()) {
+                                    if (!allSelectedMap.get(attr).equals(String.valueOf(vMap.get(attr)))) {
+                                        match = false;
+                                        break;
+                                    }
+                                }
+                                if (match) {
+                                    found = true;
+                                    Object priceObj = vMap.get("price");
+                                    Log.d("VariantDebug", "Matched price: " + priceObj);
+                                    double price = (priceObj != null) ? Double.parseDouble(priceObj.toString()) : 0;
+                                    Log.d("VariantDebug", "Set productPrice: " + formatPrice(price));
+                                    productPrice.setText(formatPrice(price));
+                                    break;
+                                }
+                            }
+                            if (!found) {
+                                Log.d("VariantDebug", "No variant matched, show basePrice");
+                                productPrice.setText(formatPrice(product.getBasePrice()));
+                            }
+                        } else {
+                            Log.d("VariantDebug", "Not all attributes selected, show basePrice");
+                            productPrice.setText(formatPrice(product.getBasePrice()));
+                        }
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {}
+                });
+            }
+        }
+        btnAddToCart.setOnClickListener(v -> {
+            // Lấy các thuộc tính đã chọn
+            Map<String, String> selected = new HashMap<>();
+            for (String attr : attributeSpinners.keySet()) {
+                Spinner spinner = attributeSpinners.get(attr);
+                selected.put(attr, spinner.getSelectedItem().toString());
+            }
+            // Tìm variant phù hợp
+            Map<String, Object> matchedVariant = null;
+            int variantId = 0;
+            if (product.getVariants() != null) {
+                for (ProductVariantDto variant : product.getVariants()) {
+                    for (Map<String, Object> vMap : variant.variants) {
+                        boolean match = true;
+                        for (String attr : selected.keySet()) {
+                            if (!selected.get(attr).equals(String.valueOf(vMap.get(attr)))) {
+                                match = false;
+                                break;
+                            }
+                        }
+                        if (match) {
+                            matchedVariant = vMap;
+                            variantId = variant.variantId; // Lấy variantId từ cha
+                            break;
+                        }
+                    }
+                    if (matchedVariant != null) break;
+                }
+            }
+            if (matchedVariant == null) {
+                Toast.makeText(this, "Vui lòng chọn đủ thuộc tính hợp lệ!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // Lấy giá và các thông tin cần thiết
+            double price = matchedVariant.containsKey("price") ? Double.parseDouble(matchedVariant.get("price").toString()) : 0;
+            double stock = matchedVariant.containsKey("stock") ? Double.parseDouble(matchedVariant.get("stock").toString()) : 0;
+            int quantity = 1; // hoặc cho người dùng chọn số lượng
+
+            // Gọi API thêm vào giỏ hàng
+            ApiService apiService = ApiClient.getClient().create(ApiService.class);
+            CartItemDto cartItem = new CartItemDto(product.getProductId(), quantity);
+            cartItem.setVariantId(variantId);
+            cartItem.setPrice(price);
+            apiService.addToCart(userId, cartItem).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(ProductDetailActivity.this, "Đã thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ProductDetailActivity.this, "Lỗi khi thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(ProductDetailActivity.this, "Lỗi kết nối!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+    }
+
+    // Hàm lọc giá trị hợp lệ cho thuộc tính tiếp theo
+    private List<String> getValidValuesForAttribute(List<Map<String, Object>> allVariants, Map<String, String> selected, String nextAttr) {
+        Set<String> validValues = new LinkedHashSet<>();
+        for (Map<String, Object> v : allVariants) {
+            boolean match = true;
+            for (String key : selected.keySet()) {
+                if (!selected.get(key).equals(String.valueOf(v.get(key)))) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match && v.containsKey(nextAttr)) {
+                validValues.add(String.valueOf(v.get(nextAttr)));
+            }
+        }
+        return new ArrayList<>(validValues);
     }
 
     private void submitReview() {

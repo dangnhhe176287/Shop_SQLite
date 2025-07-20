@@ -9,7 +9,7 @@ public class FilterData {
 
     public FilterData() {
         this.minPrice = 0;
-        this.maxPrice = 10000000; // 10 million VND
+        this.maxPrice = 1000; // 0-1000 $
         this.category = "";
         this.brand = "";
         this.isActive = false;
@@ -67,14 +67,14 @@ public class FilterData {
     // Helper methods
     public void clear() {
         this.minPrice = 0;
-        this.maxPrice = 10000000;
+        this.maxPrice = 1000;
         this.category = "";
         this.brand = "";
         this.isActive = false;
     }
 
     public boolean hasPriceFilter() {
-        return minPrice > 0 || maxPrice < 10000000;
+        return minPrice > 0 || maxPrice < 1000;
     }
 
     public boolean hasCategoryFilter() {
@@ -86,14 +86,14 @@ public class FilterData {
     }
 
     public String getPriceRangeText() {
-        if (minPrice == 0 && maxPrice == 10000000) {
+        if (minPrice == 0 && maxPrice == 1000) {
             return "All prices";
         } else if (minPrice == 0) {
-            return String.format("Under %,.0f VNĐ", maxPrice);
-        } else if (maxPrice == 10000000) {
-            return String.format("Over %,.0f VNĐ", minPrice);
+            return String.format("Under $%,.2f", maxPrice);
+        } else if (maxPrice == 1000) {
+            return String.format("Over $%,.2f", minPrice);
         } else {
-            return String.format("%,.0f - %,.0f VNĐ", minPrice, maxPrice);
+            return String.format("$%,.2f - $%,.2f", minPrice, maxPrice);
         }
     }
 

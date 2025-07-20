@@ -98,7 +98,7 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private TextView productPrice;
         private TextView brandBadge;
         private TextView categoryBadge;
-        private Button addToCartButton;
+        // private Button addToCartButton; // Đã loại bỏ nút này khỏi layout
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -108,7 +108,7 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             productPrice = itemView.findViewById(R.id.productPrice);
             brandBadge = itemView.findViewById(R.id.brandBadge);
             categoryBadge = itemView.findViewById(R.id.categoryBadge);
-            addToCartButton = itemView.findViewById(R.id.addToCartButton);
+            // addToCartButton = itemView.findViewById(R.id.addToCartButton); // Đã loại bỏ nút này khỏi layout
 
 
             itemView.setOnClickListener(v -> {
@@ -128,32 +128,7 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             });
 
-            addToCartButton.setOnClickListener(v -> {
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION && listener != null) {
-                    Product product = products.get(position);
-                    // Lấy userId hiện tại từ SharedPreferences hoặc session
-                    android.content.SharedPreferences prefs = context.getSharedPreferences("user_prefs", android.content.Context.MODE_PRIVATE);
-                    int userId = prefs.getInt("current_user_id", 0);
-                    if (userId == 0) {
-                        Toast.makeText(context, "Bạn cần đăng nhập trước khi thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    com.example.login.login.shop_sqlite.Models.CartItemDto item = new com.example.login.login.shop_sqlite.Models.CartItemDto(product.getProductId(), 1);
-                    com.example.login.login.shop_sqlite.Api.ApiService apiService = com.example.login.login.shop_sqlite.Api.ApiClient.getClient().create(com.example.login.login.shop_sqlite.Api.ApiService.class);
-                    apiService.addToCart(userId, item).enqueue(new retrofit2.Callback<Void>() {
-                        @Override
-                        public void onResponse(retrofit2.Call<Void> call, retrofit2.Response<Void> response) {
-                            Toast.makeText(context, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
-                        }
-                        @Override
-                        public void onFailure(retrofit2.Call<Void> call, Throwable t) {
-                            Toast.makeText(context, "Lỗi khi thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    listener.onAddToCartClick(product);
-                }
-            });
+            // Xoá hoặc comment toàn bộ logic/thao tác thêm vào giỏ hàng ở ProductList (nút addToCartButton, listener, v.v.)
         }
 
         public void bind(Product product) {
@@ -215,18 +190,18 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    // Thêm hàm formatPrice để hiển thị giá dạng 50k VNĐ, 1.2M VNĐ
+    // Thêm hàm formatPrice để hiển thị giá dạng $50k, $1.2M
     private String formatPrice(double price) {
         if (price >= 1_000_000) {
-            return String.format("%.2fM VNĐ", price / 1_000_000);
+            return String.format("$%.2fM", price / 1_000_000);
         } else if (price >= 1_000) {
             if (price % 1000 == 0) {
-                return String.format("%.0fk VNĐ", price / 1000);
+                return String.format("$%.0fk", price / 1000);
             } else {
-                return String.format("%.2fk VNĐ", price / 1000);
+                return String.format("$%.2fk", price / 1000);
             }
         } else {
-            return String.format("%.0f VNĐ", price);
+            return String.format("$%.2f", price);
         }
     }
 } 

@@ -20,7 +20,7 @@ public class Product {
     private double basePrice;
     
     @SerializedName("availableAttributes")
-    private String availableAttributes;
+    private String availableAttributes; // JSON string
     
     @SerializedName("categoryId")
     private int categoryId;
@@ -32,7 +32,7 @@ public class Product {
     private String imageUrl;
     
     @SerializedName("variants")
-    private List<ProductVariant> variants;
+    private List<ProductVariantDto> variants;
     
     @SerializedName("createdAt")
     private String createdAt;
@@ -126,11 +126,11 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public List<ProductVariant> getVariants() {
+    public List<ProductVariantDto> getVariants() {
         return variants;
     }
 
-    public void setVariants(List<ProductVariant> variants) {
+    public void setVariants(List<ProductVariantDto> variants) {
         this.variants = variants;
     }
 
@@ -152,6 +152,6 @@ public class Product {
 
     // Helper method to format price
     public String getFormattedPrice() {
-        return String.format("%,.0f VNĐ", basePrice);
+        return String.format("$%,.2f", basePrice);
     }
 } 

@@ -45,6 +45,9 @@ public interface ApiService {
             @Query("page") int page,
             @Query("pageSize") int pageSize);
 
+    @GET("api/Product/{id}")
+    Call<Product> getProductById(@Path("id") int productId);
+
     @GET("cart/{userId}")
     Call<CartResponse> getCart(@Path("userId") int userId);
 
@@ -54,8 +57,8 @@ public interface ApiService {
     @PUT("cart/{userId}/update")
     Call<Void> updateCartItem(@Path("userId") int userId, @Body CartItemDto item);
 
-    @DELETE("cart/{userId}/remove/{productId}")
-    Call<Void> removeFromCart(@Path("userId") int userId, @Path("productId") int productId);
+    @DELETE("cart/{userId}/remove/{productId}/{variantId}")
+    Call<Void> removeFromCart(@Path("userId") int userId, @Path("productId") int productId, @Path("variantId") int variantId);
 
     @POST("api/orders")
     Call<Void> placeOrder(@Body OrderRequest orderRequest);
