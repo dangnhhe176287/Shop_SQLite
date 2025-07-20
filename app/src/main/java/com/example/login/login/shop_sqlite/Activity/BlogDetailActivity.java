@@ -1,6 +1,7 @@
 package com.example.login.login.shop_sqlite.Activity;
 
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
@@ -17,12 +18,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BlogDetailActivity extends AppCompatActivity {
     private TextView tvTitle, tvContent;
+    private Button btnBack;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blog_detail);
         tvTitle = findViewById(R.id.tvBlogTitle);
         tvContent = findViewById(R.id.tvBlogContent);
+        btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> finish());
         int blogId = getIntent().getIntExtra("blogId", -1);
         if (blogId != -1) {
             fetchBlogDetail(blogId);
@@ -31,6 +36,7 @@ public class BlogDetailActivity extends AppCompatActivity {
             finish();
         }
     }
+
     private void fetchBlogDetail(int blogId) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:5287/") // Đổi lại nếu backend khác
@@ -48,10 +54,11 @@ public class BlogDetailActivity extends AppCompatActivity {
                     Toast.makeText(BlogDetailActivity.this, "Không tải được chi tiết blog", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call<Blog> call, Throwable t) {
                 Toast.makeText(BlogDetailActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
-} 
+}

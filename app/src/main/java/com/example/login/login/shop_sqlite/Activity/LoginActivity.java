@@ -17,6 +17,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import android.content.SharedPreferences;
 import android.widget.TextView;
+import android.util.Log;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText etEmail, etPassword;
@@ -84,14 +85,28 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback<LoginResponseDto>() {
             @Override
             public void onResponse(Call<LoginResponseDto> call, Response<LoginResponseDto> response) {
+                Log.d("LoginActivity", "onResponse: code=" + response.code());
                 if (response.isSuccessful() && response.body() != null) {
                     String token = response.body().token;
+                    String role = response.body().RoleName;
+                    Log.d("LoginActivity", "Login thành công, token=" + token + ", role=" + role);
                     Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, ProductListActivity.class);
-                    intent.putExtra("token", token);
-                    intent.putExtra("userName", response.body().UserName);
-                    startActivity(intent);
-                    finish();
+                    try {
+                        Intent intent;
+                        if (role != null && role.equalsIgnoreCase("admin")) {
+                            intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
+                        } else {
+                            intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
+                        }
+                        intent.putExtra("token", token);
+                        intent.putExtra("userName", response.body().UserName);
+                        Log.d("LoginActivity", "Bắt đầu startActivity " + intent.getComponent());
+                        startActivity(intent);
+                        Log.d("LoginActivity", "Đã gọi startActivity");
+                        finish();
+                    } catch (Exception e) {
+                        Log.e("LoginActivity", "Lỗi khi start Activity", e);
+                    }
                 } else {
                     String errorMsg = "Login failed";
                     if (response.errorBody() != null) {
@@ -100,12 +115,14 @@ public class LoginActivity extends AppCompatActivity {
                         } catch (Exception ignored) {
                         }
                     }
+                    Log.e("LoginActivity", "Login thất bại: " + errorMsg);
                     Toast.makeText(LoginActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponseDto> call, Throwable t) {
+                Log.e("LoginActivity", "onFailure: ", t);
                 Toast.makeText(LoginActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
