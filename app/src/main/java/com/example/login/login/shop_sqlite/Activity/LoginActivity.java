@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     String token = response.body().token;
                     Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, UserManagementActivity.class);
                     intent.putExtra("token", token);
                     intent.putExtra("userName", response.body().UserName);
                     startActivity(intent);

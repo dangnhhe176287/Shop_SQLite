@@ -40,6 +40,12 @@
         <activity
             android:name=".Activity.ResetPasswordActivity"
             android:exported="false" />
+        <activity
+            android:name=".Activity.UserManagementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.UserDetailActivity"
+            android:exported="false" />
 
 
 

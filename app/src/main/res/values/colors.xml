@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="colorPrimary">#2196F3</color>
-    <color name="colorPrimaryDark">#1976D2</color>
-    <color name="colorAccent">#FF5722</color>
-    <color name="white">#FFFFFF</color>
-    <color name="light_gray">#F5F5F5</color>
-    <color name="dark_gray">#757575</color>
     <color name="fashion_primary">#E91E63</color>
     <color name="fashion_accent">#FF6B6B</color>
+    <color name="primary_text">#2C3E50</color>
+    <color name="secondary_text">#7F8C8D</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="divider_color">#E0E0E0</color>
+    <color name="white">#FFFFFF</color>
+    <color name="fashion_pink">#FF6B9D</color>
+    <color name="fashion_purple">#9B59B6</color>
+    <color name="fashion_blue">#3498DB</color>
+    <color name="fashion_green">#2ECC71</color>
+    <color name="fashion_orange">#E67E22</color>
+    <color name="fashion_gradient_start">#FF6B9D</color>
+    <color name="fashion_gradient_end">#9B59B6</color>
+    <color name="fashion_light_gray">#F8F9FA</color>
+    <color name="fashion_dark_gray">#34495E</color>
+    <color name="fashion_shadow">#20000000</color>
+    <color name="black">#000000</color>
+    <color name="error">#D32F2F</color>
+    <color name="success">#388E3C</color>
+    <color name="info">#1976D2</color>
+    <color name="warning">#FFA000</color>
+    <color name="dark_gray">#757575</color>
+    <color name="colorPrimary">#E91E63</color>
+    <color name="colorPrimaryDark">#AD1457</color>
 </resources>
