@@ -94,8 +94,8 @@ public interface ApiService {
     @GET("api/Users")
     Call<List<UserDto>> getAllUsers();
 
-    @GET("api/Users/{id}")
-    Call<UserDto> getUserById(@Path("id") int id);
+//    @GET("api/Users/{id}")
+//    Call<UserDto> getUserById(@Path("id") int id);
 
     @POST("api/Users")
     Call<UserDto> addUser(@Body UserDto user);
