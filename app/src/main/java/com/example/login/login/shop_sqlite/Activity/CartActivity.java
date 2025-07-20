@@ -5,6 +5,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.login.login.shop_sqlite.Adapter.CartAdapter;
 import com.example.login.login.shop_sqlite.Models.CartItem;
 import com.example.login.login.shop_sqlite.Models.CartManager;
 import com.example.login.login.shop_sqlite.R;

@@ -31,10 +31,7 @@
             android:name=".Activity.RegisterActivity"
             android:exported="false" />
 
-        <activity
 
-            android:name=".Activity.MainActivity"
-            android:exported="false" />
 
         <activity
             android:name=".Activity.ProductListActivity"
@@ -74,6 +71,10 @@
         <activity
             android:name=".Activity.OrderListActivity"
             android:exported="false" />
+
+        <activity android:name=".Activity.BlogListActivity" android:exported="false" />
+        <activity android:name=".Activity.BlogDetailActivity" android:exported="false" />
+        <activity android:name=".Activity.ProfileActivity" android:exported="false" />
 
     </application>
 

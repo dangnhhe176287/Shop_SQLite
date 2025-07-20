@@ -1,31 +1,34 @@
-package com.example.login.login.shop_sqlite.Activity;
+package com.example.login.login.shop_sqlite.Adapter;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.content.SharedPreferences;
-import android.content.Context;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
+import com.example.login.login.shop_sqlite.Api.ApiClient;
+import com.example.login.login.shop_sqlite.Api.ApiService;
 import com.example.login.login.shop_sqlite.Models.CartItemDto;
 import com.example.login.login.shop_sqlite.R;
-import com.example.login.login.shop_sqlite.Api.ApiService;
-import com.example.login.login.shop_sqlite.Api.ApiClient;
+
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
-    private java.util.List<CartItemDto> cartItems;
+    private List<CartItemDto> cartItems;
 
-    public CartAdapter(java.util.List<CartItemDto> cartItems) {
+    public CartAdapter(List<CartItemDto> cartItems) {
         this.cartItems = (cartItems != null) ? cartItems : new java.util.ArrayList<>();
     }
 

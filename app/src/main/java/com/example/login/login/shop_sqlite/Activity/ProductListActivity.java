@@ -88,10 +88,20 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
         fabMenu.setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(ProductListActivity.this, fabMenu);
             popup.getMenu().add("Xem đơn hàng");
+            popup.getMenu().add("Xem blog"); // Thêm mục xem blog
+            popup.getMenu().add("Xem profile"); // Thêm mục xem profile
             // Có thể add thêm các chức năng khác ở đây
             popup.setOnMenuItemClickListener(item -> {
                 if (item.getTitle().equals("Xem đơn hàng")) {
                     Intent intent = new Intent(ProductListActivity.this, OrderListActivity.class);
+                    startActivity(intent);
+                    return true;
+                } else if (item.getTitle().equals("Xem blog")) {
+                    Intent intent = new Intent(ProductListActivity.this, BlogListActivity.class);
+                    startActivity(intent);
+                    return true;
+                } else if (item.getTitle().equals("Xem profile")) {
+                    Intent intent = new Intent(ProductListActivity.this, ProfileActivity.class);
                     startActivity(intent);
                     return true;
                 }

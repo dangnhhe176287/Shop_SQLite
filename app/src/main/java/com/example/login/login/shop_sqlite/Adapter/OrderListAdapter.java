@@ -1,13 +1,16 @@
-package com.example.login.login.shop_sqlite.Activity;
+package com.example.login.login.shop_sqlite.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.login.login.shop_sqlite.Models.OrderView;
 import com.example.login.login.shop_sqlite.R;
+
 import java.util.List;
 
 public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.OrderViewHolder> {

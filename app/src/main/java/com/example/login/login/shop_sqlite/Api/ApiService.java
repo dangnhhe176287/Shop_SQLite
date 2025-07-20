@@ -65,4 +65,10 @@ public interface ApiService {
 
     @GET("api/orders/{orderId}")
     Call<OrderView> getOrderDetail(@Path("orderId") int orderId);
+
+    @GET("api/users/profile")
+    Call<com.example.login.login.shop_sqlite.Models.UserProfileDto> getProfile(@Header("Authorization") String token);
+
+    @GET("api/users/{id}")
+    Call<com.example.login.login.shop_sqlite.Models.UserProfileDto> getUserById(@Path("id") int userId);
 }
