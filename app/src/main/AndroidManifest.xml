@@ -44,7 +44,7 @@
             <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".Activity.ProductListActivity" />
         </activity>
         <activity android:name=".Activity.OrderActivity" android:exported="false" />
-        <activity android:name=".Activity.OrderListActivity" android:exported="false" />
+        <activity android:name=".Activity.SaleOrderListActivity" android:exported="false" />
         <activity android:name=".Activity.BlogListActivity" android:exported="false" />
         <activity android:name=".Activity.BlogDetailActivity" android:exported="false" />
         <activity android:name=".Activity.ProfileActivity" android:exported="false" />
