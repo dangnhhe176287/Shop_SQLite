@@ -75,10 +75,18 @@ public class BlogManagementFragment extends Fragment implements BlogListAdapter.
         EditText etTitle = view.findViewById(R.id.etBlogTitle);
         EditText etContent = view.findViewById(R.id.etBlogContent);
         EditText etCategory = view.findViewById(R.id.etBlogCategory);
+        EditText etSummary = view.findViewById(R.id.etBlogSummary);
+        EditText etThumbnailUrl = view.findViewById(R.id.etBlogThumbnailUrl);
+        EditText etTags = view.findViewById(R.id.etBlogTags);
+        EditText etStatus = view.findViewById(R.id.etBlogStatus);
         if (isEdit) {
             etTitle.setText(blog.getBlogTittle());
             etContent.setText(blog.getBlogContent());
             etCategory.setText(blog.getBlogCategoryId() != null ? String.valueOf(blog.getBlogCategoryId()) : "");
+            etSummary.setText(blog.getSummary());
+            etThumbnailUrl.setText(blog.getThumbnailUrl());
+            etTags.setText(blog.getTags());
+            etStatus.setText(blog.getStatus());
         }
         builder.setView(view);
         builder.setNegativeButton("Cancel", null);
@@ -90,6 +98,10 @@ public class BlogManagementFragment extends Fragment implements BlogListAdapter.
                 String content = etContent.getText().toString().trim();
                 String categoryStr = etCategory.getText().toString().trim();
                 Integer categoryId = categoryStr.isEmpty() ? null : Integer.valueOf(categoryStr);
+                String summary = etSummary.getText().toString().trim();
+                String thumbnailUrl = etThumbnailUrl.getText().toString().trim();
+                String tags = etTags.getText().toString().trim();
+                String status = etStatus.getText().toString().trim();
                 if (title.isEmpty()) {
                     etTitle.setError("Title required");
                     etTitle.requestFocus();
@@ -105,6 +117,10 @@ public class BlogManagementFragment extends Fragment implements BlogListAdapter.
                     blog.setBlogTittle(title);
                     blog.setBlogContent(content);
                     blog.setBlogCategoryId(categoryId);
+                    blog.setSummary(summary);
+                    blog.setThumbnailUrl(thumbnailUrl);
+                    blog.setTags(tags);
+                    blog.setStatus(status);
                     api.updateBlog(blog.getBlogId(), blog).enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
@@ -128,6 +144,10 @@ public class BlogManagementFragment extends Fragment implements BlogListAdapter.
                     newBlog.setBlogTittle(title);
                     newBlog.setBlogContent(content);
                     newBlog.setBlogCategoryId(categoryId);
+                    newBlog.setSummary(summary);
+                    newBlog.setThumbnailUrl(thumbnailUrl);
+                    newBlog.setTags(tags);
+                    newBlog.setStatus(status);
                     api.addBlog(newBlog).enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
