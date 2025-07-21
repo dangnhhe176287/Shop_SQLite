@@ -4,11 +4,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.login.login.shop_sqlite.Models.Blog;
 import com.example.login.login.shop_sqlite.R;
+import com.bumptech.glide.Glide;
 import java.util.List;
 
 public class BlogListAdapter extends RecyclerView.Adapter<BlogListAdapter.BlogViewHolder> {
@@ -46,6 +48,19 @@ public class BlogListAdapter extends RecyclerView.Adapter<BlogListAdapter.BlogVi
         Blog blog = blogList.get(position);
         holder.tvTitle.setText(blog.getBlogTittle());
         holder.tvContent.setText(blog.getBlogContent());
+        holder.tvSummary.setText(blog.getSummary());
+        holder.tvViewCount.setText("Views: " + blog.getViewCount());
+        holder.tvStatus.setText("Status: " + (blog.getStatus() != null ? blog.getStatus() : ""));
+        if (blog.getThumbnailUrl() != null && !blog.getThumbnailUrl().isEmpty()) {
+            // Sử dụng Glide hoặc Picasso để load ảnh
+            Glide.with(holder.itemView.getContext())
+                    .load(blog.getThumbnailUrl())
+                    .placeholder(R.drawable.ic_err_image_background)
+                    .error(R.drawable.ic_err_image_background)
+                    .into(holder.ivThumbnail);
+        } else {
+            holder.ivThumbnail.setImageResource(R.drawable.ic_err_image_background);
+        }
         holder.itemView.setOnClickListener(v -> listener.onBlogClick(blog));
         if (showActions) {
             holder.btnEdit.setVisibility(View.VISIBLE);
@@ -65,12 +80,18 @@ public class BlogListAdapter extends RecyclerView.Adapter<BlogListAdapter.BlogVi
 
     static class BlogViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvContent;
+        TextView tvSummary, tvViewCount, tvStatus;
+        ImageView ivThumbnail;
         ImageButton btnEdit, btnDelete;
 
         BlogViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvItemBlogTitle);
             tvContent = itemView.findViewById(R.id.tvItemBlogSummary);
+            tvSummary = itemView.findViewById(R.id.tvItemBlogSummary);
+            tvViewCount = itemView.findViewById(R.id.tvItemBlogViewCount);
+            tvStatus = itemView.findViewById(R.id.tvItemBlogStatus);
+            ivThumbnail = itemView.findViewById(R.id.ivItemBlogThumbnail);
             btnEdit = itemView.findViewById(R.id.btnEditBlog);
             btnDelete = itemView.findViewById(R.id.btnDeleteBlog);
         }

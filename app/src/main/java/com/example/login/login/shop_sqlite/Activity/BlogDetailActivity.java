@@ -15,9 +15,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import android.widget.ImageView;
+import com.bumptech.glide.Glide;
 
 public class BlogDetailActivity extends AppCompatActivity {
     private TextView tvTitle, tvContent;
+    private TextView tvSummary, tvTags, tvStatus, tvViewCount;
+    private ImageView ivThumbnail;
     private Button btnBack;
 
     @Override
@@ -26,15 +30,41 @@ public class BlogDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_blog_detail);
         tvTitle = findViewById(R.id.tvBlogTitle);
         tvContent = findViewById(R.id.tvBlogContent);
+        tvSummary = findViewById(R.id.tvBlogSummary);
+        tvTags = findViewById(R.id.tvBlogTags);
+        tvStatus = findViewById(R.id.tvBlogStatus);
+        tvViewCount = findViewById(R.id.tvBlogViewCount);
+        ivThumbnail = findViewById(R.id.ivBlogThumbnail);
         btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> finish());
         int blogId = getIntent().getIntExtra("blogId", -1);
         if (blogId != -1) {
-            fetchBlogDetail(blogId);
+            increaseViewAndFetchDetail(blogId);
         } else {
             Toast.makeText(this, "Không tìm thấy bài viết", Toast.LENGTH_SHORT).show();
             finish();
         }
+    }
+
+    private void increaseViewAndFetchDetail(int blogId) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:5287/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        BlogApiService api = retrofit.create(BlogApiService.class);
+        api.increaseView(blogId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                // Sau khi tăng view, lấy lại chi tiết blog
+                fetchBlogDetail(blogId);
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Dù lỗi vẫn lấy chi tiết blog
+                fetchBlogDetail(blogId);
+            }
+        });
     }
 
     private void fetchBlogDetail(int blogId) {
@@ -50,6 +80,19 @@ public class BlogDetailActivity extends AppCompatActivity {
                     Blog blog = response.body();
                     tvTitle.setText(blog.getBlogTittle());
                     tvContent.setText(blog.getBlogContent());
+                    tvSummary.setText(blog.getSummary());
+                    tvTags.setText(blog.getTags());
+                    tvStatus.setText(blog.getStatus());
+                    tvViewCount.setText("Views: " + blog.getViewCount());
+                    if (blog.getThumbnailUrl() != null && !blog.getThumbnailUrl().isEmpty()) {
+                        Glide.with(BlogDetailActivity.this)
+                                .load(blog.getThumbnailUrl())
+                                .placeholder(R.drawable.ic_err_image_background)
+                                .error(R.drawable.ic_err_image_background)
+                                .into(ivThumbnail);
+                    } else {
+                        ivThumbnail.setImageResource(R.drawable.ic_err_image_background);
+                    }
                 } else {
                     Toast.makeText(BlogDetailActivity.this, "Không tải được chi tiết blog", Toast.LENGTH_SHORT).show();
                 }

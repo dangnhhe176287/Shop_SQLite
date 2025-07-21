@@ -23,12 +23,27 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.webkit.MimeTypeMap;
+import java.io.File;
+import java.io.IOException;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import com.example.login.login.shop_sqlite.Utils.FileUtils;
 
 public class BlogManagementActivity extends AppCompatActivity implements BlogListAdapter.OnBlogClickListener {
     private RecyclerView recyclerView;
     private BlogListAdapter adapter;
     private List<Blog> blogList = new ArrayList<>();
     private FloatingActionButton fabAddBlog;
+    private static final int PICK_IMAGE_REQUEST = 1001;
+    private EditText etThumbnailUrl;
+    private Uri selectedImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +87,20 @@ public class BlogManagementActivity extends AppCompatActivity implements BlogLis
         EditText etTitle = view.findViewById(R.id.etBlogTitle);
         EditText etCategory = view.findViewById(R.id.etBlogCategory);
         EditText etContent = view.findViewById(R.id.etBlogContent);
+        EditText etSummary = view.findViewById(R.id.etBlogSummary);
+        etThumbnailUrl = view.findViewById(R.id.etBlogThumbnailUrl);
+        Button btnPickImage = view.findViewById(R.id.btnPickImage);
+        btnPickImage.setOnClickListener(v -> openFileChooser());
+        EditText etTags = view.findViewById(R.id.etBlogTags);
+        EditText etStatus = view.findViewById(R.id.etBlogStatus);
         if (isEdit) {
             etTitle.setText(blog.getBlogTittle());
             etCategory.setText(blog.getBlogCategoryId() != null ? String.valueOf(blog.getBlogCategoryId()) : "");
             etContent.setText(blog.getBlogContent());
+            etSummary.setText(blog.getSummary());
+            etThumbnailUrl.setText(blog.getThumbnailUrl());
+            etTags.setText(blog.getTags());
+            etStatus.setText(blog.getStatus());
         }
         builder.setView(view);
         builder.setNegativeButton("Cancel", null);
@@ -87,6 +112,10 @@ public class BlogManagementActivity extends AppCompatActivity implements BlogLis
                 String content = etContent.getText().toString().trim();
                 String categoryStr = etCategory.getText().toString().trim();
                 Integer categoryId = categoryStr.isEmpty() ? null : Integer.valueOf(categoryStr);
+                String summary = etSummary.getText().toString().trim();
+                String thumbnailUrl = etThumbnailUrl.getText().toString().trim();
+                String tags = etTags.getText().toString().trim();
+                String status = etStatus.getText().toString().trim();
                 if (title.isEmpty()) {
                     etTitle.setError("Title required");
                     etTitle.requestFocus();
@@ -98,55 +127,89 @@ public class BlogManagementActivity extends AppCompatActivity implements BlogLis
                     return;
                 }
                 BlogApiService api = ApiClient.getClient().create(BlogApiService.class);
-                if (isEdit) {
-                    blog.setBlogTittle(title);
-                    blog.setBlogContent(content);
-                    blog.setBlogCategoryId(categoryId);
-                    api.updateBlog(blog.getBlogId(), blog).enqueue(new Callback<Void>() {
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            if (response.isSuccessful()) {
-                                Toast.makeText(BlogManagementActivity.this, "Blog updated", Toast.LENGTH_SHORT).show();
-                                fetchBlogs();
-                                dialog.dismiss();
-                            } else {
-                                Toast.makeText(BlogManagementActivity.this, "Update failed", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                            Toast.makeText(BlogManagementActivity.this, "Network error: " + t.getMessage(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                if (selectedImageUri != null) {
+                    uploadThumbnailAndAddOrUpdateBlog(isEdit, blog, new Blog(), title, content, categoryId, summary,
+                            tags, status, dialog, api);
                 } else {
-                    Blog newBlog = new Blog();
-                    newBlog.setBlogTittle(title);
-                    newBlog.setBlogContent(content);
-                    newBlog.setBlogCategoryId(categoryId);
-                    api.addBlog(newBlog).enqueue(new Callback<Void>() {
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            if (response.isSuccessful()) {
-                                Toast.makeText(BlogManagementActivity.this, "Blog added", Toast.LENGTH_SHORT).show();
-                                fetchBlogs();
-                                dialog.dismiss();
-                            } else {
-                                Toast.makeText(BlogManagementActivity.this, "Add failed", Toast.LENGTH_SHORT).show();
+                    // Không chọn ảnh, dùng url nhập tay hoặc rỗng
+                    if (isEdit) {
+                        blog.setBlogTittle(title);
+                        blog.setBlogContent(content);
+                        blog.setBlogCategoryId(categoryId);
+                        blog.setSummary(summary);
+                        blog.setThumbnailUrl(etThumbnailUrl.getText().toString().trim());
+                        blog.setTags(tags);
+                        blog.setStatus(status);
+                        api.updateBlog(blog.getBlogId(), blog).enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+                                    Toast.makeText(BlogManagementActivity.this, "Blog updated", Toast.LENGTH_SHORT)
+                                            .show();
+                                    fetchBlogs();
+                                    dialog.dismiss();
+                                } else {
+                                    Toast.makeText(BlogManagementActivity.this, "Update failed", Toast.LENGTH_SHORT)
+                                            .show();
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                            Toast.makeText(BlogManagementActivity.this, "Network error: " + t.getMessage(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Toast.makeText(BlogManagementActivity.this, "Network error: " + t.getMessage(),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        Blog newBlog = new Blog();
+                        newBlog.setBlogTittle(title);
+                        newBlog.setBlogContent(content);
+                        newBlog.setBlogCategoryId(categoryId);
+                        newBlog.setSummary(summary);
+                        newBlog.setThumbnailUrl(etThumbnailUrl.getText().toString().trim());
+                        newBlog.setTags(tags);
+                        newBlog.setStatus(status);
+                        api.addBlog(newBlog).enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+                                    Toast.makeText(BlogManagementActivity.this, "Blog added", Toast.LENGTH_SHORT)
+                                            .show();
+                                    fetchBlogs();
+                                    dialog.dismiss();
+                                } else {
+                                    Toast.makeText(BlogManagementActivity.this, "Add failed", Toast.LENGTH_SHORT)
+                                            .show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Toast.makeText(BlogManagementActivity.this, "Network error: " + t.getMessage(),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 }
             });
         });
         dialog.show();
+    }
+
+    private void openFileChooser() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null
+                && data.getData() != null) {
+            selectedImageUri = data.getData();
+            etThumbnailUrl.setText(selectedImageUri.toString());
+        }
     }
 
     @Override
@@ -187,5 +250,108 @@ public class BlogManagementActivity extends AppCompatActivity implements BlogLis
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
+    }
+
+    private void uploadThumbnailAndAddOrUpdateBlog(boolean isEdit, Blog blog, Blog newBlog, String title,
+            String content, Integer categoryId, String summary, String tags, String status, AlertDialog dialog,
+            BlogApiService api) {
+        try {
+            String filePath = FileUtils.getPath(this, selectedImageUri);
+            File file = new File(filePath);
+            RequestBody requestFile = RequestBody
+                    .create(MediaType.parse(getContentResolver().getType(selectedImageUri)), file);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+            api.uploadThumbnail(body).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        try {
+                            String responseStr = response.body().string();
+                            String url = parseUrlFromResponse(responseStr);
+                            if (isEdit) {
+                                blog.setBlogTittle(title);
+                                blog.setBlogContent(content);
+                                blog.setBlogCategoryId(categoryId);
+                                blog.setSummary(summary);
+                                blog.setThumbnailUrl(url);
+                                blog.setTags(tags);
+                                blog.setStatus(status);
+                                api.updateBlog(blog.getBlogId(), blog).enqueue(new Callback<Void>() {
+                                    @Override
+                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                        if (response.isSuccessful()) {
+                                            Toast.makeText(BlogManagementActivity.this, "Blog updated",
+                                                    Toast.LENGTH_SHORT).show();
+                                            fetchBlogs();
+                                            dialog.dismiss();
+                                        } else {
+                                            Toast.makeText(BlogManagementActivity.this, "Update failed",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Void> call, Throwable t) {
+                                        Toast.makeText(BlogManagementActivity.this, "Network error: " + t.getMessage(),
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            } else {
+                                newBlog.setBlogTittle(title);
+                                newBlog.setBlogContent(content);
+                                newBlog.setBlogCategoryId(categoryId);
+                                newBlog.setSummary(summary);
+                                newBlog.setThumbnailUrl(url);
+                                newBlog.setTags(tags);
+                                newBlog.setStatus(status);
+                                api.addBlog(newBlog).enqueue(new Callback<Void>() {
+                                    @Override
+                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                        if (response.isSuccessful()) {
+                                            Toast.makeText(BlogManagementActivity.this, "Blog added",
+                                                    Toast.LENGTH_SHORT).show();
+                                            fetchBlogs();
+                                            dialog.dismiss();
+                                        } else {
+                                            Toast.makeText(BlogManagementActivity.this, "Add failed",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Void> call, Throwable t) {
+                                        Toast.makeText(BlogManagementActivity.this, "Network error: " + t.getMessage(),
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        } catch (IOException e) {
+                            Toast.makeText(BlogManagementActivity.this, "Parse response error", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    } else {
+                        Toast.makeText(BlogManagementActivity.this, "Upload failed", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(BlogManagementActivity.this, "Upload error: " + t.getMessage(), Toast.LENGTH_SHORT)
+                            .show();
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(this, "File error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String parseUrlFromResponse(String responseStr) {
+        // Giả sử response dạng {"url":"/uploads/thumbnails/xxx.jpg"}
+        int start = responseStr.indexOf(":");
+        int end = responseStr.indexOf("}");
+        if (start != -1 && end != -1) {
+            return responseStr.substring(start + 2, end - 1);
+        }
+        return "";
     }
 }

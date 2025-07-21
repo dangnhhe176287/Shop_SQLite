@@ -10,6 +10,11 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.DELETE;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.http.Multipart;
+import retrofit2.http.Part;
 
 public interface BlogApiService {
     @GET("api/blog/all")
@@ -29,4 +34,11 @@ public interface BlogApiService {
 
     @DELETE("api/blog/{id}")
     Call<Void> deleteBlog(@Path("id") int id, @Query("confirm") boolean confirm);
+
+    @Multipart
+    @POST("api/blog/upload-thumbnail")
+    Call<ResponseBody> uploadThumbnail(@Part MultipartBody.Part file);
+
+    @PUT("api/blog/increase-view/{id}")
+    Call<Void> increaseView(@Path("id") int id);
 }

@@ -44,6 +44,40 @@
                 android:inputType="number"
                 android:layout_marginBottom="12dp" />
             <EditText
+                android:id="@+id/etBlogSummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Summary"
+                android:inputType="text"
+                android:layout_marginBottom="12dp" />
+            <EditText
+                android:id="@+id/etBlogThumbnailUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Thumbnail URL"
+                android:inputType="textUri"
+                android:layout_marginBottom="12dp" />
+            <Button
+                android:id="@+id/btnPickImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pick Image"
+                android:layout_marginBottom="12dp" />
+            <EditText
+                android:id="@+id/etBlogTags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tags (comma separated)"
+                android:inputType="text"
+                android:layout_marginBottom="12dp" />
+            <EditText
+                android:id="@+id/etBlogStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Status"
+                android:inputType="text"
+                android:layout_marginBottom="12dp" />
+            <EditText
                 android:id="@+id/etBlogContent"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
