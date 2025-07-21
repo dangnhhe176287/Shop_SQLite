@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/border_background"> <EditText
+    android:id="@+id/edtVariantSize"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Kích thước"
+    android:layout_marginBottom="4dp" />
+
+    <EditText
+        android:id="@+id/edtVariantColor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Màu sắc"
+        android:layout_marginBottom="4dp" />
+
+    <EditText
+        android:id="@+id/edtVariantPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Giá biến thể"
+        android:inputType="numberDecimal"
+        android:layout_marginBottom="4dp" />
+
+    <EditText
+        android:id="@+id/edtVariantStock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Số lượng kho"
+        android:inputType="number"
+        android:layout_marginBottom="4dp" />
+
+    <Button
+        android:id="@+id/btnRemoveVariant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Xóa biến thể"
+        android:layout_gravity="end"
+        android:backgroundTint="@android:color/holo_red_dark"
+        android:textColor="@android:color/white"/>
+
+</LinearLayout>

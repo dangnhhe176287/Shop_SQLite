@@ -9,28 +9,29 @@
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
-        android:networkSecurityConfig="@xml/network_security_config"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Shop_SQLite"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
         <activity
-            android:name=".Activity.LoginActivity"
+            android:name=".Activity.SaleActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Activity.RegisterActivity"
-            android:exported="false" />
+        <activity android:name=".Activity.RegisterActivity" />
 
 
         <activity
+
             android:name=".Activity.ForgotPasswordActivity"
             android:exported="false" />
         <activity
@@ -89,6 +90,24 @@
         <activity android:name=".Activity.BlogListActivity" android:exported="false" />
         <activity android:name=".Activity.BlogDetailActivity" android:exported="false" />
         <activity android:name=".Activity.ProfileActivity" android:exported="false" />
+
+            android:name=".Activity.LoginActivity"
+            android:exported="false" />
+        <activity android:name=".Activity.CreateOrderActivity" android:exported="true" />
+        <activity android:name=".Activity.SaleProductListActivity" android:exported="true" />
+        <activity android:name=".Activity.CreateCategoryActivity" android:exported="true" />
+        <activity android:name=".Activity.UpdateCategoryActivity" android:exported="true" />
+        <activity android:name=".Activity.DeleteCategoryActivity" android:exported="true" />
+        <activity android:name=".Activity.EditProductActivity" android:exported="true" />
+        <activity android:name=".Activity.CreateProductActivity" android:exported="true" />
+        <activity android:name=".Activity.OrderDetailActivity" android:exported="true" />
+        <activity android:name=".Activity.ProductCategoriesActivity" android:exported="true" />
+        <activity android:name=".Activity.UpdateOrderActivity" android:exported="true" />
+        <activity android:name=".Activity.OrderListActivity" android:exported="true" />
+        <activity android:name=".Activity.CreateUserActivity" android:exported="true" />
+        <activity android:name=".Activity.EditUserActivity" android:exported="true" />
+        <activity android:name=".Activity.UserListActivity" android:exported="true" />
+
 
     </application>
 
