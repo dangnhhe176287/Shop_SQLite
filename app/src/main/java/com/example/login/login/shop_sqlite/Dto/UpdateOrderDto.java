@@ -1,16 +1,17 @@
 package com.example.login.login.shop_sqlite.Dto;
 
 import java.util.List;
+import java.util.ArrayList;
 
-public class CreateOrderDto {
-    private int customerId;
-    private Integer paymentMethodId; // Integer để khớp với int? của C#
-    private Integer orderStatusId;   // Integer để khớp với int? của C# (nếu backend yêu cầu)
+public class UpdateOrderDto {
+    private Integer customerId;
+    private Integer paymentMethodId;
+    private Integer orderStatusId;
     private String orderNote;
-    private List<OrderDetailRequestDto> orderDetails;
+    private List<OrderDetailRequestDto> orderDetails = new ArrayList<>();
 
-    // Constructor phải khớp với các trường bạn muốn gửi
-    public CreateOrderDto(int customerId, Integer paymentMethodId, Integer orderStatusId, String orderNote, List<OrderDetailRequestDto> orderDetails) {
+
+    public UpdateOrderDto(Integer customerId, Integer paymentMethodId, Integer orderStatusId, String orderNote, List<OrderDetailRequestDto> orderDetails) {
         this.customerId = customerId;
         this.paymentMethodId = paymentMethodId;
         this.orderStatusId = orderStatusId;
@@ -18,8 +19,9 @@ public class CreateOrderDto {
         this.orderDetails = orderDetails;
     }
 
-    // Getters (cần thiết cho Gson để serialize)
-    public int getCustomerId() {
+
+
+    public Integer getCustomerId() {
         return customerId;
     }
 

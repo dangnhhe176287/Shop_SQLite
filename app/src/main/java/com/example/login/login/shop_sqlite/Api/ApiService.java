@@ -5,6 +5,7 @@ import com.example.login.login.shop_sqlite.Dto.CreateProductCategoryDto;
 import com.example.login.login.shop_sqlite.Dto.CreateProductDto;
 import com.example.login.login.shop_sqlite.Dto.ProductCategoryResponseDto;
 import com.example.login.login.shop_sqlite.Dto.ProductResponseDto; // Đảm bảo import này là ProductResponseDto, không phải ProductDetailResponseDto
+import com.example.login.login.shop_sqlite.Dto.UpdateOrderDto;
 import com.example.login.login.shop_sqlite.Dto.UpdateProductCategoryDto;
 import com.example.login.login.shop_sqlite.Models.LoginRequestDto;
 import com.example.login.login.shop_sqlite.Models.LoginResponseDto;
@@ -38,10 +39,10 @@ public interface ApiService {
     Call<Order> createOrder(@Body CreateOrderDto orderDto);
 
     @PUT("SaleOrder/{id}")
-    Call<Order> updateOrder(@Path("id") int id, @Body Order order);
+    Call<Order> updateOrder(@Path("id") int orderId, @Body UpdateOrderDto updateOrderDto);
 
     @DELETE("SaleOrder/{id}")
-    Call<Void> deleteOrder(@Path("id") int id); // API này dùng cho Order
+    Call<Void> deleteOrder(@Path("id") int id);
 
     @GET("SaleProduct/categories")
     Call<List<ProductCategoryResponseDto>> getAllProductCategories();
@@ -66,7 +67,7 @@ public interface ApiService {
     @GET("SaleProduct/products/{id}")
     Call<ProductResponseDto> getProductById(@Path("id") int productId);
 
-    @PUT("SaleProduct/products/{id}") // Thay đổi từ "products/{id}" sang "SaleProduct/products/{id}" để đồng bộ
+    @PUT("SaleProduct/products/{id}")
     Call<ProductResponseDto> updateProduct(@Path("id") int productId, @Body CreateProductDto productDto);
     @DELETE("SaleProduct/products/{id}")
     Call<Void> deleteProduct(@Path("id") int productId);

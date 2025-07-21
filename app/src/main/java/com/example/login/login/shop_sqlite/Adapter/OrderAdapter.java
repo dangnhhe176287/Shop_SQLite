@@ -1,50 +1,97 @@
 package com.example.login.login.shop_sqlite.Adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.login.login.shop_sqlite.Models.Order;
 import com.example.login.login.shop_sqlite.R;
 
 import java.util.List;
+import java.util.Locale;
 
-public class OrderAdapter extends ArrayAdapter<Order> {
+public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
 
-    public OrderAdapter(Context context, List<Order> orders) {
-        super(context, 0, orders);
+    private List<Order> orderList;
+    private OnItemActionListener listener;
+
+    public interface OnItemActionListener {
+        void onEditClick(int orderId);
+        void onDeleteClick(int orderId);
+    }
+
+    public OrderAdapter(List<Order> orderList, OnItemActionListener listener) {
+        this.orderList = orderList;
+        this.listener = listener;
+    }
+
+    @NonNull
+    @Override
+    public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order, parent, false);
+        return new OrderViewHolder(view);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        Order order = getItem(position);
+    public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
+        Order order = orderList.get(position);
 
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext())
-                    .inflate(R.layout.item_order, parent, false);
-        }
+        holder.tvOrderId.setText("Mã đơn: " + order.getOrderId());
 
-        TextView orderIdText = convertView.findViewById(R.id.orderIdTextView);
-        TextView amountDueText = convertView.findViewById(R.id.amountDueTextView);
-        TextView statusText = convertView.findViewById(R.id.statusTextView);
+        holder.tvCustomerId.setText("ID Khách hàng: " + (order.getCustomerId() != null ? order.getCustomerId() : "N/A"));
 
-        orderIdText.setText("Mã đơn hàng: #" + order.getOrderId());
-        amountDueText.setText("Tổng tiền: " + String.format("%.0f đ", order.getAmountDue()));
-        statusText.setText("Trạng thái: " + getStatusText(order.getOrderStatusId()));
+        holder.tvTotalQuantity.setText("Tổng SP: " + (order.getTotalQuantity() != null ? order.getTotalQuantity() : 0));
 
-        return convertView;
+        holder.tvAmountDue.setText(String.format(Locale.getDefault(), "Tổng tiền: %.2f VNĐ",
+                (order.getAmountDue() != null ? order.getAmountDue() : new java.math.BigDecimal("0.0"))));
+
+        holder.tvOrderStatus.setText("Trạng thái: " + (order.getOrderStatusId() != null ? getStatusName(order.getOrderStatusId()) : "N/A"));
+
+        holder.btnEdit.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onEditClick(order.getOrderId());
+            }
+        });
+
+        holder.btnDelete.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onDeleteClick(order.getOrderId());
+            }
+        });
     }
 
-    private String getStatusText(int statusId) {
+    @Override
+    public int getItemCount() {
+        return orderList.size();
+    }
+
+    public static class OrderViewHolder extends RecyclerView.ViewHolder {
+        TextView tvOrderId, tvCustomerId, tvTotalQuantity, tvAmountDue, tvOrderStatus;
+        Button btnEdit, btnDelete;
+
+        public OrderViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvOrderId = itemView.findViewById(R.id.tvOrderId);
+            tvCustomerId = itemView.findViewById(R.id.tvCustomerId);
+            tvTotalQuantity = itemView.findViewById(R.id.tvTotalQuantity);
+            tvAmountDue = itemView.findViewById(R.id.tvAmountDue);
+            tvOrderStatus = itemView.findViewById(R.id.tvOrderStatus);
+            btnEdit = itemView.findViewById(R.id.btnEditOrder);
+            btnDelete = itemView.findViewById(R.id.btnDeleteOrder);
+        }
+    }
+
+    private String getStatusName(int statusId) {
         switch (statusId) {
-            case 1: return "Đang xử lý";
-            case 2: return "Đã thanh toán";
-            case 3: return "Đã giao";
+            case 1: return "Chờ xử lý";
+            case 2: return "Đang xử lý";
+            case 3: return "Đã giao hàng";
             case 4: return "Đã hủy";
-            default: return "Không rõ";
+            default: return "Không xác định";
         }
     }
 }

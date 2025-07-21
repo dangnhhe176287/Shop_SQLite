@@ -1,35 +1,57 @@
 package com.example.login.login.shop_sqlite.Models;
 
+import com.example.login.login.shop_sqlite.Dto.OrderDetailResponseDto;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 public class Order {
-    private int orderId;
-    private int customerId;
-    private int totalQuantity;
-    private double amountDue;
-    private int paymentMethodId;
+    private Integer orderId;
+    private Integer customerId;
+    private Integer totalQuantity;
+    private BigDecimal amountDue;
+    private Integer paymentMethodId;
     private String orderNote;
-    private int orderStatusId;
+    private Integer orderStatusId;
+    private List<OrderDetailResponseDto> orderDetails;
 
-    // GET & SET
-    public int getOrderId() { return orderId; }
-    public void setOrderId(int orderId) { this.orderId = orderId; }
+    public Integer getOrderId() { return orderId; }
+    public void setOrderId(Integer orderId) { this.orderId = orderId; }
 
-    public int getCustomerId() { return customerId; }
-    public void setCustomerId(int customerId) { this.customerId = customerId; }
+    public Integer getCustomerId() { return customerId; }
+    public void setCustomerId(Integer customerId) { this.customerId = customerId; }
 
-    public int getTotalQuantity() { return totalQuantity; }
-    public void setTotalQuantity(int totalQuantity) { this.totalQuantity = totalQuantity; }
+    public Integer getTotalQuantity() { return totalQuantity; }
+    public void setTotalQuantity(Integer totalQuantity) { this.totalQuantity = totalQuantity; }
 
-    public double getAmountDue() { return amountDue; }
-    public void setAmountDue(double amountDue) { this.amountDue = amountDue; }
+    public BigDecimal getAmountDue() { return amountDue; }
+    public void setAmountDue(BigDecimal amountDue) { this.amountDue = amountDue; }
 
-    public int getPaymentMethodId() { return paymentMethodId; }
-    public void setPaymentMethodId(int paymentMethodId) { this.paymentMethodId = paymentMethodId; }
+    public Integer getPaymentMethodId() { return paymentMethodId; }
+    public void setPaymentMethodId(Integer paymentMethodId) { this.paymentMethodId = paymentMethodId; }
 
     public String getOrderNote() { return orderNote; }
     public void setOrderNote(String orderNote) { this.orderNote = orderNote; }
 
-    public int getOrderStatusId() { return orderStatusId; }
-    public void setOrderStatusId(int orderStatusId) { this.orderStatusId = orderStatusId; }
+    public Integer getOrderStatusId() { return orderStatusId; }
+    public void setOrderStatusId(Integer orderStatusId) { this.orderStatusId = orderStatusId; }
+
+    public Order(Integer orderId, Integer customerId, Integer totalQuantity, BigDecimal amountDue, Integer paymentMethodId, String orderNote, Integer orderStatusId, List<OrderDetailResponseDto> orderDetails) {
+        this.orderId = orderId;
+        this.customerId = customerId;
+        this.totalQuantity = totalQuantity;
+        this.amountDue = amountDue;
+        this.paymentMethodId = paymentMethodId;
+        this.orderNote = orderNote;
+        this.orderStatusId = orderStatusId;
+        this.orderDetails = orderDetails;
+    }
+
+    public List<OrderDetailResponseDto> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetailResponseDto> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
 }

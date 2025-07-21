@@ -20,7 +20,7 @@
 
 
         <activity
-            android:name=".Activity.ProductCategoriesActivity"
+            android:name=".Activity.OrderListActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,9 +32,6 @@
         <activity
             android:name=".Activity.LoginActivity"
             android:exported="false" />
-        <activity
-            android:name=".Activity.OrderActivity"
-            android:exported="false" />
         <activity android:name=".Activity.CreateOrderActivity" android:exported="true" />
         <activity android:name=".Activity.ProductListActivity" android:exported="true" />
         <activity android:name=".Activity.CreateCategoryActivity" android:exported="true" />
@@ -42,6 +39,9 @@
         <activity android:name=".Activity.DeleteCategoryActivity" android:exported="true" />
         <activity android:name=".Activity.EditProductActivity" android:exported="true" />
         <activity android:name=".Activity.CreateProductActivity" android:exported="true" />
+        <activity android:name=".Activity.OrderDetailActivity" android:exported="true" />
+        <activity android:name=".Activity.ProductCategoriesActivity" android:exported="true" />
+        <activity android:name=".Activity.UpdateOrderActivity" android:exported="true" />
 
     </application>
 

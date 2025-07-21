@@ -50,17 +50,16 @@ public class EditProductActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_product); // Đảm bảo bạn đang sử dụng layout mới
+        setContentView(R.layout.activity_edit_product);
 
         initViews();
         apiService = ApiClient.getClient().create(ApiService.class);
 
-        // Lấy Product ID từ Intent
         if (getIntent().hasExtra("productId")) {
             productIdToEdit = getIntent().getIntExtra("productId", -1);
             if (productIdToEdit != -1) {
                 edtProductId.setText(String.valueOf(productIdToEdit));
-                fetchProductDetails(productIdToEdit); // Tải chi tiết sản phẩm
+                fetchProductDetails(productIdToEdit);
             } else {
                 Toast.makeText(this, "Không tìm thấy ID sản phẩm hợp lệ.", Toast.LENGTH_SHORT).show();
                 finish();
@@ -120,7 +119,7 @@ public class EditProductActivity extends AppCompatActivity {
                 String networkError = "Lỗi kết nối khi lấy chi tiết sản phẩm: " + t.getMessage();
                 Toast.makeText(EditProductActivity.this, networkError, Toast.LENGTH_LONG).show();
                 Log.e(TAG, networkError, t);
-                finish(); // Đóng Activity nếu có lỗi mạng
+                finish();
             }
         });
     }
@@ -134,12 +133,10 @@ public class EditProductActivity extends AppCompatActivity {
         edtStatus.setText(product.getStatus() != null ? String.valueOf(product.getStatus()) : "");
         chkIsDelete.setChecked(product.isDelete());
 
-        // Hiển thị hình ảnh
         if (product.getProductImages() != null && !product.getProductImages().isEmpty()) {
             edtImageUrl.setText(product.getProductImages().get(0).getImageUrl());
         }
 
-        // Hiển thị Available Attributes
         if (product.getAvailableAttributes() != null && !product.getAvailableAttributes().isEmpty()) {
             try {
                 Type type = new TypeToken<Map<String, List<String>>>(){}.getType();
@@ -155,8 +152,7 @@ public class EditProductActivity extends AppCompatActivity {
             }
         }
 
-        // Hiển thị Variants
-        variantsContainer.removeAllViews(); // Xóa các trường biến thể mặc định hoặc cũ
+        variantsContainer.removeAllViews();
         if (product.getVariants() != null && !product.getVariants().isEmpty()) {
             for (ProductVariantDto variantDto : product.getVariants()) {
                 String size = "";
@@ -164,7 +160,6 @@ public class EditProductActivity extends AppCompatActivity {
                 double price = 0.0;
                 int stock = 0;
 
-                // Phân tích cú pháp chuỗi JSON 'attributes' của biến thể
                 if (!variantDto.getAttributes().isEmpty()) {
                     try {
                         Type attributesType = new TypeToken<Map<String, String>>(){}.getType();
@@ -180,13 +175,11 @@ public class EditProductActivity extends AppCompatActivity {
                     }
                 }
 
-                // Phân tích cú pháp chuỗi JSON 'variants' của biến thể (chứa giá và kho)
                 if (!variantDto.getVariants().isEmpty()) {
                     try {
                         Type variantDetailsType = new TypeToken<Map<String, Object>>(){}.getType();
                         Map<String, Object> variantDetailsMap = gson.fromJson(variantDto.getVariants(), variantDetailsType);
                         if (variantDetailsMap.containsKey("price")) {
-                            // Gson có thể trả về Double cho số, cần kiểm tra
                             Object priceObj = variantDetailsMap.get("price");
                             if (priceObj instanceof Double) {
                                 price = (Double) priceObj;
@@ -196,7 +189,7 @@ public class EditProductActivity extends AppCompatActivity {
                         }
                         if (variantDetailsMap.containsKey("stock")) {
                             Object stockObj = variantDetailsMap.get("stock");
-                            if (stockObj instanceof Double) { // Gson có thể trả về Double cho số nguyên nếu không có kiểu cụ thể
+                            if (stockObj instanceof Double) {
                                 stock = ((Double) stockObj).intValue();
                             } else if (stockObj instanceof String) {
                                 stock = Integer.parseInt((String) stockObj);
@@ -256,11 +249,10 @@ public class EditProductActivity extends AppCompatActivity {
                 return;
             }
 
-            // Xử lý AvailableSizes và AvailableColors (như CreateProductActivity)
             Map<String, List<String>> availableAttributesMap = new HashMap<>();
             if (!availableSizesInput.isEmpty()) {
                 List<String> sizesList = new ArrayList<>(Arrays.asList(availableSizesInput.split("[,.]")));
-                sizesList.removeIf(String::isEmpty); // Remove empty strings
+                sizesList.removeIf(String::isEmpty);
                 if (!sizesList.isEmpty()) availableAttributesMap.put("size", sizesList);
             }
             if (!availableColorsInput.isEmpty()) {
@@ -272,7 +264,6 @@ public class EditProductActivity extends AppCompatActivity {
             Log.d(TAG, "JSON của Available Attributes gửi đi: " + availableAttributesJson);
 
 
-            // Thu thập dữ liệu từ các biến thể và tạo JSON cho từng biến thể (như CreateProductActivity)
             List<ProductVariantDto> variantsList = new ArrayList<>();
             for (int i = 0; i < variantsContainer.getChildCount(); i++) {
                 View variantView = variantsContainer.getChildAt(i);
@@ -291,13 +282,11 @@ public class EditProductActivity extends AppCompatActivity {
                     continue;
                 }
 
-                // Xây dựng JSON cho 'attributes' của TỪNG biến thể
                 JsonObject attributesObject = new JsonObject();
                 if (!size.isEmpty()) attributesObject.addProperty("size", size);
                 if (!color.isEmpty()) attributesObject.addProperty("color", color);
                 String attributesJsonForVariant = gson.toJson(attributesObject);
 
-                // Xây dựng JSON cho 'variants' (price, stock) của TỪNG biến thể
                 JsonObject variantDetailsObject = new JsonObject();
                 try {
                     if (!priceStr.isEmpty()) variantDetailsObject.addProperty("price", Double.parseDouble(priceStr));
@@ -320,20 +309,16 @@ public class EditProductActivity extends AppCompatActivity {
             }
             Log.d(TAG, "Tổng số biến thể đã xử lý: " + variantsList.size());
 
-            // Xử lý hình ảnh (như CreateProductActivity)
             List<ProductImageDto> images = imageUrl.isEmpty() ? null :
                     Collections.singletonList(new ProductImageDto(imageUrl));
 
-            // Tạo đối tượng CreateProductDto
             CreateProductDto productDto = new CreateProductDto(
                     name, description, categoryId, brand, basePrice, availableAttributesJson, status, isDelete, images, variantsList
             );
 
-            // Log toàn bộ JSON được gửi đi
             String json = gson.toJson(productDto);
             Log.i(TAG, "JSON request gửi đến API: \n" + json);
 
-            // Thực hiện cuộc gọi API PUT
             Call<ProductResponseDto> call = apiService.updateProduct(productIdToEdit, productDto);
 
             call.enqueue(new Callback<ProductResponseDto>() {
@@ -342,7 +327,7 @@ public class EditProductActivity extends AppCompatActivity {
                     if (response.isSuccessful() && response.body() != null) {
                         Log.i(TAG, "Cập nhật sản phẩm thành công! ID: " + response.body().getProductId());
                         Toast.makeText(EditProductActivity.this, "Cập nhật sản phẩm thành công!", Toast.LENGTH_SHORT).show();
-                        setResult(RESULT_OK); // Đặt kết quả thành công để Activity gọi biết
+                        setResult(RESULT_OK);  
                         finish();
                     } else {
                         String errorMsg = "Lỗi khi cập nhật sản phẩm: " + response.code();
