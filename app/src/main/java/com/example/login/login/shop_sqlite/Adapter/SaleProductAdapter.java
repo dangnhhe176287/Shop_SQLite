@@ -6,7 +6,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.login.login.shop_sqlite.Activity.SaleActivity;
 import com.example.login.login.shop_sqlite.Dto.ProductResponseDto;
 import com.example.login.login.shop_sqlite.R;
 import com.google.gson.Gson; // Thêm import này
@@ -31,7 +30,7 @@ public class SaleProductAdapter extends RecyclerView.Adapter<SaleProductAdapter.
     }
 
     // Cập nhật constructor để nhận listener
-    public SaleActivity(List<ProductResponseDto> productList, OnItemActionListener listener) {
+    public SaleProductAdapter(List<ProductResponseDto> productList, OnItemActionListener listener) {
         this.productList = productList;
         this.listener = listener;
     }
@@ -62,7 +61,7 @@ public class SaleProductAdapter extends RecyclerView.Adapter<SaleProductAdapter.
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.sale_item_product, parent, false);
+                .inflate(R.layout.item_product, parent, false);
         return new ProductViewHolder(view);
     }
 
