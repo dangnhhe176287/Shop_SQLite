@@ -31,7 +31,7 @@ public class CreateUserActivity extends AppCompatActivity {
     private Button btnCreateUser;
 
     private ApiService apiService;
-    private Calendar calendar; // Để chọn ngày sinh
+    private Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

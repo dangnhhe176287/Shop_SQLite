@@ -26,7 +26,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-// Implement UserAdapter.OnUserActionListener
 public class UserListActivity extends AppCompatActivity implements UserAdapter.OnUserActionListener {
 
     private static final String TAG = "UserListActivity";
@@ -34,10 +33,10 @@ public class UserListActivity extends AppCompatActivity implements UserAdapter.O
     private static final int EDIT_USER_REQUEST_CODE = 2;
 
     private ListView lvUsers;
-    private FloatingActionButton btnCreateNewUser; // Thay đổi sang FloatingActionButton
+    private FloatingActionButton btnCreateNewUser;
     private ApiService apiService;
     private List<UserResponseDto> userList = new ArrayList<>();
-    private UserAdapter userAdapter; // Thay đổi sang UserAdapter
+    private UserAdapter userAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,21 +44,14 @@ public class UserListActivity extends AppCompatActivity implements UserAdapter.O
         setContentView(R.layout.activity_user_list);
 
         lvUsers = findViewById(R.id.lvUsers);
-        btnCreateNewUser = findViewById(R.id.btnCreateNewUser); // Ánh xạ FloatingActionButton
+        btnCreateNewUser = findViewById(R.id.btnCreateUser);
 
         apiService = ApiClient.getClient().create(ApiService.class);
 
-        // Khởi tạo UserAdapter với listener là chính Activity này
         userAdapter = new UserAdapter(this, userList, this);
         lvUsers.setAdapter(userAdapter);
 
-        // Không cần đăng ký Context Menu nữa vì có nút xóa trực tiếp
-        // registerForContextMenu(lvUsers);
-        // Bỏ setOnItemClickListener cho ListView nếu bạn muốn chỉ xử lý click trên nút
-        // Nếu bạn vẫn muốn click vào item để edit, thì bỏ qua dòng này:
-        // lvUsers.setOnItemClickListener(null); // Hoặc giữ lại và xử lý tùy theo mong muốn
 
-        // Thiết lập sự kiện click cho nút "Tạo User mới" (FAB)
         btnCreateNewUser.setOnClickListener(v -> {
             Intent intent = new Intent(UserListActivity.this, CreateUserActivity.class);
             startActivityForResult(intent, CREATE_USER_REQUEST_CODE);
@@ -74,10 +66,10 @@ public class UserListActivity extends AppCompatActivity implements UserAdapter.O
             @Override
             public void onResponse(Call<List<UserResponseDto>> call, Response<List<UserResponseDto>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    userList.clear(); // Xóa dữ liệu cũ
-                    userList.addAll(response.body()); // Thêm tất cả dữ liệu mới
+                    userList.clear();
+                    userList.addAll(response.body());
 
-                    userAdapter.notifyDataSetChanged(); // Cập nhật Adapter
+                    userAdapter.notifyDataSetChanged();
 
                     if (userList.isEmpty()) {
                         Toast.makeText(UserListActivity.this, "Không có người dùng nào.", Toast.LENGTH_SHORT).show();
@@ -107,7 +99,6 @@ public class UserListActivity extends AppCompatActivity implements UserAdapter.O
         });
     }
 
-    //region Implement OnUserActionListener methods
     @Override
     public void onEditClick(UserResponseDto user) {
         Intent intent = new Intent(UserListActivity.this, EditUserActivity.class);
@@ -119,7 +110,7 @@ public class UserListActivity extends AppCompatActivity implements UserAdapter.O
     public void onDeleteClick(UserResponseDto user) {
         showDeleteConfirmationDialog(user.getUserId(), user.getUserName());
     }
-    //endregion
+
 
     private void showDeleteConfirmationDialog(int userId, String userName) {
         new AlertDialog.Builder(this)
@@ -136,7 +127,7 @@ public class UserListActivity extends AppCompatActivity implements UserAdapter.O
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(UserListActivity.this, "Đã xóa người dùng thành công.", Toast.LENGTH_SHORT).show();
-                    fetchUsers(); // Refresh danh sách sau khi xóa
+                    fetchUsers();
                 } else {
                     String errorMsg = "Lỗi khi xóa người dùng: " + response.code();
                     try {

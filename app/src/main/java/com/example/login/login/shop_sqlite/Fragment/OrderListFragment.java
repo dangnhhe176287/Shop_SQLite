@@ -56,9 +56,8 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnItemAc
 
         apiService = ApiClient.getClient().create(ApiService.class);
 
-        btnCreateNewOrder = view.findViewById(R.id.btnCreateNewOrder); // Nếu cần thêm nút tạo mới
+        btnCreateNewOrder = view.findViewById(R.id.btnCreateNewOrder);
         btnCreateNewOrder.setOnClickListener(v -> {
-            // Logic để thêm đơn hàng mới
             Toast.makeText(getContext(), "Chức năng thêm đơn hàng mới sẽ được triển khai sau!", Toast.LENGTH_SHORT).show();
         });
 
