@@ -19,7 +19,7 @@ import java.util.*;
 
 import retrofit2.*;
 
-public class ProductListActivity extends AppCompatActivity implements ProductAdapter.OnItemActionListener {
+public class SaleProductListActivity extends AppCompatActivity implements ProductAdapter.OnItemActionListener {
 
     private RecyclerView recyclerView;
     private ProductAdapter adapter;
@@ -46,7 +46,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
         btnCreateNewProduct = findViewById(R.id.btnCreateNewProduct);
 
         btnCreateNewProduct.setOnClickListener(v -> {
-            Intent intent = new Intent(ProductListActivity.this, CreateProductActivity.class);
+            Intent intent = new Intent(SaleProductListActivity.this, CreateProductActivity.class);
             startActivityForResult(intent, REQUEST_CODE_CREATE_PRODUCT);
         });
 
@@ -74,7 +74,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
                     } catch (Exception e) {
                         Log.e("ProductListActivity", "Lỗi đọc errorBody: " + e.getMessage(), e);
                     }
-                    Toast.makeText(ProductListActivity.this, "Lỗi khi tải sản phẩm: " + response.code() + " - " + errorBody, Toast.LENGTH_LONG).show();
+                    Toast.makeText(SaleProductListActivity.this, "Lỗi khi tải sản phẩm: " + response.code() + " - " + errorBody, Toast.LENGTH_LONG).show();
                     Log.e("ProductListActivity", "Lỗi tải sản phẩm: " + response.code() + " - " + errorBody);
                 }
             }
@@ -82,7 +82,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
             @Override
             public void onFailure(Call<List<ProductResponseDto>> call, Throwable t) {
                 Log.e("ProductListActivity", "Lỗi kết nối khi tải sản phẩm", t);
-                Toast.makeText(ProductListActivity.this, "Không thể kết nối đến máy chủ: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(SaleProductListActivity.this, "Không thể kết nối đến máy chủ: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -90,7 +90,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
     @Override
     public void onEditClick(int productId) {
         Log.d("ProductListActivity", "Chỉnh sửa sản phẩm với ID: " + productId);
-        Intent intent = new Intent(ProductListActivity.this, EditProductActivity.class);
+        Intent intent = new Intent(SaleProductListActivity.this, EditProductActivity.class);
         intent.putExtra("productId", productId);
         startActivityForResult(intent, REQUEST_CODE_EDIT_PRODUCT);
     }
@@ -102,7 +102,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(ProductListActivity.this, "Đã xóa sản phẩm thành công!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SaleProductListActivity.this, "Đã xóa sản phẩm thành công!", Toast.LENGTH_SHORT).show();
                     fetchProducts();
                     Log.d("ProductListActivity", "Sản phẩm ID " + productId + " đã được xóa thành công.");
                 } else {
@@ -111,13 +111,13 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
                         if (response.errorBody() != null) {
                             String errorBodyString = response.errorBody().string();
                             errorMsg += " - Chi tiết: " + errorBodyString;
-                            Toast.makeText(ProductListActivity.this, "Lỗi server: " + errorBodyString, Toast.LENGTH_LONG).show();
+                            Toast.makeText(SaleProductListActivity.this, "Lỗi server: " + errorBodyString, Toast.LENGTH_LONG).show();
                         } else {
-                            Toast.makeText(ProductListActivity.this, "Lỗi server không xác định: " + response.code(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(SaleProductListActivity.this, "Lỗi server không xác định: " + response.code(), Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
                         Log.e("ProductListActivity", "Lỗi khi đọc errorBody khi xóa", e);
-                        Toast.makeText(ProductListActivity.this, "Lỗi server, không đọc được chi tiết lỗi.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(SaleProductListActivity.this, "Lỗi server, không đọc được chi tiết lỗi.", Toast.LENGTH_LONG).show();
                     }
                     Log.e("ProductListActivity", errorMsg);
                 }
@@ -127,7 +127,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
             public void onFailure(Call<Void> call, Throwable t) {
                 String networkError = "Không thể kết nối đến máy chủ khi xóa sản phẩm: " + t.getMessage();
                 Log.e("ProductListActivity", networkError, t);
-                Toast.makeText(ProductListActivity.this, networkError, Toast.LENGTH_LONG).show();
+                Toast.makeText(SaleProductListActivity.this, networkError, Toast.LENGTH_LONG).show();
             }
         });
     }
