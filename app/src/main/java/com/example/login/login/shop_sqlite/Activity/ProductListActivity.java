@@ -37,7 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProductListActivity extends AppCompatActivity implements SaleProductAdapter.OnProductClickListener {
+public class ProductListActivity extends AppCompatActivity implements SaleProductAdapter.OnPro {
 
     private RecyclerView productsRecyclerView;
     private SaleProductAdapter saleProductAdapter;
