@@ -25,10 +25,10 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
     private ProductAdapter adapter;
     private List<ProductResponseDto> productList;
     private ApiService apiService;
-    private Button btnCreateNewProduct; // Khai báo Button
+    private Button btnCreateNewProduct;
 
     private static final int REQUEST_CODE_EDIT_PRODUCT = 1;
-    private static final int REQUEST_CODE_CREATE_PRODUCT = 2; // Thêm mã yêu cầu cho CreateProductActivity
+    private static final int REQUEST_CODE_CREATE_PRODUCT = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,20 +43,17 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
 
         apiService = ApiClient.getClient().create(ApiService.class);
 
-        btnCreateNewProduct = findViewById(R.id.btnCreateNewProduct); // Ánh xạ Button
+        btnCreateNewProduct = findViewById(R.id.btnCreateNewProduct);
 
-        // Thiết lập OnClickListener cho nút "Thêm Sản phẩm mới"
         btnCreateNewProduct.setOnClickListener(v -> {
             Intent intent = new Intent(ProductListActivity.this, CreateProductActivity.class);
-            startActivityForResult(intent, REQUEST_CODE_CREATE_PRODUCT); // Dùng startActivityForResult
+            startActivityForResult(intent, REQUEST_CODE_CREATE_PRODUCT);
         });
 
         fetchProducts();
     }
-
-    // Trong ProductListActivity.java
     private void fetchProducts() {
-        Log.d("ProductListActivity", "Bắt đầu tải lại danh sách sản phẩm..."); // Thêm log này
+        Log.d("ProductListActivity", "Bắt đầu tải lại danh sách sản phẩm...");
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
         Call<List<ProductResponseDto>> call = apiService.getAllProducts();
 
@@ -135,17 +132,15 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
         });
     }
 
-    // Xử lý kết quả trả về từ các Activity khác (EditProductActivity, CreateProductActivity)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_EDIT_PRODUCT && resultCode == RESULT_OK) {
-            // Nếu EditProductActivity trả về RESULT_OK, nghĩa là sản phẩm đã được cập nhật
             fetchProducts();
             Toast.makeText(this, "Sản phẩm đã được cập nhật.", Toast.LENGTH_SHORT).show();
         } else if (requestCode == REQUEST_CODE_CREATE_PRODUCT && resultCode == RESULT_OK) {
-            // Nếu CreateProductActivity trả về RESULT_OK, nghĩa là sản phẩm mới đã được tạo
-            fetchProducts(); // Tải lại danh sách để hiển thị sản phẩm mới
+
+            fetchProducts();
             Toast.makeText(this, "Sản phẩm mới đã được tạo thành công!", Toast.LENGTH_SHORT).show();
         }
     }

@@ -20,7 +20,7 @@
 
 
         <activity
-            android:name=".Activity.UserListActivity"
+            android:name=".Activity.SaleActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,6 +45,7 @@
         <activity android:name=".Activity.OrderListActivity" android:exported="true" />
         <activity android:name=".Activity.CreateUserActivity" android:exported="true" />
         <activity android:name=".Activity.EditUserActivity" android:exported="true" />
+        <activity android:name=".Activity.UserListActivity" android:exported="true" />
 
     </application>
 
