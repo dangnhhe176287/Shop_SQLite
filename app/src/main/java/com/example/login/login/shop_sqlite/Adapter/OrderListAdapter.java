@@ -41,8 +41,8 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
             tvOrderId = itemView.findViewById(R.id.tvOrderId);
-            tvTotal = itemView.findViewById(R.id.tvTotal);
-            tvDate = itemView.findViewById(R.id.tvDate);
+            tvTotal = itemView.findViewById(R.id.tvTotalQuantity);
+            tvDate = itemView.findViewById(R.id.tvDateOfBirth);
             tvAddress = itemView.findViewById(R.id.tvAddress);
         }
     }

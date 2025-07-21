@@ -67,7 +67,7 @@ public class UserListFragment extends Fragment implements UserAdapter.OnUserActi
 
     private void fetchUsers() {
         Log.d(TAG, "Đang tải danh sách người dùng...");
-        apiService.getAllUsers().enqueue(new retrofit2.Callback<List<UserResponseDto>>() {
+        apiService.saleGetAllUsers().enqueue(new retrofit2.Callback<List<UserResponseDto>>() {
             @Override
             public void onResponse(retrofit2.Call<List<UserResponseDto>> call, retrofit2.Response<List<UserResponseDto>> response) {
                 if (response.isSuccessful() && response.body() != null) {
