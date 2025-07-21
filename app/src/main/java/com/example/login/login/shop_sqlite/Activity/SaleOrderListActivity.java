@@ -6,10 +6,9 @@ import android.widget.Toast;
 =======
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 >>>>>>> hmthmt
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,14 +23,10 @@ import com.example.login.login.shop_sqlite.Api.ApiClient;
 import com.example.login.login.shop_sqlite.R;
 import java.util.List;
 =======
-import com.example.login.login.shop_sqlite.Api.ApiClient;
-import com.example.login.login.shop_sqlite.Api.ApiService;
 import com.example.login.login.shop_sqlite.Adapter.OrderAdapter; // Sẽ tạo OrderAdapter
 import com.example.login.login.shop_sqlite.Models.Order; // Model Order (ánh xạ OrderResponseDto)
-import com.example.login.login.shop_sqlite.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 >>>>>>> hmthmt
 import retrofit2.Call;
@@ -45,7 +40,7 @@ public class OrderListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_list);
+        setContentView(R.layout.sale_activity_order_list);
         recyclerView = findViewById(R.id.recyclerViewOrders);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // Lấy userId từ SharedPreferences
@@ -84,7 +79,7 @@ public class OrderListActivity extends AppCompatActivity implements OrderAdapter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_list); // Sẽ tạo layout này
+        setContentView(R.layout.sale_activity_order_list); // Sẽ tạo layout này
 
         recyclerView = findViewById(R.id.recyclerOrders);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

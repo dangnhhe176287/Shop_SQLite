@@ -1,6 +1,5 @@
 package com.example.login.login.shop_sqlite.Activity;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     @NonNull
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sale_item_user, parent, false);
         return new UserViewHolder(view);
     }
 

@@ -32,7 +32,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     @NonNull
     @Override
     public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sale_item_order, parent, false);
         return new OrderViewHolder(view);
     }
 

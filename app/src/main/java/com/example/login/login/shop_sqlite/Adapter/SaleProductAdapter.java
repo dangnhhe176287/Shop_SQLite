@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,7 +19,7 @@ import com.example.login.login.shop_sqlite.R;
 
 import java.util.List;
 
-public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class SaleProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int VIEW_TYPE_PRODUCT = 0;
     private static final int VIEW_TYPE_LOADING = 1;
@@ -35,7 +34,7 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         void onAddToCartClick(Product product);
     }
 
-    public ProductAdapter(Context context, List<Product> products) {
+    public SaleProductAdapter(Context context, List<Product> products) {
         this.context = context;
         this.products = products;
     }
@@ -122,7 +121,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             View view = LayoutInflater.from(context).inflate(R.layout.item_loading, parent, false);
             return new LoadingViewHolder(view);
         } else {
-            View view = LayoutInflater.from(context).inflate(R.layout.item_product, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.sale_item_product, parent, false);
             return new ProductViewHolder(view);
         }
     }
@@ -145,7 +144,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 =======
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_product, parent, false);
+                .inflate(R.layout.sale_item_product, parent, false);
         return new ProductViewHolder(view);
     }
 

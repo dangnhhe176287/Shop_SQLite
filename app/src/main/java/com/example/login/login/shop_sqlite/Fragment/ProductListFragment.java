@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.login.login.shop_sqlite.Activity.CreateProductActivity;
 import com.example.login.login.shop_sqlite.Activity.EditProductActivity;
-import com.example.login.login.shop_sqlite.Adapter.ProductAdapter;
+import com.example.login.login.shop_sqlite.Adapter.SaleProductAdapter;
 import com.example.login.login.shop_sqlite.Api.ApiClient;
 import com.example.login.login.shop_sqlite.Api.ApiService;
 import com.example.login.login.shop_sqlite.Dto.ProductResponseDto;
@@ -32,14 +32,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProductListFragment extends Fragment implements ProductAdapter.OnItemActionListener {
+public class ProductListFragment extends Fragment implements SaleProductAdapter.OnItemActionListener {
 
     private static final String TAG = "ProductListFragment";
     private static final int REQUEST_CODE_CREATE_PRODUCT = 1;
     private static final int REQUEST_CODE_EDIT_PRODUCT = 2;
 
     private RecyclerView recyclerView;
-    private ProductAdapter adapter;
+    private SaleProductAdapter adapter;
     private List<ProductResponseDto> productList;
     private ApiService apiService;
     private Button btnCreateNewProduct;
@@ -56,7 +56,7 @@ public class ProductListFragment extends Fragment implements ProductAdapter.OnIt
         recyclerView = view.findViewById(R.id.recyclerProducts);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         productList = new ArrayList<>();
-        adapter = new ProductAdapter(productList, this);
+        adapter = new SaleProductAdapter(productList, this);
         recyclerView.setAdapter(adapter);
         apiService = ApiClient.getClient().create(ApiService.class);
 

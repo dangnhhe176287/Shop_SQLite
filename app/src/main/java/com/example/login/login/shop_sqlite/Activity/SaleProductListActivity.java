@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.*;
 
 import com.example.login.login.shop_sqlite.Api.ApiClient;
 import com.example.login.login.shop_sqlite.Api.ApiService;
-import com.example.login.login.shop_sqlite.Adapter.ProductAdapter;
+import com.example.login.login.shop_sqlite.Adapter.SaleProductAdapter;
 import com.example.login.login.shop_sqlite.Dto.ProductResponseDto;
 import com.example.login.login.shop_sqlite.R;
 
@@ -19,10 +19,10 @@ import java.util.*;
 
 import retrofit2.*;
 
-public class SaleProductListActivity extends AppCompatActivity implements ProductAdapter.OnItemActionListener {
+public class SaleProductListActivity extends AppCompatActivity implements SaleProductAdapter.OnItemActionListener {
 
     private RecyclerView recyclerView;
-    private ProductAdapter adapter;
+    private SaleProductAdapter adapter;
     private List<ProductResponseDto> productList;
     private ApiService apiService;
     private Button btnCreateNewProduct;
@@ -33,12 +33,12 @@ public class SaleProductListActivity extends AppCompatActivity implements Produc
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_product_list);
+        setContentView(R.layout.sale_activity_product_list);
 
         recyclerView = findViewById(R.id.recyclerProducts);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         productList = new ArrayList<>();
-        adapter = new ProductAdapter(productList, this);
+        adapter = new SaleProductAdapter(productList, this);
         recyclerView.setAdapter(adapter);
 
         apiService = ApiClient.getClient().create(ApiService.class);
