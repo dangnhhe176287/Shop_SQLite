@@ -97,7 +97,7 @@ public class EditUserActivity extends AppCompatActivity {
     }
 
     private void fetchUserDetails(int userId) {
-        apiService.getUserById(userId).enqueue(new Callback<UserResponseDto>() {
+        apiService.saleGetUserById(userId).enqueue(new Callback<UserResponseDto>() {
             @Override
             public void onResponse(Call<UserResponseDto> call, Response<UserResponseDto> response) {
                 if (response.isSuccessful() && response.body() != null) {

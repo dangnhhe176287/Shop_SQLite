@@ -92,7 +92,7 @@ public class EditProductActivity extends AppCompatActivity {
 
     private void fetchProductDetails(int productId) {
         Log.d(TAG, "Đang lấy chi tiết sản phẩm cho ID: " + productId);
-        apiService.getProductById(productId).enqueue(new Callback<ProductResponseDto>() {
+        apiService.saleGetProductById(productId).enqueue(new Callback<ProductResponseDto>() {
             @Override
             public void onResponse(Call<ProductResponseDto> call, Response<ProductResponseDto> response) {
                 if (response.isSuccessful() && response.body() != null) {

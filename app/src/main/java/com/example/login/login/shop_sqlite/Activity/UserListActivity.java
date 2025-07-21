@@ -62,7 +62,7 @@ public class UserListActivity extends AppCompatActivity implements UserAdapter.O
 
     private void fetchUsers() {
         Log.d(TAG, "Đang tải danh sách người dùng...");
-        apiService.getAllUsers().enqueue(new Callback<List<UserResponseDto>>() {
+        apiService.saleGetAllUsers().enqueue(new Callback<List<UserResponseDto>>() {
             @Override
             public void onResponse(Call<List<UserResponseDto>> call, Response<List<UserResponseDto>> response) {
                 if (response.isSuccessful() && response.body() != null) {

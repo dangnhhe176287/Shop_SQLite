@@ -1,3 +1,4 @@
+/*
 package com.example.login.login.shop_sqlite.Activity;
 
 import android.content.Intent;
@@ -567,4 +568,4 @@ public class ProductListActivity extends AppCompatActivity implements SaleProduc
     public void onRetryClick(View view) {
         loadProducts();
     }
-} 
+} */
