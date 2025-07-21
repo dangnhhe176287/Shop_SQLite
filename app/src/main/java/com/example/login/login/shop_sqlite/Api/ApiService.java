@@ -7,6 +7,8 @@ import com.example.login.login.shop_sqlite.Dto.ProductCategoryResponseDto;
 import com.example.login.login.shop_sqlite.Dto.ProductResponseDto; // Đảm bảo import này là ProductResponseDto, không phải ProductDetailResponseDto
 import com.example.login.login.shop_sqlite.Dto.UpdateOrderDto;
 import com.example.login.login.shop_sqlite.Dto.UpdateProductCategoryDto;
+import com.example.login.login.shop_sqlite.Dto.UserCreateDto;
+import com.example.login.login.shop_sqlite.Dto.UserResponseDto;
 import com.example.login.login.shop_sqlite.Models.LoginRequestDto;
 import com.example.login.login.shop_sqlite.Models.LoginResponseDto;
 import com.example.login.login.shop_sqlite.Models.Order;
@@ -73,5 +75,18 @@ public interface ApiService {
     Call<Void> deleteProduct(@Path("id") int productId);
     @GET("SaleProduct/categories/{id}")
     Call<ProductCategoryResponseDto> getProductCategoryById(@Path("id") int categoryId);
+
+    @GET("SaleUser")
+    Call<List<UserResponseDto>> getAllUsers();
+    @POST("SaleUser")
+    Call<UserResponseDto> createUser(@Body UserCreateDto userCreateDto);
+    @GET("SaleUser/{id}")
+    Call<UserResponseDto> getUserById(@Path("id") int id);
+
+    @PUT("SaleUser/{id}")
+    Call<Void> updateUser(@Path("id") int id, @Body UserResponseDto userDto);
+
+    @DELETE("SaleUser/{id}")
+    Call<Void> deleteUser(@Path("id") int id);
 
 }

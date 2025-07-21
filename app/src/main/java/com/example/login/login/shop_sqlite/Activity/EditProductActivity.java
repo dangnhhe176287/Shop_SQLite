@@ -327,7 +327,7 @@ public class EditProductActivity extends AppCompatActivity {
                     if (response.isSuccessful() && response.body() != null) {
                         Log.i(TAG, "Cập nhật sản phẩm thành công! ID: " + response.body().getProductId());
                         Toast.makeText(EditProductActivity.this, "Cập nhật sản phẩm thành công!", Toast.LENGTH_SHORT).show();
-                        setResult(RESULT_OK);  
+                        setResult(RESULT_OK);
                         finish();
                     } else {
                         String errorMsg = "Lỗi khi cập nhật sản phẩm: " + response.code();
