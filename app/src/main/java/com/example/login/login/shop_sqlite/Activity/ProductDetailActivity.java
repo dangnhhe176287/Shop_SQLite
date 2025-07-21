@@ -322,6 +322,8 @@ public class ProductDetailActivity extends AppCompatActivity {
             CartItemDto cartItem = new CartItemDto(product.getProductId(), quantity);
             cartItem.setVariantId(variantId);
             cartItem.setPrice(price);
+            // Thêm dòng này: set variantAttributes
+            cartItem.setVariantAttributes(new Gson().toJson(selected));
             apiService.addToCart(userId, cartItem).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {

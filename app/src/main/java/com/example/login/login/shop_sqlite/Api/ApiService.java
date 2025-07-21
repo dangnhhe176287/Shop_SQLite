@@ -77,7 +77,7 @@ public interface ApiService {
     Call<Void> updateCartItem(@Path("userId") int userId, @Body CartItemDto item);
 
     @DELETE("cart/{userId}/remove/{productId}/{variantId}")
-    Call<Void> removeFromCart(@Path("userId") int userId, @Path("productId") int productId, @Path("variantId") int variantId);
+    Call<Void> removeFromCart(@Path("userId") int userId, @Path("productId") int productId, @Path("variantId") int variantId, @Query("variantAttributes") String variantAttributes);
 
     @POST("api/orders")
     Call<Void> placeOrder(@Body OrderRequest orderRequest);

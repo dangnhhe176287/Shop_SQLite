@@ -401,7 +401,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
         
         // Setup price range slider
         priceRangeSlider.setValueFrom(0f);
-        priceRangeSlider.setValueTo(10000000f);
+        priceRangeSlider.setValueTo(1000f);
         priceRangeSlider.setValues((float) currentFilter.getMinPrice(), (float) currentFilter.getMaxPrice());
         
         // Update price text when slider changes
@@ -439,7 +439,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
         // Clear filter button
         btnClearFilter.setOnClickListener(v -> {
             currentFilter.clear();
-            priceRangeSlider.setValues(0f, 10000000f);
+            priceRangeSlider.setValues(0f, 1000f);
             categorySpinner.setSelection(0);
             brandSpinner.setSelection(0);
         });
