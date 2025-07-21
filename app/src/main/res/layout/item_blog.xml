@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="28dp"
+    app:cardElevation="8dp"
+    android:layout_marginBottom="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:backgroundTint="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="24dp"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvItemBlogTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Blog Title"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/fashion_primary"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/tvItemBlogSummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Blog summary goes here..."
+                android:textSize="16sp"
+                android:textColor="@color/secondary_text"/>
+
+            <TextView
+                android:id="@+id/tvItemBlogViewCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Views: 0"
+                android:textSize="14sp"
+                android:textColor="@color/secondary_text"/>
+
+            <TextView
+                android:id="@+id/tvItemBlogStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status: ..."
+                android:textSize="14sp"
+                android:textColor="@color/secondary_text"
+                android:layout_marginBottom="4dp"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivItemBlogThumbnail"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_err_image_background"
+            android:layout_marginEnd="8dp"/>
+
+        <ImageButton
+            android:id="@+id/btnEditBlog"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:src="@drawable/ic_edit"
+            android:background="@android:color/transparent"
+            android:contentDescription="Edit Blog"
+            android:tint="#F48FB1"
+            android:focusable="true"
+            android:clickable="true" />
+
+        <ImageButton
+            android:id="@+id/btnDeleteBlog"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:src="@drawable/ic_delete"
+            android:background="@android:color/transparent"
+            android:contentDescription="Delete Blog"
+            android:tint="#D81B60"
+            android:focusable="true"
+            android:clickable="true" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView> 

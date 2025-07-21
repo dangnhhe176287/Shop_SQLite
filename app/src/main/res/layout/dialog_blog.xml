@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="28dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="32dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Blog Info"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@color/fashion_primary"
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp" />
+
+            <EditText
+                android:id="@+id/etBlogTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Title*"
+                android:inputType="text"
+                android:layout_marginBottom="12dp" />
+            <EditText
+                android:id="@+id/etBlogCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Category Id"
+                android:inputType="number"
+                android:layout_marginBottom="12dp" />
+            <EditText
+                android:id="@+id/etBlogSummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Summary"
+                android:inputType="text"
+                android:layout_marginBottom="12dp" />
+            <EditText
+                android:id="@+id/etBlogThumbnailUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Thumbnail URL"
+                android:inputType="textUri"
+                android:layout_marginBottom="12dp" />
+            <Button
+                android:id="@+id/btnPickImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pick Image"
+                android:layout_marginBottom="12dp" />
+            <EditText
+                android:id="@+id/etBlogTags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tags (comma separated)"
+                android:inputType="text"
+                android:layout_marginBottom="12dp" />
+            <EditText
+                android:id="@+id/etBlogStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Status"
+                android:inputType="text"
+                android:layout_marginBottom="12dp" />
+            <EditText
+                android:id="@+id/etBlogContent"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:hint="Content*"
+                android:inputType="textMultiLine"
+                android:gravity="top"
+                android:layout_marginBottom="20dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end">
+                <Button
+                    android:id="@+id/btnCancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cancel"
+                    android:textColor="#D81B60"
+                    android:backgroundTint="#FCE4EC"
+                    android:elevation="2dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</ScrollView> 

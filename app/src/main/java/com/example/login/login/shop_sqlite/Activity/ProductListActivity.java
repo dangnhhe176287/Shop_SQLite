@@ -88,10 +88,20 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
         fabMenu.setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(ProductListActivity.this, fabMenu);
             popup.getMenu().add("Xem đơn hàng");
+            popup.getMenu().add("Xem blog"); // Thêm mục xem blog
+            popup.getMenu().add("Xem profile"); // Thêm mục xem profile
             // Có thể add thêm các chức năng khác ở đây
             popup.setOnMenuItemClickListener(item -> {
                 if (item.getTitle().equals("Xem đơn hàng")) {
                     Intent intent = new Intent(ProductListActivity.this, OrderListActivity.class);
+                    startActivity(intent);
+                    return true;
+                } else if (item.getTitle().equals("Xem blog")) {
+                    Intent intent = new Intent(ProductListActivity.this, BlogListActivity.class);
+                    startActivity(intent);
+                    return true;
+                } else if (item.getTitle().equals("Xem profile")) {
+                    Intent intent = new Intent(ProductListActivity.this, ProfileActivity.class);
                     startActivity(intent);
                     return true;
                 }
@@ -391,7 +401,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
         
         // Setup price range slider
         priceRangeSlider.setValueFrom(0f);
-        priceRangeSlider.setValueTo(10000000f);
+        priceRangeSlider.setValueTo(1000f);
         priceRangeSlider.setValues((float) currentFilter.getMinPrice(), (float) currentFilter.getMaxPrice());
         
         // Update price text when slider changes
@@ -400,8 +410,8 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
             if (values.size() >= 2) {
                 float minPrice = values.get(0);
                 float maxPrice = values.get(1);
-                minPriceText.setText(String.format("Min: %,.0f VNĐ", minPrice));
-                maxPriceText.setText(String.format("Max: %,.0f VNĐ", maxPrice));
+                minPriceText.setText(String.format("Min: $%,.2f", minPrice));
+                maxPriceText.setText(String.format("Max: $%,.2f", maxPrice));
             }
         });
         
@@ -429,7 +439,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
         // Clear filter button
         btnClearFilter.setOnClickListener(v -> {
             currentFilter.clear();
-            priceRangeSlider.setValues(0f, 10000000f);
+            priceRangeSlider.setValues(0f, 1000f);
             categorySpinner.setSelection(0);
             brandSpinner.setSelection(0);
         });

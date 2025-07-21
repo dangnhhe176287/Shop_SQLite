@@ -1,13 +1,16 @@
-package com.example.login.login.shop_sqlite.Activity;
+package com.example.login.login.shop_sqlite.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.login.login.shop_sqlite.Models.OrderView;
 import com.example.login.login.shop_sqlite.R;
+
 import java.util.List;
 
 public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.OrderViewHolder> {
@@ -43,17 +46,17 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
             tvAddress = itemView.findViewById(R.id.tvAddress);
         }
     }
-    private String formatPrice(double price) {
+    public String formatPrice(double price) {
         if (price >= 1_000_000) {
-            return String.format("%.2fM VNĐ", price / 1_000_000);
+            return String.format("$%.2fM", price / 1_000_000);
         } else if (price >= 1_000) {
             if (price % 1000 == 0) {
-                return String.format("%.0fk VNĐ", price / 1000);
+                return String.format("$%.0fk", price / 1000);
             } else {
-                return String.format("%.2fk VNĐ", price / 1000);
+                return String.format("$%.2fk", price / 1000);
             }
         } else {
-            return String.format("%.0f VNĐ", price);
+            return String.format("$%.2f", price);
         }
     }
 } 

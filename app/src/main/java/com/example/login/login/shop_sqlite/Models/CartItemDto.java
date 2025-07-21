@@ -6,6 +6,8 @@ public class CartItemDto {
     private String productName;
     private Double price;
     private String imageUrl;
+    private int variantId;
+    private String variantAttributes;
 
     public CartItemDto(int productId, int quantity) {
         this.productId = productId;
@@ -24,4 +26,10 @@ public class CartItemDto {
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public int getVariantId() { return variantId; }
+    public void setVariantId(int variantId) { this.variantId = variantId; }
+
+    public String getVariantAttributes() { return variantAttributes; }
+    public void setVariantAttributes(String variantAttributes) { this.variantAttributes = variantAttributes; }
 } 

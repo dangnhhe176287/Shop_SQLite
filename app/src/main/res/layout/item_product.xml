@@ -108,22 +108,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="0 VNĐ"
+                    android:text="0 $"
                     android:textColor="@color/colorPrimary"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    tools:text="2,500,000 VNĐ" />
-
-                <!-- Add to Cart Button -->
-                <Button
-                    android:id="@+id/addToCartButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:background="@drawable/button_rounded"
-                    android:minWidth="80dp"
-                    android:text="Add"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp" />
+                    tools:text="2,500 $" />
 
             </LinearLayout>
 

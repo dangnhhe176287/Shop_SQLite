@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fashion_login_background">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="48dp"
+        android:elevation="8dp"
+        app:cardCornerRadius="28dp"
+        app:cardBackgroundColor="@color/white"
+        android:background="@drawable/fashion_card_background">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="32dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewBlogs"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddBlog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="36dp"
+        android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="#F48FB1"
+        app:tint="@color/white"
+        android:contentDescription="Add Blog" />
+
+</FrameLayout> 

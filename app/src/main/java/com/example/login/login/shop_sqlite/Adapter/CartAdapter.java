@@ -1,31 +1,38 @@
-package com.example.login.login.shop_sqlite.Activity;
+package com.example.login.login.shop_sqlite.Adapter;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.content.SharedPreferences;
-import android.content.Context;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
+import com.example.login.login.shop_sqlite.Api.ApiClient;
+import com.example.login.login.shop_sqlite.Api.ApiService;
 import com.example.login.login.shop_sqlite.Models.CartItemDto;
 import com.example.login.login.shop_sqlite.R;
-import com.example.login.login.shop_sqlite.Api.ApiService;
-import com.example.login.login.shop_sqlite.Api.ApiClient;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
-    private java.util.List<CartItemDto> cartItems;
+    private List<CartItemDto> cartItems;
 
-    public CartAdapter(java.util.List<CartItemDto> cartItems) {
+    public CartAdapter(List<CartItemDto> cartItems) {
         this.cartItems = (cartItems != null) ? cartItems : new java.util.ArrayList<>();
     }
 
@@ -67,6 +74,24 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         } else {
             holder.image.setImageResource(R.drawable.ic_err_image_layy);
         }
+        // Hiển thị thông tin biến thể
+        String variantText = "";
+        android.util.Log.d("CartDebug", "Cart item: productId=" + item.getProductId() + ", variantId=" + item.getVariantId() + ", variantAttributes=" + item.getVariantAttributes());
+        if (item.getVariantAttributes() != null && !item.getVariantAttributes().isEmpty()) {
+            try {
+                Type type = new TypeToken<java.util.Map<String, String>>(){}.getType();
+                java.util.Map<String, String> attrMap = new Gson().fromJson(item.getVariantAttributes(), type);
+                StringBuilder sb = new StringBuilder();
+                for (String key : attrMap.keySet()) {
+                    if (sb.length() > 0) sb.append(", ");
+                    sb.append(key).append(": ").append(attrMap.get(key));
+                }
+                variantText = sb.toString();
+            } catch (Exception e) {
+                variantText = item.getVariantAttributes(); // fallback nếu lỗi parse
+            }
+        }
+        holder.variant.setText(variantText.isEmpty() ? "" : ("Sản phẩm: " + variantText));
         // Không cần setText cho ImageButton nữa
         holder.btnIncrease.setOnClickListener(v -> {
             int newQuantity = item.getQuantity() + 1;
@@ -91,6 +116,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     static class CartViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView name, price, quantity, totalPrice;
+        TextView variant;
         ImageButton btnIncrease, btnDecrease;
         ImageButton btnRemove;
         public CartViewHolder(@NonNull View itemView) {
@@ -100,23 +126,24 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             price = itemView.findViewById(R.id.cartItemPrice);
             quantity = itemView.findViewById(R.id.cartItemQuantity);
             totalPrice = itemView.findViewById(R.id.cartItemTotalPrice);
+            variant = itemView.findViewById(R.id.cartItemVariant);
             btnIncrease = itemView.findViewById(R.id.btnIncrease);
             btnDecrease = itemView.findViewById(R.id.btnDecrease);
             btnRemove = itemView.findViewById(R.id.btnRemove);
         }
     }
 
-    private String formatPrice(double price) {
+    public String formatPrice(double price) {
         if (price >= 1_000_000) {
-            return String.format("%.2fM VNĐ", price / 1_000_000);
+            return String.format("$%.2fM", price / 1_000_000);
         } else if (price >= 1_000) {
             if (price % 1000 == 0) {
-                return String.format("%.0fk VNĐ", price / 1000);
+                return String.format("$%.0fk", price / 1000);
             } else {
-                return String.format("%.2fk VNĐ", price / 1000);
+                return String.format("$%.2fk", price / 1000);
             }
         } else {
-            return String.format("%.0f VNĐ", price);
+            return String.format("$%.2f", price);
         }
     }
 
@@ -133,6 +160,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         int userId = prefs.getInt("current_user_id", 0);
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
         CartItemDto updateItem = new CartItemDto(item.getProductId(), newQuantity);
+        updateItem.setVariantId(item.getVariantId());
+        updateItem.setVariantAttributes(item.getVariantAttributes()); // Truyền variantAttributes khi update
+        android.util.Log.d("CartUpdate", "updateCartItem: userId=" + userId + ", productId=" + item.getProductId() + ", variantId=" + item.getVariantId() + ", quantity=" + newQuantity + ", variantAttributes=" + item.getVariantAttributes());
         apiService.updateCartItem(userId, updateItem).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -151,7 +181,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         SharedPreferences prefs = holder.itemView.getContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
         int userId = prefs.getInt("current_user_id", 0);
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
-        apiService.removeFromCart(userId, item.getProductId()).enqueue(new Callback<Void>() {
+        android.util.Log.d("CartUpdate", "removeCartItem: userId=" + userId + ", productId=" + item.getProductId() + ", variantId=" + item.getVariantId() + ", variantAttributes=" + item.getVariantAttributes());
+        apiService.removeFromCart(userId, item.getProductId(), item.getVariantId(), item.getVariantAttributes()).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 cartItems.remove(item);

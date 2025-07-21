@@ -5,6 +5,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.login.login.shop_sqlite.Adapter.CartAdapter;
 import com.example.login.login.shop_sqlite.Models.CartItem;
 import com.example.login.login.shop_sqlite.Models.CartManager;
 import com.example.login.login.shop_sqlite.R;
@@ -67,15 +69,15 @@ public class CartActivity extends AppCompatActivity {
     // Thêm hàm formatPrice vào CartActivity
     private String formatPrice(double price) {
         if (price >= 1_000_000) {
-            return String.format("%.2fM VNĐ", price / 1_000_000);
+            return String.format("$%.2fM", price / 1_000_000);
         } else if (price >= 1_000) {
             if (price % 1000 == 0) {
-                return String.format("%.0fk VNĐ", price / 1000);
+                return String.format("$%.0fk", price / 1000);
             } else {
-                return String.format("%.2fk VNĐ", price / 1000);
+                return String.format("$%.2fk", price / 1000);
             }
         } else {
-            return String.format("%.0f VNĐ", price);
+            return String.format("$%.2f", price);
         }
     }
 
