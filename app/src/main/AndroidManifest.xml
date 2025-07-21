@@ -27,72 +27,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".Activity.RegisterActivity" />
-
-
-        <activity
-
-            android:name=".Activity.ForgotPasswordActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activity.VerifyOtpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activity.ResetPasswordActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activity.UserManagementActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activity.UserDetailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activity.BlogManagementActivity"
-            android:exported="false" />
-
-
-        <activity
-            android:name=".Activity.AdminHomeActivity"
-            android:exported="false" />
-
-
-
-
-        <activity
-            android:name=".Activity.ProductListActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".Activity.ProductDetailActivity"
-            android:exported="false"
-            android:parentActivityName=".Activity.ProductListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activity.ProductListActivity" />
+        <activity android:name=".Activity.ForgotPasswordActivity" android:exported="false" />
+        <activity android:name=".Activity.VerifyOtpActivity" android:exported="false" />
+        <activity android:name=".Activity.ResetPasswordActivity" android:exported="false" />
+        <activity android:name=".Activity.UserManagementActivity" android:exported="false" />
+        <activity android:name=".Activity.UserDetailActivity" android:exported="false" />
+        <activity android:name=".Activity.BlogManagementActivity" android:exported="false" />
+        <activity android:name=".Activity.AdminHomeActivity" android:exported="false" />
+        <activity android:name=".Activity.ProductListActivity" android:exported="false" />
+        <activity android:name=".Activity.ProductDetailActivity" android:exported="false" android:parentActivityName=".Activity.ProductListActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".Activity.ProductListActivity" />
         </activity>
-        <activity
-            android:name=".Activity.CartActivity"
-            android:exported="false"
-            android:parentActivityName=".Activity.ProductListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activity.ProductListActivity" />
+        <activity android:name=".Activity.CartActivity" android:exported="false" android:parentActivityName=".Activity.ProductListActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".Activity.ProductListActivity" />
         </activity>
-
-        <activity
-            android:name=".Activity.OrderActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".Activity.OrderListActivity"
-            android:exported="false" />
-
+        <activity android:name=".Activity.OrderActivity" android:exported="false" />
+        <activity android:name=".Activity.OrderListActivity" android:exported="false" />
         <activity android:name=".Activity.BlogListActivity" android:exported="false" />
         <activity android:name=".Activity.BlogDetailActivity" android:exported="false" />
         <activity android:name=".Activity.ProfileActivity" android:exported="false" />
-
-            android:name=".Activity.LoginActivity"
-            android:exported="false" />
+        <activity android:name=".Activity.LoginActivity" android:exported="false" />
         <activity android:name=".Activity.CreateOrderActivity" android:exported="true" />
         <activity android:name=".Activity.SaleProductListActivity" android:exported="true" />
         <activity android:name=".Activity.CreateCategoryActivity" android:exported="true" />
@@ -103,12 +59,9 @@
         <activity android:name=".Activity.OrderDetailActivity" android:exported="true" />
         <activity android:name=".Activity.ProductCategoriesActivity" android:exported="true" />
         <activity android:name=".Activity.UpdateOrderActivity" android:exported="true" />
-        <activity android:name=".Activity.OrderListActivity" android:exported="true" />
         <activity android:name=".Activity.CreateUserActivity" android:exported="true" />
         <activity android:name=".Activity.EditUserActivity" android:exported="true" />
         <activity android:name=".Activity.UserListActivity" android:exported="true" />
-
-
     </application>
 
 </manifest>

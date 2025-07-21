@@ -6,8 +6,8 @@
     <string name="login_button">Đăng nhập</string>
     <string name="register_link">Chưa có tài khoản? Đăng ký ngay</string>
 
-    <string name="navigation_drawer_open">Mở menu</string>
-    <string name="navigation_drawer_close">Đóng menu</string>
+    <string name="sale_navigation_drawer_open">Mở menu</string>
+    <string name="sale_navigation_drawer_close">Đóng menu</string>
 
     <string name="navigation_drawer_open">Mở điều hướng ngăn kéo</string>
     <string name="navigation_drawer_close">Đóng điều hướng ngăn kéo</string>

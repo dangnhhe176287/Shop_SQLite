@@ -1,74 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-<<<<<<< HEAD
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:background="@drawable/fashion_login_background">
+    android:background="@drawable/fashion_login_background"
+    android:padding="16dp"> <!-- Giữ padding cho toàn bộ màn hình -->
 
+    <!-- CardView bao bọc phần tiêu đề và nút thêm -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginBottom="16dp"
         android:elevation="8dp"
-        app:cardCornerRadius="28dp"
-        app:cardBackgroundColor="@color/white"
-        android:background="@drawable/fashion_card_background">
+        app:cardCornerRadius="16dp"
+        app:cardBackgroundColor="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="32dp">
+            android:padding="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Đơn hàng của bạn"
-                android:textSize="24sp"
+                android:text="Danh sách Đơn hàng"
+                android:textSize="22sp"
                 android:textStyle="bold"
                 android:textColor="@color/fashion_primary"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="12dp"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewOrders"
+            <Button
+                android:id="@+id/btnCreateNewOrder"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="wrap_content"
+                android:text="Thêm Đơn hàng mới"
+                android:backgroundTint="?attr/colorPrimary"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-</LinearLayout> 
-=======
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Danh sách Đơn hàng"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"/>
-
-    <Button
-        android:id="@+id/btnCreateNewOrder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Thêm Đơn hàng mới"
-        android:backgroundTint="?attr/colorPrimary"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"/>
-
+    <!-- RecyclerView cho danh sách đơn hàng -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerOrders"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"/> <!-- Khoảng cách từ CardView trên -->
 
 </LinearLayout>
->>>>>>> hmthmt

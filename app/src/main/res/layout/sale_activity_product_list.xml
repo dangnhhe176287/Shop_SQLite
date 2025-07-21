@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<<<<<<< HEAD
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -26,7 +25,6 @@
             android:orientation="vertical"
             android:padding="32dp">
 
-            <!-- Custom Top Bar: Search + Filter + Cart -->
             <LinearLayout
                 android:id="@+id/searchBarLayout"
                 android:layout_width="match_parent"
@@ -60,20 +58,18 @@
                     android:background="@drawable/button_rounded"
                     android:src="@drawable/ic_filter"
                     android:contentDescription="Filter"
-                    android:tint="@android:color/black" />
+                    tools:ignore="ContentDescription"
+                    app:tint="@android:color/black" /> <ImageButton
+                android:id="@+id/cartButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/button_rounded"
+                android:src="@drawable/ic_shopping_cart"
+                android:contentDescription="Cart"
+                tools:ignore="ContentDescription"
+                app:tint="@android:color/black" /> </LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/cartButton"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/button_rounded"
-                    android:src="@drawable/ic_shopping_cart"
-                    android:contentDescription="Cart"
-                    android:tint="@android:color/black" />
-            </LinearLayout>
-
-            <!-- Tiêu đề danh sách sản phẩm -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -84,7 +80,6 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="16dp" />
 
-            <!-- Active Filter Indicator -->
             <LinearLayout
                 android:id="@+id/activeFilterLayout"
                 android:layout_width="match_parent"
@@ -101,8 +96,8 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:src="@drawable/ic_filter"
-                    android:tint="@color/fashion_primary"
-                    android:layout_marginEnd="8dp" />
+                    app:tint="@color/fashion_primary" android:layout_marginEnd="8dp"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/activeFilterText"
@@ -125,7 +120,6 @@
 
             </LinearLayout>
 
-            <!-- Products RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/productsRecyclerView"
                 android:layout_width="match_parent"
@@ -133,9 +127,8 @@
                 android:layout_weight="1"
                 android:clipToPadding="false"
                 android:padding="4dp"
-                tools:listitem="@layout/item_product" />
+                tools:listitem="@layout/sale_item_product" />
 
-            <!-- Pagination Info -->
             <TextView
                 android:id="@+id/paginationInfoText"
                 android:layout_width="match_parent"
@@ -149,7 +142,6 @@
                 android:visibility="gone"
                 android:layout_marginTop="8dp" />
 
-            <!-- Loading Progress -->
             <ProgressBar
                 android:id="@+id/loadingProgressBar"
                 android:layout_width="wrap_content"
@@ -158,7 +150,6 @@
                 android:layout_margin="16dp"
                 android:visibility="gone" />
 
-            <!-- Empty State -->
             <LinearLayout
                 android:id="@+id/emptyStateLayout"
                 android:layout_width="match_parent"
@@ -171,7 +162,8 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:src="@drawable/ic_err_image_layy"
-                    android:contentDescription="No products" />
+                    android:contentDescription="No products"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -192,7 +184,6 @@
 
             </LinearLayout>
 
-            <!-- Error State -->
             <LinearLayout
                 android:id="@+id/errorStateLayout"
                 android:layout_width="match_parent"
@@ -205,7 +196,8 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:src="@drawable/ic_err_image_layy"
-                    android:contentDescription="Error" />
+                    android:contentDescription="Error"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -240,36 +232,15 @@
     </androidx.cardview.widget.CardView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabMenu"
+        android:id="@+id/fabAddProduct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="24dp"
-        android:src="@android:drawable/ic_menu_more"
-        android:contentDescription="Menu"
-        app:backgroundTint="#1976D2" />
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:src="@drawable/ic_add"
+        android:contentDescription="Add New Product"
+        app:backgroundTint="#1976D2"
+        tools:ignore="ContentDescription" />
 
-</FrameLayout> 
-=======
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
-
-    <Button
-        android:id="@+id/btnCreateNewProduct"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Thêm Sản phẩm mới"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="?attr/colorAccent"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerProducts"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-</LinearLayout>
->>>>>>> hmthmt
+</FrameLayout>
