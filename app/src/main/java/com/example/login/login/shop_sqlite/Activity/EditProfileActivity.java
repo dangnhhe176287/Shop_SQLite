@@ -1,0 +1,176 @@
+package com.example.login.login.shop_sqlite.Activity;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.example.login.login.shop_sqlite.Models.UserDto;
+import com.example.login.login.shop_sqlite.Models.UpdateUserDto;
+import com.example.login.login.shop_sqlite.Api.ApiService;
+import com.example.login.login.shop_sqlite.Api.ApiClient;
+import com.example.login.login.shop_sqlite.R;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class EditProfileActivity extends AppCompatActivity {
+    private static final String TAG = "EditProfileActivity";
+    
+    private EditText etName, etEmail, etPhone, etAddress;
+    private Button btnSave, btnCancel;
+    private int userId;
+    private UserDto currentUser;
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_edit_profile);
+        
+        // Setup toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle("Sửa thông tin cá nhân");
+        }
+        
+        // Initialize views
+        etName = findViewById(R.id.etName);
+        etEmail = findViewById(R.id.etEmail);
+        etPhone = findViewById(R.id.etPhone);
+        etAddress = findViewById(R.id.etAddress);
+        btnSave = findViewById(R.id.btnSave);
+        btnCancel = findViewById(R.id.btnCancel);
+        
+        // Get user ID from SharedPreferences
+        android.content.SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        userId = prefs.getInt("current_user_id", 0);
+        
+        if (userId == 0) {
+            Toast.makeText(this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        
+        // Load current user data
+        loadUserProfile();
+        
+        // Setup button listeners
+        btnSave.setOnClickListener(v -> saveProfile());
+        btnCancel.setOnClickListener(v -> finish());
+    }
+    
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+    
+    private void loadUserProfile() {
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        apiService.getUserByIdForEdit(userId).enqueue(new Callback<UserDto>() {
+            @Override
+            public void onResponse(Call<UserDto> call, Response<UserDto> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    currentUser = response.body();
+                    populateFields();
+                } else {
+                    Log.e(TAG, "API Error: " + response.code() + " - " + response.message());
+                    Toast.makeText(EditProfileActivity.this, "Không lấy được thông tin người dùng", Toast.LENGTH_SHORT).show();
+                }
+            }
+            
+            @Override
+            public void onFailure(Call<UserDto> call, Throwable t) {
+                Log.e(TAG, "API Call Failed", t);
+                Toast.makeText(EditProfileActivity.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    
+    private void populateFields() {
+        if (currentUser != null) {
+            etName.setText(currentUser.userName);
+            etEmail.setText(currentUser.email);
+            etPhone.setText(currentUser.phone);
+            etAddress.setText(currentUser.address);
+        }
+    }
+    
+    private void saveProfile() {
+        // Validate input
+        String name = etName.getText().toString().trim();
+        String email = etEmail.getText().toString().trim();
+        String phone = etPhone.getText().toString().trim();
+        String address = etAddress.getText().toString().trim();
+        
+        if (name.isEmpty()) {
+            etName.setError("Tên không được để trống");
+            return;
+        }
+        
+        if (email.isEmpty()) {
+            etEmail.setError("Email không được để trống");
+            return;
+        }
+        
+        if (phone.isEmpty()) {
+            etPhone.setError("Số điện thoại không được để trống");
+            return;
+        }
+        
+        // Create updated user object
+        UpdateUserDto updatedUser = new UpdateUserDto();
+        updatedUser.userId = currentUser.userId;
+        updatedUser.userName = name;
+        updatedUser.email = email;
+        updatedUser.phone = phone;
+        updatedUser.address = address;
+        updatedUser.password = currentUser.password; // Keep existing password
+        updatedUser.roleId = currentUser.roleId;
+        updatedUser.status = currentUser.status;
+        updatedUser.isDelete = currentUser.isDelete;
+        updatedUser.dateOfBirth = currentUser.dateOfBirth; // Keep existing date of birth
+        updatedUser.createDate = currentUser.createDate; // Keep existing create date
+        
+        // Call API to update
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        
+        // Log the request data
+        Log.d(TAG, "Updating user with ID: " + userId);
+        Log.d(TAG, "Updated user data: " + updatedUser.userName + ", " + updatedUser.email + ", " + updatedUser.phone + ", " + updatedUser.address);
+        
+        apiService.updateUser(userId, updatedUser).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.d(TAG, "Update API Response: " + response.code() + " - " + response.message());
+                if (response.isSuccessful()) {
+                    Toast.makeText(EditProfileActivity.this, "Cập nhật thông tin thành công!", Toast.LENGTH_SHORT).show();
+                    setResult(RESULT_OK);
+                    finish();
+                } else {
+                    Log.e(TAG, "Update API Error: " + response.code() + " - " + response.message());
+                    try {
+                        String errorBody = response.errorBody() != null ? response.errorBody().string() : "No error body";
+                        Log.e(TAG, "Error body: " + errorBody);
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error reading error body", e);
+                    }
+                    Toast.makeText(EditProfileActivity.this, "Cập nhật thất bại: " + response.code(), Toast.LENGTH_SHORT).show();
+                }
+            }
+            
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e(TAG, "Update API Call Failed", t);
+                Toast.makeText(EditProfileActivity.this, "Lỗi kết nối khi cập nhật", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+} 

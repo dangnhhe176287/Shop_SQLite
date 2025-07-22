@@ -155,6 +155,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         this.cartChangedListener = listener;
     }
 
+    public void updateCartItems(List<CartItemDto> newItems) {
+        this.cartItems.clear();
+        this.cartItems.addAll(newItems);
+        notifyDataSetChanged();
+    }
+
     private void updateCartItem(CartViewHolder holder, CartItemDto item, int newQuantity) {
         SharedPreferences prefs = holder.itemView.getContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
         int userId = prefs.getInt("current_user_id", 0);

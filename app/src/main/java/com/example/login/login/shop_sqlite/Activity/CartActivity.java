@@ -18,6 +18,7 @@ import java.util.List;
 import android.widget.TextView;
 import android.widget.Button;
 import android.content.Intent;
+import android.view.View;
 
 public class CartActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -36,7 +37,7 @@ public class CartActivity extends AppCompatActivity {
         btnCheckout = findViewById(R.id.btnCheckout);
         btnCheckout.setOnClickListener(v -> {
             Intent intent = new Intent(CartActivity.this, OrderActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, 1001); // Sử dụng startActivityForResult để nhận kết quả
         });
 
         // Lấy userId hiện tại từ SharedPreferences
@@ -92,10 +93,29 @@ public class CartActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     double total = response.body().getAmountDue();
                     tvTotalAmount.setText("Tổng tiền: " + formatPrice(total));
+                    
+                    // Cập nhật lại adapter nếu có sản phẩm
+                    if (response.body().getItems() != null && !response.body().getItems().isEmpty()) {
+                        cartAdapter.updateCartItems(response.body().getItems());
+                    } else {
+                        // Nếu giỏ hàng trống, hiển thị thông báo
+                        recyclerView.setVisibility(View.GONE);
+                        findViewById(R.id.emptyCartMessage).setVisibility(View.VISIBLE);
+                        tvTotalAmount.setText("Tổng tiền: $0.00");
+                    }
                 }
             }
             @Override
             public void onFailure(retrofit2.Call<CartResponse> call, Throwable t) {}
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1001 && resultCode == RESULT_OK) {
+            // Refresh cart khi quay về từ OrderActivity
+            reloadCart();
+        }
     }
 } 

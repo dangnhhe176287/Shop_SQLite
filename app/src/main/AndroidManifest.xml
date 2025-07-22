@@ -86,9 +86,14 @@
             android:name=".Activity.OrderListActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".Activity.OrderDetailActivity"
+            android:exported="false" />
+
         <activity android:name=".Activity.BlogListActivity" android:exported="false" />
         <activity android:name=".Activity.BlogDetailActivity" android:exported="false" />
         <activity android:name=".Activity.ProfileActivity" android:exported="false" />
+        <activity android:name=".Activity.EditProfileActivity" android:exported="false" />
 
     </application>
 
