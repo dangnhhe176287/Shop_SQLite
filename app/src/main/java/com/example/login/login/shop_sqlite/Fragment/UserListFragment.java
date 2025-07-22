@@ -11,11 +11,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog; // Import AlertDialog for consistency
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.login.login.shop_sqlite.Activity.CreateUserActivity;
 import com.example.login.login.shop_sqlite.Activity.EditUserActivity;
+import com.example.login.login.shop_sqlite.Activity.UserDetailActivity; // Import UserDetailActivity
 import com.example.login.login.shop_sqlite.Adapter.UserAdapter;
 import com.example.login.login.shop_sqlite.Api.ApiClient;
 import com.example.login.login.shop_sqlite.Api.ApiService;
@@ -30,6 +32,8 @@ public class UserListFragment extends Fragment implements UserAdapter.OnUserActi
     private static final String TAG = "UserListFragment";
     private static final int REQUEST_CODE_CREATE_USER = 1;
     private static final int REQUEST_CODE_EDIT_USER = 2;
+    // Define a request code for detail view if needed (less common for fragments)
+    // private static final int REQUEST_CODE_DETAIL_USER = 3;
 
     private ListView lvUsers;
     private ApiService apiService;
@@ -51,6 +55,7 @@ public class UserListFragment extends Fragment implements UserAdapter.OnUserActi
         userAdapter = new UserAdapter(getContext(), userList, this);
         lvUsers.setAdapter(userAdapter);
 
+        // Assuming btnCreateUser is the FloatingActionButton ID as per UserListActivity
         view.findViewById(R.id.btnCreateUser).setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), CreateUserActivity.class);
             startActivityForResult(intent, REQUEST_CODE_CREATE_USER);
@@ -115,7 +120,27 @@ public class UserListFragment extends Fragment implements UserAdapter.OnUserActi
 
     @Override
     public void onDeleteClick(UserResponseDto user) {
-        apiService.deleteUser(user.getUserId()).enqueue(new retrofit2.Callback<Void>() {
+        // Use AlertDialog from AppCompat for consistency with Activity
+        new AlertDialog.Builder(getContext())
+                .setTitle("Xóa Người dùng")
+                .setMessage("Bạn có chắc chắn muốn xóa người dùng '" + (user.getUserName() != null ? user.getUserName() : "ID: " + user.getUserId()) + "' không?")
+                .setPositiveButton("Xóa", (dialog, which) -> confirmDeleteUser(user.getUserId()))
+                .setNegativeButton("Hủy", null)
+                .show();
+    }
+
+    // --- Start of new implementation for onDetailClick ---
+    @Override
+    public void onDetailClick(UserResponseDto user) {
+        Log.d(TAG, "Đã nhấp xem chi tiết người dùng ID: " + user.getUserId());
+        Intent intent = new Intent(getActivity(), UserDetailActivity.class);
+        intent.putExtra("userId", user.getUserId()); // Ensure UserDetailActivity expects "userId"
+        startActivity(intent); // No need for startActivityForResult
+    }
+    // --- End of new implementation for onDetailClick ---
+
+    private void confirmDeleteUser(int userId) {
+        apiService.deleteUser(userId).enqueue(new retrofit2.Callback<Void>() {
             @Override
             public void onResponse(retrofit2.Call<Void> call, retrofit2.Response<Void> response) {
                 if (response.isSuccessful()) {
@@ -142,10 +167,12 @@ public class UserListFragment extends Fragment implements UserAdapter.OnUserActi
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_CREATE_USER && resultCode == AppCompatActivity.RESULT_OK) {
-            fetchUsers();  // Tải lại danh sách khi tạo người dùng mới
-        } else if (requestCode == REQUEST_CODE_EDIT_USER && resultCode == AppCompatActivity.RESULT_OK) {
-            fetchUsers();  // Tải lại danh sách khi chỉnh sửa người dùng
+        if (resultCode == AppCompatActivity.RESULT_OK) { // Check if the operation was successful
+            if (requestCode == REQUEST_CODE_CREATE_USER || requestCode == REQUEST_CODE_EDIT_USER) {
+                fetchUsers();  // Tải lại danh sách khi tạo hoặc chỉnh sửa người dùng
+                Toast.makeText(getContext(), "Danh sách người dùng đã được cập nhật.", Toast.LENGTH_SHORT).show();
+            }
+            // No specific handling for DETAIL_USER_REQUEST_CODE as it doesn't return a result
         }
     }
 }

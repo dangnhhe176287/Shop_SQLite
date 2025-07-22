@@ -1,3 +1,4 @@
+// com.example.login.login.shop_sqlite.Activity.UserListActivity.java
 package com.example.login.login.shop_sqlite.Activity;
 
 import android.content.DialogInterface;
@@ -31,6 +32,9 @@ public class UserListActivity extends AppCompatActivity implements UserAdapter.O
     private static final String TAG = "UserListActivity";
     private static final int CREATE_USER_REQUEST_CODE = 1;
     private static final int EDIT_USER_REQUEST_CODE = 2;
+    // Define a request code for detail view if you ever need a result back (less common for detail views)
+    // private static final int DETAIL_USER_REQUEST_CODE = 3;
+
 
     private ListView lvUsers;
     private FloatingActionButton btnCreateNewUser;
@@ -111,6 +115,16 @@ public class UserListActivity extends AppCompatActivity implements UserAdapter.O
         showDeleteConfirmationDialog(user.getUserId(), user.getUserName());
     }
 
+    // --- Start of new implementation for onDetailClick ---
+    @Override
+    public void onDetailClick(UserResponseDto user) {
+        Log.d(TAG, "Đã nhấp xem chi tiết người dùng ID: " + user.getUserId());
+        Intent intent = new Intent(UserListActivity.this, UserDetailActivity.class);
+        intent.putExtra("userId", user.getUserId()); // Ensure UserDetailActivity expects "userId"
+        startActivity(intent); // No need for startActivityForResult as no result is expected
+    }
+    // --- End of new implementation for onDetailClick ---
+
 
     private void showDeleteConfirmationDialog(int userId, String userName) {
         new AlertDialog.Builder(this)
@@ -155,12 +169,15 @@ public class UserListActivity extends AppCompatActivity implements UserAdapter.O
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CREATE_USER_REQUEST_CODE && resultCode == RESULT_OK) {
-            Toast.makeText(this, "Người dùng mới đã được tạo.", Toast.LENGTH_SHORT).show();
-            fetchUsers();
-        } else if (requestCode == EDIT_USER_REQUEST_CODE && resultCode == RESULT_OK) {
-            Toast.makeText(this, "Người dùng đã được cập nhật.", Toast.LENGTH_SHORT).show();
-            fetchUsers();
+        if (resultCode == RESULT_OK) { // Check if the operation was successful
+            if (requestCode == CREATE_USER_REQUEST_CODE) {
+                Toast.makeText(this, "Người dùng mới đã được tạo.", Toast.LENGTH_SHORT).show();
+                fetchUsers();
+            } else if (requestCode == EDIT_USER_REQUEST_CODE) {
+                Toast.makeText(this, "Người dùng đã được cập nhật.", Toast.LENGTH_SHORT).show();
+                fetchUsers();
+            }
+            // No specific handling for DETAIL_USER_REQUEST_CODE as it doesn't return a result
         }
     }
 }

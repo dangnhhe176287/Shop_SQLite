@@ -7,7 +7,8 @@ import android.widget.Button;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.*;
+import androidx.recyclerview.widget.LinearLayoutManager; // Import cụ thể LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView; // Import cụ thể RecyclerView
 
 import com.example.login.login.shop_sqlite.Api.ApiClient;
 import com.example.login.login.shop_sqlite.Api.ApiService;
@@ -15,9 +16,12 @@ import com.example.login.login.shop_sqlite.Adapter.ProductAdapter;
 import com.example.login.login.shop_sqlite.Dto.ProductResponseDto;
 import com.example.login.login.shop_sqlite.R;
 
-import java.util.*;
+import java.util.ArrayList; // Import cụ thể ArrayList
+import java.util.List; // Import cụ thể List
 
-import retrofit2.*;
+import retrofit2.Call; // Import cụ thể Call
+import retrofit2.Callback; // Import cụ thể Callback
+import retrofit2.Response; // Import cụ thể Response
 
 public class SaleProductListActivity extends AppCompatActivity implements ProductAdapter.OnItemActionListener {
 
@@ -52,6 +56,7 @@ public class SaleProductListActivity extends AppCompatActivity implements Produc
 
         fetchProducts();
     }
+
     private void fetchProducts() {
         Log.d("ProductListActivity", "Bắt đầu tải lại danh sách sản phẩm...");
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
@@ -64,7 +69,7 @@ public class SaleProductListActivity extends AppCompatActivity implements Produc
                     productList.clear();
                     productList.addAll(response.body());
                     adapter.notifyDataSetChanged();
-                    Log.d("ProductListActivity", "Đã tải lại " + productList.size() + " sản phẩm. Adapter đã được cập nhật."); // Thêm log này
+                    Log.d("ProductListActivity", "Đã tải lại " + productList.size() + " sản phẩm. Adapter đã được cập nhật.");
                 } else {
                     String errorBody = "Không có thông tin lỗi";
                     try {
@@ -90,7 +95,7 @@ public class SaleProductListActivity extends AppCompatActivity implements Produc
     @Override
     public void onEditClick(int productId) {
         Log.d("ProductListActivity", "Chỉnh sửa sản phẩm với ID: " + productId);
-        Intent intent = new Intent(SaleProductListActivity.this, EditProductActivity.class);
+        Intent intent = new Intent(SaleProductListActivity.this, EditProductActivity.class); // Thay EditProductActivity bằng UpdateProductActivity nếu đó là tên đúng
         intent.putExtra("productId", productId);
         startActivityForResult(intent, REQUEST_CODE_EDIT_PRODUCT);
     }
@@ -98,6 +103,26 @@ public class SaleProductListActivity extends AppCompatActivity implements Produc
     @Override
     public void onDeleteClick(int productId) {
         Log.d("ProductListActivity", "Yêu cầu xóa sản phẩm với ID: " + productId);
+        // Có thể thêm AlertDialog để xác nhận xóa ở đây để tránh xóa nhầm
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("Xác nhận xóa sản phẩm")
+                .setMessage("Bạn có chắc chắn muốn xóa sản phẩm này không?")
+                .setPositiveButton("Xóa", (dialog, which) -> confirmDeleteProduct(productId))
+                .setNegativeButton("Hủy", null)
+                .show();
+    }
+
+    // --- TRIỂN KHAI PHƯƠNG THỨC THIẾU onDetailClick ---
+    @Override
+    public void onDetailClick(int productId) {
+        Log.d("ProductListActivity", "Xem chi tiết sản phẩm với ID: " + productId);
+        Intent intent = new Intent(SaleProductListActivity.this, ProductDetailActivity.class);
+        intent.putExtra("productId", productId); // Truyền ID sản phẩm
+        startActivity(intent); // Chỉ cần startActivity vì không cần kết quả trả về
+    }
+    // --- KẾT THÚC TRIỂN KHAI PHƯƠNG THỨC THIẾU ---
+
+    private void confirmDeleteProduct(int productId) {
         apiService.deleteProduct(productId).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -135,13 +160,9 @@ public class SaleProductListActivity extends AppCompatActivity implements Produc
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_EDIT_PRODUCT && resultCode == RESULT_OK) {
+        if ((requestCode == REQUEST_CODE_EDIT_PRODUCT || requestCode == REQUEST_CODE_CREATE_PRODUCT) && resultCode == RESULT_OK) {
             fetchProducts();
-            Toast.makeText(this, "Sản phẩm đã được cập nhật.", Toast.LENGTH_SHORT).show();
-        } else if (requestCode == REQUEST_CODE_CREATE_PRODUCT && resultCode == RESULT_OK) {
-
-            fetchProducts();
-            Toast.makeText(this, "Sản phẩm mới đã được tạo thành công!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Danh sách sản phẩm đã được cập nhật.", Toast.LENGTH_SHORT).show();
         }
     }
 }

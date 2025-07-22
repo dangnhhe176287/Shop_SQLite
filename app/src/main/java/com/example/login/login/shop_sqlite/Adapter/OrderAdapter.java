@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView; // Import ImageView
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +23,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     public interface OnItemActionListener {
         void onEditClick(int orderId);
         void onDeleteClick(int orderId);
+        void onDetailClick(int orderId); // Added for detail view
     }
 
     public OrderAdapter(List<Order> orderList, OnItemActionListener listener) {
@@ -41,14 +43,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         Order order = orderList.get(position);
 
         holder.tvOrderId.setText("Mã đơn: " + order.getOrderId());
-
         holder.tvCustomerId.setText("ID Khách hàng: " + (order.getCustomerId() != null ? order.getCustomerId() : "N/A"));
-
         holder.tvTotalQuantity.setText("Tổng SP: " + (order.getTotalQuantity() != null ? order.getTotalQuantity() : 0));
-
         holder.tvAmountDue.setText(String.format(Locale.getDefault(), "Tổng tiền: %.2f VNĐ",
                 (order.getAmountDue() != null ? order.getAmountDue() : new java.math.BigDecimal("0.0"))));
-
         holder.tvOrderStatus.setText("Trạng thái: " + (order.getOrderStatusId() != null ? getStatusName(order.getOrderStatusId()) : "N/A"));
 
         holder.btnEdit.setOnClickListener(v -> {
@@ -62,6 +60,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 listener.onDeleteClick(order.getOrderId());
             }
         });
+
+        // Set OnClickListener for the detail eye icon
+        holder.ivDetail.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onDetailClick(order.getOrderId());
+            }
+        });
     }
 
     @Override
@@ -72,6 +77,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
         TextView tvOrderId, tvCustomerId, tvTotalQuantity, tvAmountDue, tvOrderStatus;
         Button btnEdit, btnDelete;
+        ImageView ivDetail; // Declare ImageView for detail icon
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -82,6 +88,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             tvOrderStatus = itemView.findViewById(R.id.tvOrderStatus);
             btnEdit = itemView.findViewById(R.id.btnEditOrder);
             btnDelete = itemView.findViewById(R.id.btnDeleteOrder);
+            ivDetail = itemView.findViewById(R.id.ivDetail); // Initialize ImageView
         }
     }
 

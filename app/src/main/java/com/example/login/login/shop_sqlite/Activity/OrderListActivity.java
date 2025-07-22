@@ -1,6 +1,6 @@
 package com.example.login.login.shop_sqlite.Activity;
 
-
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.login.login.shop_sqlite.Api.ApiClient;
 import com.example.login.login.shop_sqlite.Api.ApiService;
-import com.example.login.login.shop_sqlite.Adapter.OrderAdapter; // Sẽ tạo OrderAdapter
-import com.example.login.login.shop_sqlite.Models.Order; // Model Order (ánh xạ OrderResponseDto)
+import com.example.login.login.shop_sqlite.Adapter.OrderAdapter;
+import com.example.login.login.shop_sqlite.Models.Order;
 import com.example.login.login.shop_sqlite.R;
 
 import java.util.ArrayList;
@@ -38,17 +38,17 @@ public class OrderListActivity extends AppCompatActivity implements OrderAdapter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_list); // Sẽ tạo layout này
+        setContentView(R.layout.activity_order_list);
 
         recyclerView = findViewById(R.id.recyclerOrders);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         orderList = new ArrayList<>();
-        adapter = new OrderAdapter(orderList, this); // 'this' để truyền listener
+        adapter = new OrderAdapter(orderList, this);
         recyclerView.setAdapter(adapter);
 
         apiService = ApiClient.getClient().create(ApiService.class);
 
-        btnCreateNewOrder = findViewById(R.id.btnCreateNewOrder); // Sẽ tạo button này trong layout
+        btnCreateNewOrder = findViewById(R.id.btnCreateNewOrder);
 
         btnCreateNewOrder.setOnClickListener(v -> {
             Intent intent = new Intent(OrderListActivity.this, CreateOrderActivity.class);
@@ -101,6 +101,26 @@ public class OrderListActivity extends AppCompatActivity implements OrderAdapter
     @Override
     public void onDeleteClick(int orderId) {
         Log.d("OrderListActivity", "Yêu cầu xóa đơn hàng với ID: " + orderId);
+        // Hiển thị AlertDialog để xác nhận trước khi xóa
+        new AlertDialog.Builder(this) // Sử dụng 'this' vì là Activity
+                .setTitle("Xác nhận xóa")
+                .setMessage("Bạn có chắc chắn muốn xóa đơn hàng này không?")
+                .setPositiveButton("Xóa", (dialog, which) -> confirmDeleteOrder(orderId))
+                .setNegativeButton("Hủy", null)
+                .show();
+    }
+
+    // <-- THÊM PHƯƠNG THỨC onDetailClick VÀO ĐÂY
+    @Override
+    public void onDetailClick(int orderId) {
+        Log.d("OrderListActivity", "Xem chi tiết đơn hàng với ID: " + orderId);
+        Intent intent = new Intent(OrderListActivity.this, OrderDetailActivity.class);
+        intent.putExtra("orderId", orderId);
+        startActivity(intent); // Dùng startActivity vì không cần kết quả trả về
+    }
+    // THÊM PHƯƠNG THỨC onDetailClick VÀO ĐÂY -->
+
+    private void confirmDeleteOrder(int orderId) {
         apiService.deleteOrder(orderId).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

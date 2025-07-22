@@ -46,6 +46,8 @@
         <activity android:name=".Activity.CreateUserActivity" android:exported="true" />
         <activity android:name=".Activity.EditUserActivity" android:exported="true" />
         <activity android:name=".Activity.UserListActivity" android:exported="true" />
+        <activity android:name=".Activity.ProductDetailActivity" android:exported="true" />
+        <activity android:name=".Activity.UserDetailActivity" android:exported="true" />
 
     </application>
 

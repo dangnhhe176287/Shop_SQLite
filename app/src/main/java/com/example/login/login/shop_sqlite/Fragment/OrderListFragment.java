@@ -1,8 +1,8 @@
 package com.example.login.login.shop_sqlite.Fragment;
 
-import android.app.AlertDialog; // Import AlertDialog
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent; // Import Intent
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,12 +17,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.login.login.shop_sqlite.Activity.CreateOrderActivity; // Import CreateOrderActivity
-import com.example.login.login.shop_sqlite.Activity.UpdateOrderActivity; // Import UpdateOrderActivity
+import com.example.login.login.shop_sqlite.Activity.CreateOrderActivity;
+import com.example.login.login.shop_sqlite.Activity.UpdateOrderActivity;
+import com.example.login.login.shop_sqlite.Activity.OrderDetailActivity; // Import OrderDetailActivity
 import com.example.login.login.shop_sqlite.Api.ApiClient;
 import com.example.login.login.shop_sqlite.Api.ApiService;
 import com.example.login.login.shop_sqlite.Adapter.OrderAdapter;
-import com.example.login.login.shop_sqlite.Models.Order; // Đảm bảo Order model là đúng DTO cho phản hồi API
+import com.example.login.login.shop_sqlite.Models.Order;
 import com.example.login.login.shop_sqlite.R;
 
 import java.util.ArrayList;
@@ -64,7 +65,6 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnItemAc
 
         btnCreateNewOrder = view.findViewById(R.id.btnCreateNewOrder);
         btnCreateNewOrder.setOnClickListener(v -> {
-            // Mở CreateOrderActivity khi nhấn nút
             Intent intent = new Intent(getContext(), CreateOrderActivity.class);
             startActivityForResult(intent, REQUEST_CODE_CREATE_ORDER);
         });
@@ -75,10 +75,9 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnItemAc
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fetchOrders(); // Tải danh sách đơn hàng khi Fragment được tạo View
+        fetchOrders();
     }
 
-    // Phương thức để làm mới danh sách đơn hàng
     private void refreshOrderList() {
         fetchOrders();
     }
@@ -118,16 +117,14 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnItemAc
     @Override
     public void onEditClick(int orderId) {
         Log.d(TAG, "Đã nhấp chỉnh sửa đơn hàng ID: " + orderId);
-        // Mở UpdateOrderActivity khi nhấn nút chỉnh sửa
         Intent intent = new Intent(getContext(), UpdateOrderActivity.class);
-        intent.putExtra("orderId", orderId); // Truyền ID đơn hàng cần chỉnh sửa
-        startActivityForResult(intent, REQUEST_CODE_UPDATE_ORDER); // Bắt đầu Activity để lấy kết quả
+        intent.putExtra("orderId", orderId);
+        startActivityForResult(intent, REQUEST_CODE_UPDATE_ORDER);
     }
 
     @Override
     public void onDeleteClick(int orderId) {
         Log.d(TAG, "Đã nhấp xóa đơn hàng ID: " + orderId);
-        // Hiển thị hộp thoại xác nhận trước khi xóa
         new AlertDialog.Builder(getContext())
                 .setTitle("Xác nhận xóa đơn hàng")
                 .setMessage("Bạn có chắc chắn muốn xóa đơn hàng này không?")
@@ -136,13 +133,21 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnItemAc
                 .show();
     }
 
+    @Override
+    public void onDetailClick(int orderId) { // Implementation for the new detail click
+        Log.d(TAG, "Đã nhấp xem chi tiết đơn hàng ID: " + orderId);
+        Intent intent = new Intent(getContext(), OrderDetailActivity.class);
+        intent.putExtra("orderId", orderId); // Pass the order ID
+        startActivity(intent); // No need for startActivityForResult as no result is expected back
+    }
+
     private void confirmDeleteOrder(int orderId) {
         apiService.deleteOrder(orderId).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "Đã xóa đơn hàng thành công!", Toast.LENGTH_SHORT).show();
-                    refreshOrderList(); // Làm mới danh sách sau khi xóa thành công
+                    refreshOrderList();
                 } else if (response.code() == 404) {
                     Toast.makeText(getContext(), "Không tìm thấy đơn hàng để xóa.", Toast.LENGTH_SHORT).show();
                 } else {
@@ -172,9 +177,8 @@ public class OrderListFragment extends Fragment implements OrderAdapter.OnItemAc
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == getActivity().RESULT_OK) { // Kiểm tra RESULT_OK từ Activity đã đóng
+        if (resultCode == getActivity().RESULT_OK) {
             if (requestCode == REQUEST_CODE_CREATE_ORDER || requestCode == REQUEST_CODE_UPDATE_ORDER) {
-                // Nếu là kết quả từ tạo hoặc cập nhật, làm mới danh sách đơn hàng
                 refreshOrderList();
                 Toast.makeText(getContext(), "Danh sách đơn hàng đã được cập nhật.", Toast.LENGTH_SHORT).show();
             }

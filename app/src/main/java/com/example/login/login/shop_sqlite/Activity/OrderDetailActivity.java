@@ -30,7 +30,7 @@ public class OrderDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_detail); // Sẽ tạo layout này
+        setContentView(R.layout.activity_order_detail);
 
         tvOrderId = findViewById(R.id.tvOrderDetailId);
         tvCustomerId = findViewById(R.id.tvOrderDetailCustomerId);

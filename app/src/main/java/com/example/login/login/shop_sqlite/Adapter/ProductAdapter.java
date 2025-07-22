@@ -1,32 +1,38 @@
+// com.example.login.login.shop_sqlite.Adapter.ProductAdapter.java
+
 package com.example.login.login.shop_sqlite.Adapter;
 
-import android.view.*;
-import android.widget.Button; // Thêm import này
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView; // <--- THÊM IMPORT NÀY
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.login.login.shop_sqlite.Dto.ProductResponseDto;
 import com.example.login.login.shop_sqlite.R;
-import com.google.gson.Gson; // Thêm import này
-import com.google.gson.reflect.TypeToken; // Thêm import này
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type; // Thêm import này
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map; // Thêm import này
+import java.util.Map;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     private List<ProductResponseDto> productList;
-    private OnItemActionListener listener; // Khai báo listener
+    private OnItemActionListener listener;
 
-    // Interface để truyền sự kiện về Activity/Fragment
+    // Interface để truyền sự kiện về Activity/Fragment (ĐÃ CẬP NHẬT)
     public interface OnItemActionListener {
         void onEditClick(int productId);
         void onDeleteClick(int productId);
+        void onDetailClick(int productId); // <--- THÊM PHƯƠNG THỨC NÀY
     }
 
     // Cập nhật constructor để nhận listener
@@ -37,7 +43,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         TextView txtProductId, txtName, txtDesc, txtCategoryId, txtBrand, txtPrice, txtAttributes, txtStatus, txtIsDelete, txtCreatedAt, txtUpdatedAt;
-        Button btnEditProduct, btnDeleteProduct; // Khai báo các nút
+        Button btnEditProduct, btnDeleteProduct;
+        ImageView ivDetail; // <--- THÊM KHAI BÁO ImageView CHO BIỂU TƯỢNG MẮT
 
         public ProductViewHolder(View itemView) {
             super(itemView);
@@ -52,8 +59,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             txtIsDelete = itemView.findViewById(R.id.txtIsDelete);
             txtCreatedAt = itemView.findViewById(R.id.txtCreatedAt);
             txtUpdatedAt = itemView.findViewById(R.id.txtUpdatedAt);
-            btnEditProduct = itemView.findViewById(R.id.btnEditProduct); // Ánh xạ nút Edit
-            btnDeleteProduct = itemView.findViewById(R.id.btnDeleteProduct); // Ánh xạ nút Delete
+            btnEditProduct = itemView.findViewById(R.id.btnEditProduct);
+            btnDeleteProduct = itemView.findViewById(R.id.btnDeleteProduct);
+            ivDetail = itemView.findViewById(R.id.ivDetail); // <--- ÁNH XẠ ImageView
         }
     }
 
@@ -75,11 +83,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.txtDesc.setText("Description: " + product.getDescription());
         holder.txtCategoryId.setText("Category ID: " + (product.getProductCategoryId() != null ? product.getProductCategoryId() : "N/A"));
         holder.txtBrand.setText("Brand: " + product.getBrand());
-        holder.txtPrice.setText(String.format(Locale.getDefault(), "Price: ₫%.2f", product.getBasePrice())); // Định dạng giá tốt hơn
+        holder.txtPrice.setText(String.format(Locale.getDefault(), "Price: ₫%.2f", product.getBasePrice()));
         holder.txtStatus.setText("Status: " + (product.getStatus() != null ? product.getStatus() : "N/A"));
-        holder.txtIsDelete.setText("Is Deleted: " + (product.isDelete() ? "Yes" : "No")); // Hiển thị Yes/No
+        holder.txtIsDelete.setText("Is Deleted: " + (product.isDelete() ? "Yes" : "No"));
 
-        // Xử lý AvailableAttributes JSON
         if (product.getAvailableAttributes() != null && !product.getAvailableAttributes().isEmpty()) {
             try {
                 Gson gson = new Gson();
@@ -101,8 +108,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             holder.txtAttributes.setText("Attributes: N/A");
         }
 
-
-        // Xử lý CreatedAt
         if (product.getCreatedAt() != null) {
             try {
                 holder.txtCreatedAt.setText("Created At: " + dateFormat.format(product.getCreatedAt()));
@@ -113,7 +118,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             holder.txtCreatedAt.setText("Created At: N/A");
         }
 
-        // Xử lý UpdatedAt
         if (product.getUpdatedAt() != null) {
             try {
                 holder.txtUpdatedAt.setText("Updated At: " + dateFormat.format(product.getUpdatedAt()));
@@ -136,6 +140,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 listener.onDeleteClick(product.getProductId());
             }
         });
+
+        // <--- THIẾT LẬP ONCLICKLISTENER CHO BIỂU TƯỢNG MẮT (XEM CHI TIẾT)
+        holder.ivDetail.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onDetailClick(product.getProductId());
+            }
+        });
+        // THIẾT LẬP ONCLICKLISTENER CHO BIỂU TƯỢNG MẮT (XEM CHI TIẾT) --->
     }
 
     @Override
