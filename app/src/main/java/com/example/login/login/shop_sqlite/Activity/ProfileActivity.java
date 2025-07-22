@@ -1,10 +1,13 @@
 package com.example.login.login.shop_sqlite.Activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import com.example.login.login.shop_sqlite.Api.ApiClient;
 import com.example.login.login.shop_sqlite.Api.ApiService;
 import com.example.login.login.shop_sqlite.Models.UserProfileDto;
@@ -15,11 +18,22 @@ import retrofit2.Response;
 
 public class ProfileActivity extends AppCompatActivity {
     private TextView tvUserName, tvEmail, tvPhone, tvAddress, tvDateOfBirth, tvCreateDate, tvStatus, tvRoleId;
+    private Button btnEditProfile;
+    private static final int EDIT_PROFILE_REQUEST = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        // Setup toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle("Thông tin cá nhân");
+        }
 
         tvUserName = findViewById(R.id.tvUserName);
         tvEmail = findViewById(R.id.tvEmail);
@@ -29,7 +43,34 @@ public class ProfileActivity extends AppCompatActivity {
         tvCreateDate = findViewById(R.id.tvCreateDate);
         tvStatus = findViewById(R.id.tvStatus);
         tvRoleId = findViewById(R.id.tvRoleId);
+        btnEditProfile = findViewById(R.id.btnEditProfile);
 
+        // Setup edit button
+        btnEditProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
+            startActivityForResult(intent, EDIT_PROFILE_REQUEST);
+        });
+
+        loadUserProfile();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_PROFILE_REQUEST && resultCode == RESULT_OK) {
+            // Reload profile data after successful edit
+            loadUserProfile();
+            Toast.makeText(this, "Thông tin đã được cập nhật!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void loadUserProfile() {
         SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         int userId = prefs.getInt("current_user_id", -1);
         ApiService apiService = ApiClient.getClient().create(ApiService.class);

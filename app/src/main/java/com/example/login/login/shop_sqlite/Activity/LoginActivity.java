@@ -87,9 +87,14 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<LoginResponseDto> call, Response<LoginResponseDto> response) {
                 Log.d("LoginActivity", "onResponse: code=" + response.code());
                 if (response.isSuccessful() && response.body() != null) {
+                    int userId = response.body().userId; // Lấy userId từ response
                     String token = response.body().token;
                     String role = response.body().roleName;
-                    Log.d("LoginActivity", "Role nhận được: '" + role + "'");
+                    // Lưu userId vào SharedPreferences
+                    SharedPreferences.Editor editor = getSharedPreferences("user_prefs", MODE_PRIVATE).edit();
+                    editor.putInt("current_user_id", userId);
+                    editor.apply();
+                    Log.d("LoginActivity", "userId saved to SharedPreferences: " + userId);
                     Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                     try {
                         Intent intent;

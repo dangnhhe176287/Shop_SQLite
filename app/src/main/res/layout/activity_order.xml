@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/orderRootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -33,29 +34,33 @@
                 android:textColor="@color/fashion_primary"
                 android:layout_marginBottom="16dp" />
 
-            <EditText
-                android:id="@+id/etName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Họ và tên"
-                android:inputType="textPersonName"
-                android:layout_marginBottom="12dp" />
+            <!-- Đã xoá các trường nhập tên, số điện thoại, địa chỉ nhận hàng -->
 
             <EditText
-                android:id="@+id/etPhone"
+                android:id="@+id/etOrderNote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Số điện thoại"
-                android:inputType="phone"
-                android:layout_marginBottom="12dp" />
+                android:hint="Ghi chú cho đơn hàng (ví dụ: Giao buổi sáng, gọi trước khi giao...)"
+                android:inputType="textMultiLine"
+                android:minLines="2"
+                android:maxLines="4"
+                android:layout_marginBottom="16dp" />
 
-            <EditText
-                android:id="@+id/etAddress"
+            <Spinner
+                android:id="@+id/spinnerProvince"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Địa chỉ nhận hàng"
-                android:inputType="textPostalAddress"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginTop="8dp" />
+            <Spinner
+                android:id="@+id/spinnerDistrict"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+            <Spinner
+                android:id="@+id/spinnerWard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
 
             <Button
                 android:id="@+id/btnPlaceOrder"

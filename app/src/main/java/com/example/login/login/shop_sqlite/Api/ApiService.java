@@ -38,6 +38,7 @@ import com.example.login.login.shop_sqlite.Models.ResetPasswordRequestDto;
 import com.example.login.login.shop_sqlite.Models.ResetPasswordRequestDto;
 import com.example.login.login.shop_sqlite.Models.VerifyOtpRequestDto;
 import com.example.login.login.shop_sqlite.Models.UserDto;
+import com.example.login.login.shop_sqlite.Models.UpdateUserDto;
 
 import java.util.List;
 
@@ -105,13 +106,16 @@ public interface ApiService {
     @DELETE("cart/{userId}/remove/{productId}/{variantId}")
     Call<Void> removeFromCart(@Path("userId") int userId, @Path("productId") int productId, @Path("variantId") int variantId, @Query("variantAttributes") String variantAttributes);
 
-    @POST("api/orders")
+    @DELETE("cart/{userId}/clear")
+    Call<Void> clearCart(@Path("userId") int userId);
+
+    @POST("api/Orders")
     Call<Void> placeOrder(@Body OrderRequest orderRequest);
 
-    @GET("api/orders")
+    @GET("api/Orders")
     Call<List<OrderView>> getOrders(@Query("customerId") int customerId);
 
-    @GET("api/orders/{orderId}")
+    @GET("api/Orders/{orderId}")
     Call<OrderView> getOrderDetail(@Path("orderId") int orderId);
 
     @GET("api/users/profile")
@@ -120,6 +124,9 @@ public interface ApiService {
     @GET("api/users/{id}")
     Call<com.example.login.login.shop_sqlite.Models.UserProfileDto> getUserById(@Path("id") int userId);
 
+    @GET("api/Users/{id}")
+    Call<UserDto> getUserByIdForEdit(@Path("id") int userId);
+
     @GET("api/Users")
     Call<List<UserDto>> getAllUsers();
 
@@ -127,7 +134,7 @@ public interface ApiService {
     Call<UserDto> addUser(@Body UserDto user);
 
     @PUT("api/Users/{id}")
-    Call<Void> updateUser(@Path("id") int id, @Body UserDto user);
+    Call<Void> updateUser(@Path("id") int id, @Body UpdateUserDto user);
 
     @DELETE("api/Users/{id}")
 
