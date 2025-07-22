@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (role != null && role.trim().equalsIgnoreCase("admin")) {
                             intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
                         } else {
-                            intent = new Intent(LoginActivity.this, ProductListActivity.class);
+                            intent = new Intent(LoginActivity.this, SaleProductListActivity.class);
                         }
                         intent.putExtra("token", token);
                         intent.putExtra("userName", response.body().roleName);

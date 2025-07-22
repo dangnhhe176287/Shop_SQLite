@@ -1,3 +1,4 @@
+/*
 package com.example.login.login.shop_sqlite.Activity;
 
 import android.content.Intent;
@@ -23,7 +24,7 @@ import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.widget.PopupMenu;
 
-import com.example.login.login.shop_sqlite.Adapter.ProductAdapter;
+import com.example.login.login.shop_sqlite.Adapter.SaleProductAdapter;
 import com.example.login.login.shop_sqlite.Api.ApiClient;
 import com.example.login.login.shop_sqlite.Api.ApiService;
 import com.example.login.login.shop_sqlite.Models.Product;
@@ -37,10 +38,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProductListActivity extends AppCompatActivity implements ProductAdapter.OnProductClickListener {
+public class ProductListActivity extends AppCompatActivity implements SaleProductAdapter.OnPro {
 
     private RecyclerView productsRecyclerView;
-    private ProductAdapter productAdapter;
+    private SaleProductAdapter saleProductAdapter;
     private List<Product> allProducts;
     private List<Product> filteredProducts;
     
@@ -69,7 +70,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_product_list);
+        setContentView(R.layout.sale_activity_product_list);
         
         initializeViews();
         setupRecyclerView();
@@ -130,13 +131,13 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
     }
 
     private void setupRecyclerView() {
-        productAdapter = new ProductAdapter(this, filteredProducts);
-        productAdapter.setOnProductClickListener(this);
+        saleProductAdapter = new SaleProductAdapter(this, filteredProducts);
+        saleProductAdapter.setOnProductClickListener(this);
         
         // Use GridLayoutManager for better product display
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         productsRecyclerView.setLayoutManager(layoutManager);
-        productsRecyclerView.setAdapter(productAdapter);
+        productsRecyclerView.setAdapter(saleProductAdapter);
         
         // Add scroll listener for pagination
         productsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -245,14 +246,14 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
         if (isLoading || !hasMoreData) return;
         
         isLoading = true;
-        productAdapter.setLoading(true);
+        saleProductAdapter.setLoading(true);
         
         Call<List<Product>> call = apiService.getAllProducts(currentPage, pageSize);
         call.enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                 isLoading = false;
-                productAdapter.setLoading(false);
+                saleProductAdapter.setLoading(false);
                 
                 if (response.isSuccessful() && response.body() != null) {
                     List<Product> newProducts = response.body();
@@ -270,7 +271,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
                     filterProducts(searchEditText.getText().toString());
                     
                     // Notify adapter about new items
-                    productAdapter.notifyItemRangeInserted(startPosition, newProducts.size());
+                    saleProductAdapter.notifyItemRangeInserted(startPosition, newProducts.size());
                     
                     // Update pagination info
                     updatePaginationInfo();
@@ -286,7 +287,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
             @Override
             public void onFailure(Call<List<Product>> call, Throwable t) {
                 isLoading = false;
-                productAdapter.setLoading(false);
+                saleProductAdapter.setLoading(false);
                 Toast.makeText(ProductListActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -333,7 +334,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
             }
         }
         
-        productAdapter.updateProducts(filteredProducts);
+        saleProductAdapter.updateProducts(filteredProducts);
         
         if (filteredProducts.isEmpty() && !allProducts.isEmpty()) {
             showEmpty();
@@ -567,4 +568,4 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
     public void onRetryClick(View view) {
         loadProducts();
     }
-} 
+} */

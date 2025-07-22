@@ -33,7 +33,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
     @NonNull
     @Override
     public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sale_item_order, parent, false);
         return new OrderViewHolder(view);
     }
     
@@ -116,8 +116,8 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
             tvOrderId = itemView.findViewById(R.id.tvOrderId);
-            tvTotal = itemView.findViewById(R.id.tvTotal);
-            tvDate = itemView.findViewById(R.id.tvDate);
+            tvTotal = itemView.findViewById(R.id.tvTotalQuantity);
+            tvDate = itemView.findViewById(R.id.tvDateOfBirth);
             tvAddress = itemView.findViewById(R.id.tvAddress);
             tvOrderStatus = itemView.findViewById(R.id.tvOrderStatus);
         }

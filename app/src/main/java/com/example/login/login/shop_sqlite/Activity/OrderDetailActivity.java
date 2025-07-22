@@ -87,7 +87,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                     displayOrderDetail(order);
                 } else {
                     Log.e(TAG, "API Error: " + response.code() + " - " + response.message());
-                    Toast.makeText(OrderDetailActivity.this, "Không lấy được chi tiết đơn hàng", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OrderDetailActivity.this, "Không lấy được thông tin đơn hàng", Toast.LENGTH_SHORT).show();
                 }
             }
             
@@ -100,77 +100,42 @@ public class OrderDetailActivity extends AppCompatActivity {
     }
     
     private void displayOrderDetail(OrderView order) {
-        // Set order information
-        tvOrderId.setText("Mã đơn hàng: #" + order.getOrderId());
-        tvTotal.setText("Tổng tiền: " + formatPrice(order.getAmountDue()));
-        
-        // Hiển thị trạng thái đơn hàng
-        String statusText = order.getOrderStatusTitle() != null ? order.getOrderStatusTitle() : "Đang xử lý";
-        tvOrderStatus.setText(statusText);
-        
-        // Đặt màu cho trạng thái
-        int statusColor = getStatusColor(order.getOrderStatusId());
-        tvOrderStatus.setBackgroundColor(statusColor);
-        
-        // Format date
-        String dateText = "Ngày đặt: ";
-        if (order.getCreatedAt() != null && !order.getCreatedAt().isEmpty()) {
-            try {
-                Date date = inputFormat.parse(order.getCreatedAt());
-                dateText += outputFormat.format(date);
-            } catch (ParseException e) {
-                dateText += order.getCreatedAt();
-            }
-        } else {
-            dateText += "N/A";
-        }
-        tvDate.setText(dateText);
-        
-        // Set address and note
-        tvAddress.setText("Địa chỉ giao hàng: " + (order.getShippingAddress() != null ? order.getShippingAddress() : "N/A"));
-        tvNote.setText("Ghi chú: " + (order.getOrderNote() != null ? order.getOrderNote() : "Không có"));
-        
-        // Debug order items
-        if (order.getItems() != null && !order.getItems().isEmpty()) {
-            Log.d(TAG, "Order has " + order.getItems().size() + " items");
-            for (OrderView.OrderDetailView item : order.getItems()) {
-                Log.d(TAG, "Item: " + item.getProductName() + ", Variant: " + item.getVariantAttributes());
-            }
+        try {
+            // Parse and format date
+            Date date = inputFormat.parse(order.getCreatedAt());
+            String formattedDate = outputFormat.format(date);
+            
+            // Display order information
+            tvOrderId.setText("Đơn hàng #" + order.getOrderId());
+            tvTotal.setText(formatPrice(order.getAmountDue()));
+            tvDate.setText(formattedDate);
+            tvAddress.setText(order.getShippingAddress());
+            tvNote.setText(order.getOrderNote() != null ? order.getOrderNote() : "Không có ghi chú");
+            tvOrderStatus.setText(order.getOrderStatusTitle());
+            tvOrderStatus.setBackgroundColor(getStatusColor(order.getOrderStatusId()));
+            
+            // Setup RecyclerView for order items
             adapter = new OrderDetailAdapter(order.getItems());
             recyclerView.setAdapter(adapter);
-        } else {
-            Log.d(TAG, "Order has no items");
+            
+        } catch (ParseException e) {
+            Log.e(TAG, "Error parsing date", e);
+            tvDate.setText(order.getCreatedAt()); // Fallback to original string
         }
     }
     
     private String formatPrice(double price) {
-        if (price >= 1_000_000) {
-            return String.format("$%.2fM", price / 1_000_000);
-        } else if (price >= 1_000) {
-            if (price % 1000 == 0) {
-                return String.format("$%.0fk", price / 1000);
-            } else {
-                return String.format("$%.2fk", price / 1000);
-            }
-        } else {
-            return String.format("$%.2f", price);
-        }
+        return String.format(Locale.getDefault(), "%,.0f VNĐ", price);
     }
     
     private int getStatusColor(int statusId) {
         switch (statusId) {
-            case 1: // Pending
-                return 0xFFE91E63; // Pink
-            case 2: // Processing
-                return 0xFFFF9800; // Orange
-            case 3: // Shipped
-                return 0xFF2196F3; // Blue
-            case 4: // Delivered
-                return 0xFF4CAF50; // Green
-            case 5: // Cancelled
-                return 0xFFF44336; // Red
-            default:
-                return 0xFFE91E63; // Default Pink
+            case 1: return getResources().getColor(android.R.color.holo_blue_dark); // Pending
+            case 2: return getResources().getColor(android.R.color.holo_orange_dark); // Processing
+            case 3: return getResources().getColor(android.R.color.holo_green_dark); // Shipped
+            case 4: return getResources().getColor(android.R.color.holo_green_light); // Delivered
+            case 5: return getResources().getColor(android.R.color.holo_red_dark); // Cancelled
+            default: return getResources().getColor(android.R.color.darker_gray);
         }
     }
-} 
+}
