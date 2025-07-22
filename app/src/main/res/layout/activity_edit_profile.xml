@@ -130,6 +130,57 @@
 
             </androidx.cardview.widget.CardView>
 
+            <!-- Change Password Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Đổi mật khẩu"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/fashion_primary"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="12dp" />
+
+            <EditText
+                android:id="@+id/etOldPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mật khẩu cũ"
+                android:inputType="textPassword"
+                android:padding="12dp"
+                android:background="@drawable/edit_text_background"
+                android:layout_marginBottom="12dp" />
+
+            <EditText
+                android:id="@+id/etNewPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mật khẩu mới"
+                android:inputType="textPassword"
+                android:padding="12dp"
+                android:background="@drawable/edit_text_background"
+                android:layout_marginBottom="12dp" />
+
+            <EditText
+                android:id="@+id/etConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Xác nhận mật khẩu mới"
+                android:inputType="textPassword"
+                android:padding="12dp"
+                android:background="@drawable/edit_text_background"
+                android:layout_marginBottom="16dp" />
+
+            <Button
+                android:id="@+id/btnChangePassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Đổi mật khẩu"
+                android:textColor="@color/white"
+                android:background="@color/fashion_primary"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp" />
+
             <!-- Buttons -->
             <LinearLayout
                 android:layout_width="match_parent"
