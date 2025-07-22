@@ -1,6 +1,8 @@
 package com.example.login.login.shop_sqlite.Fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +15,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.login.login.shop_sqlite.Activity.CreateCategoryActivity; // Import CreateCategoryActivity
+import com.example.login.login.shop_sqlite.Activity.UpdateCategoryActivity;
 import com.example.login.login.shop_sqlite.R;
 import com.example.login.login.shop_sqlite.Api.ApiClient;
 import com.example.login.login.shop_sqlite.Api.ApiService;
@@ -27,6 +32,8 @@ import retrofit2.Response;
 public class ProductCategoriesFragment extends Fragment implements CategoryAdapter.OnCategoryActionListener {
 
     private static final String TAG = "ProductCategoriesFrag";
+    private static final int REQUEST_CODE_UPDATE_CATEGORY = 101; // Request code for update activity
+    private static final int REQUEST_CODE_CREATE_CATEGORY = 102; // New request code for create activity
 
     private TextView txtHeader;
     private Button btnAddCategory;
@@ -38,7 +45,6 @@ public class ProductCategoriesFragment extends Fragment implements CategoryAdapt
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-
     }
 
     @Nullable
@@ -58,8 +64,9 @@ public class ProductCategoriesFragment extends Fragment implements CategoryAdapt
         listViewCategories.setAdapter(categoryAdapter);
 
         btnAddCategory.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Chức năng thêm danh mục mới sẽ được triển khai sau!", Toast.LENGTH_SHORT).show();
-
+            // Launch CreateCategoryActivity when "Add New Category" button is clicked
+            Intent intent = new Intent(getContext(), CreateCategoryActivity.class);
+            startActivityForResult(intent, REQUEST_CODE_CREATE_CATEGORY); // Use the new request code
         });
 
         return view;
@@ -68,11 +75,11 @@ public class ProductCategoriesFragment extends Fragment implements CategoryAdapt
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fetchProductCategories();
+        fetchProductCategories(); // Initial load of categories
     }
 
     public void refreshProductCategoryList() {
-        fetchProductCategories();
+        fetchProductCategories(); // Call this when you need to refresh the list
     }
 
     private void fetchProductCategories() {
@@ -114,20 +121,69 @@ public class ProductCategoriesFragment extends Fragment implements CategoryAdapt
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    @Override
     public void onEditClick(int categoryId) {
-        Toast.makeText(getContext(), "Tính năng chỉnh sửa danh mục ID: " + categoryId + " sẽ được triển khai.", Toast.LENGTH_SHORT).show();
-
+        Log.d(TAG, "Đã nhấp chỉnh sửa danh mục ID: " + categoryId);
+        Intent intent = new Intent(getContext(), UpdateCategoryActivity.class);
+        intent.putExtra("categoryId", categoryId);
+        startActivityForResult(intent, REQUEST_CODE_UPDATE_CATEGORY);
     }
 
     @Override
     public void onDeleteClick(int categoryId) {
-        Toast.makeText(getContext(), "Tính năng xóa danh mục ID: " + categoryId + " sẽ được triển khai.", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "Đã nhấp xóa danh mục ID: " + categoryId);
 
+        new AlertDialog.Builder(getContext())
+                .setTitle("Xác nhận xóa")
+                .setMessage("Bạn có chắc chắn muốn xóa danh mục này không?")
+                .setPositiveButton("Xóa", (dialog, which) -> confirmDeleteCategory(categoryId))
+                .setNegativeButton("Hủy", null)
+                .show();
     }
 
+    private void confirmDeleteCategory(int categoryId) {
+        apiService.deleteCategory(categoryId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Đã xóa danh mục thành công!", Toast.LENGTH_SHORT).show();
+                    refreshProductCategoryList();
+                } else if (response.code() == 404) {
+                    Toast.makeText(getContext(), "Không tìm thấy danh mục để xóa.", Toast.LENGTH_SHORT).show();
+                } else {
+                    String errorMsg = "Lỗi khi xóa danh mục: " + response.code();
+                    try {
+                        if (response.errorBody() != null) {
+                            String rawErrorBody = response.errorBody().string();
+                            errorMsg += " - Chi tiết: " + rawErrorBody;
+                            Log.e(TAG, "Lỗi phản hồi API khi xóa (" + response.code() + "): " + rawErrorBody);
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "Lỗi đọc errorBody khi xóa: " + e.getMessage(), e);
+                        errorMsg += " - Không thể đọc chi tiết lỗi.";
+                    }
+                    Toast.makeText(getContext(), errorMsg, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e(TAG, "Lỗi kết nối máy chủ khi xóa:", t);
+                Toast.makeText(getContext(), "Không thể kết nối máy chủ để xóa: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == getActivity().RESULT_OK) { // Check if the activity returned RESULT_OK
+            if (requestCode == REQUEST_CODE_UPDATE_CATEGORY) {
+                refreshProductCategoryList();
+                Toast.makeText(getContext(), "Danh mục đã được cập nhật!", Toast.LENGTH_SHORT).show();
+            } else if (requestCode == REQUEST_CODE_CREATE_CATEGORY) {
+                refreshProductCategoryList();
+                Toast.makeText(getContext(), "Danh mục mới đã được tạo!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }

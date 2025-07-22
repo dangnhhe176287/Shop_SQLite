@@ -25,7 +25,7 @@ public class CreateOrderActivity extends AppCompatActivity {
 
     private static final String TAG = "CreateOrderActivity";
     private EditText edtCustomerId, edtPaymentMethodId, edtOrderNote;
-    private EditText edtProductId, edtQuantity, edtVariantId; // Fields for the first order detail
+    private EditText edtProductId, edtQuantity, edtVariantId;
     private Button btnCreateOrder;
 
     private ApiService apiService;
@@ -35,7 +35,6 @@ public class CreateOrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_order);
 
-        // Ánh xạ các thành phần UI
         edtCustomerId = findViewById(R.id.edtCustomerId);
         edtPaymentMethodId = findViewById(R.id.edtPaymentMethodId);
         edtOrderNote = findViewById(R.id.edtOrderNote);
@@ -61,7 +60,6 @@ public class CreateOrderActivity extends AppCompatActivity {
         String quantityStr = edtQuantity.getText().toString().trim();
         String variantIdStr = edtVariantId.getText().toString().trim();
 
-        // 2. Validate dữ liệu như trong Razor Page
         if (customerIdStr.isEmpty() || paymentMethodIdStr.isEmpty() ||
                 productIdStr.isEmpty() || quantityStr.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin bắt buộc (Customer ID, Payment Method ID, Product ID, Quantity).", Toast.LENGTH_LONG).show();
@@ -114,16 +112,14 @@ public class CreateOrderActivity extends AppCompatActivity {
                 orderDetails
         );
 
-        // Log request payload for debugging
         Log.d(TAG, "Gửi CreateOrderDto: " + new com.google.gson.Gson().toJson(createOrderDto));
 
-        // 5. Gửi yêu cầu API
         apiService.createOrder(createOrderDto).enqueue(new Callback<Order>() {
             @Override
             public void onResponse(Call<Order> call, Response<Order> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(CreateOrderActivity.this, "Tạo đơn hàng thành công! Mã: " + response.body().getOrderId(), Toast.LENGTH_LONG).show();
-                    setResult(RESULT_OK); // Đặt kết quả thành công cho Activity gọi
+                    setResult(RESULT_OK);
                     finish();
                 } else {
                     String errorMsg = "Lỗi khi tạo đơn hàng: " + response.code();
