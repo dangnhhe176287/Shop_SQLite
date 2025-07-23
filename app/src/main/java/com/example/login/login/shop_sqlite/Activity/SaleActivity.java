@@ -2,7 +2,6 @@ package com.example.login.login.shop_sqlite.Activity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -11,12 +10,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import com.example.login.login.shop_sqlite.Fragment.OrderListFragment;
-import com.example.login.login.shop_sqlite.Fragment.ProductCategoriesFragment;
-import com.example.login.login.shop_sqlite.Fragment.ProductListFragment;
-import com.example.login.login.shop_sqlite.Fragment.UserListFragment;
+import com.example.login.login.shop_sqlite.SaleFragment.OrderListFragment;
+import com.example.login.login.shop_sqlite.SaleFragment.ProductCategoriesFragment;
+import com.example.login.login.shop_sqlite.SaleFragment.ProductListFragment;
+import com.example.login.login.shop_sqlite.SaleFragment.UserListFragment;
 import com.example.login.login.shop_sqlite.R;
 import com.google.android.material.navigation.NavigationView;
 
@@ -30,7 +28,7 @@ public class SaleActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sale);
+        setContentView(R.layout.sale_activity_sale);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

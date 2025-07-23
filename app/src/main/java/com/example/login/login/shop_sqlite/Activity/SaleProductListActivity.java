@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager; // Import cụ thể Li
 import androidx.recyclerview.widget.RecyclerView; // Import cụ thể RecyclerView
 
 import com.example.login.login.shop_sqlite.Api.ApiClient;
-import com.example.login.login.shop_sqlite.Api.ApiService;
-import com.example.login.login.shop_sqlite.Adapter.ProductAdapter;
-import com.example.login.login.shop_sqlite.Dto.ProductResponseDto;
+import com.example.login.login.shop_sqlite.Api.SaleApiService;
+import com.example.login.login.shop_sqlite.Adapter.SaleProductAdapter;
+import com.example.login.login.shop_sqlite.Dto.SaleProductResponseDto;
 import com.example.login.login.shop_sqlite.R;
 
 import java.util.ArrayList; // Import cụ thể ArrayList
@@ -23,12 +23,12 @@ import retrofit2.Call; // Import cụ thể Call
 import retrofit2.Callback; // Import cụ thể Callback
 import retrofit2.Response; // Import cụ thể Response
 
-public class SaleProductListActivity extends AppCompatActivity implements ProductAdapter.OnItemActionListener {
+public class SaleProductListActivity extends AppCompatActivity implements SaleProductAdapter.OnItemActionListener {
 
     private RecyclerView recyclerView;
-    private ProductAdapter adapter;
-    private List<ProductResponseDto> productList;
-    private ApiService apiService;
+    private SaleProductAdapter adapter;
+    private List<SaleProductResponseDto> productList;
+    private SaleApiService saleApiService;
     private Button btnCreateNewProduct;
 
     private static final int REQUEST_CODE_EDIT_PRODUCT = 1;
@@ -37,20 +37,20 @@ public class SaleProductListActivity extends AppCompatActivity implements Produc
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_product_list);
+        setContentView(R.layout.sale_activity_product_list);
 
         recyclerView = findViewById(R.id.recyclerProducts);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         productList = new ArrayList<>();
-        adapter = new ProductAdapter(productList, this);
+        adapter = new SaleProductAdapter(productList, this);
         recyclerView.setAdapter(adapter);
 
-        apiService = ApiClient.getClient().create(ApiService.class);
+        saleApiService = ApiClient.getClient().create(SaleApiService.class);
 
         btnCreateNewProduct = findViewById(R.id.btnCreateNewProduct);
 
         btnCreateNewProduct.setOnClickListener(v -> {
-            Intent intent = new Intent(SaleProductListActivity.this, CreateProductActivity.class);
+            Intent intent = new Intent(SaleProductListActivity.this, SaleCreateProductActivity.class);
             startActivityForResult(intent, REQUEST_CODE_CREATE_PRODUCT);
         });
 
@@ -59,12 +59,12 @@ public class SaleProductListActivity extends AppCompatActivity implements Produc
 
     private void fetchProducts() {
         Log.d("ProductListActivity", "Bắt đầu tải lại danh sách sản phẩm...");
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
-        Call<List<ProductResponseDto>> call = apiService.getAllProducts();
+        SaleApiService saleApiService = ApiClient.getClient().create(SaleApiService.class);
+        Call<List<SaleProductResponseDto>> call = saleApiService.getAllProducts();
 
-        call.enqueue(new Callback<List<ProductResponseDto>>() {
+        call.enqueue(new Callback<List<SaleProductResponseDto>>() {
             @Override
-            public void onResponse(Call<List<ProductResponseDto>> call, Response<List<ProductResponseDto>> response) {
+            public void onResponse(Call<List<SaleProductResponseDto>> call, Response<List<SaleProductResponseDto>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     productList.clear();
                     productList.addAll(response.body());
@@ -85,7 +85,7 @@ public class SaleProductListActivity extends AppCompatActivity implements Produc
             }
 
             @Override
-            public void onFailure(Call<List<ProductResponseDto>> call, Throwable t) {
+            public void onFailure(Call<List<SaleProductResponseDto>> call, Throwable t) {
                 Log.e("ProductListActivity", "Lỗi kết nối khi tải sản phẩm", t);
                 Toast.makeText(SaleProductListActivity.this, "Không thể kết nối đến máy chủ: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
@@ -95,7 +95,7 @@ public class SaleProductListActivity extends AppCompatActivity implements Produc
     @Override
     public void onEditClick(int productId) {
         Log.d("ProductListActivity", "Chỉnh sửa sản phẩm với ID: " + productId);
-        Intent intent = new Intent(SaleProductListActivity.this, EditProductActivity.class); // Thay EditProductActivity bằng UpdateProductActivity nếu đó là tên đúng
+        Intent intent = new Intent(SaleProductListActivity.this, SaleEditProductActivity.class); // Thay EditProductActivity bằng UpdateProductActivity nếu đó là tên đúng
         intent.putExtra("productId", productId);
         startActivityForResult(intent, REQUEST_CODE_EDIT_PRODUCT);
     }
@@ -116,14 +116,14 @@ public class SaleProductListActivity extends AppCompatActivity implements Produc
     @Override
     public void onDetailClick(int productId) {
         Log.d("ProductListActivity", "Xem chi tiết sản phẩm với ID: " + productId);
-        Intent intent = new Intent(SaleProductListActivity.this, ProductDetailActivity.class);
+        Intent intent = new Intent(SaleProductListActivity.this, SaleProductDetailActivity.class);
         intent.putExtra("productId", productId); // Truyền ID sản phẩm
         startActivity(intent); // Chỉ cần startActivity vì không cần kết quả trả về
     }
     // --- KẾT THÚC TRIỂN KHAI PHƯƠNG THỨC THIẾU ---
 
     private void confirmDeleteProduct(int productId) {
-        apiService.deleteProduct(productId).enqueue(new Callback<Void>() {
+        saleApiService.deleteProduct(productId).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {

@@ -5,19 +5,25 @@
     android:orientation="vertical"
     android:padding="8dp"
     android:layout_marginBottom="8dp"
-    android:background="@drawable/border_background"> <EditText
-    android:id="@+id/edtVariantSize"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:hint="Kích thước"
-    android:layout_marginBottom="4dp" />
+    android:background="@drawable/border_background">
+
+    <EditText
+        android:id="@+id/edtVariantSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Kích thước"
+        android:layout_marginBottom="4dp"
+        android:padding="12dp"
+        android:background="@drawable/edit_text_background"/>
 
     <EditText
         android:id="@+id/edtVariantColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Màu sắc"
-        android:layout_marginBottom="4dp" />
+        android:layout_marginBottom="4dp"
+        android:padding="12dp"
+        android:background="@drawable/edit_text_background"/>
 
     <EditText
         android:id="@+id/edtVariantPrice"
@@ -25,7 +31,9 @@
         android:layout_height="wrap_content"
         android:hint="Giá biến thể"
         android:inputType="numberDecimal"
-        android:layout_marginBottom="4dp" />
+        android:layout_marginBottom="4dp"
+        android:padding="12dp"
+        android:background="@drawable/edit_text_background"/>
 
     <EditText
         android:id="@+id/edtVariantStock"
@@ -33,7 +41,9 @@
         android:layout_height="wrap_content"
         android:hint="Số lượng kho"
         android:inputType="number"
-        android:layout_marginBottom="4dp" />
+        android:layout_marginBottom="4dp"
+        android:padding="12dp"
+        android:background="@drawable/edit_text_background"/>
 
     <Button
         android:id="@+id/btnRemoveVariant"
@@ -42,6 +52,7 @@
         android:text="Xóa biến thể"
         android:layout_gravity="end"
         android:backgroundTint="@android:color/holo_red_dark"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white"
+        android:padding="8dp"/>
 
 </LinearLayout>

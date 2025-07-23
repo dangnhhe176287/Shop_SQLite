@@ -32,22 +32,22 @@
         <activity
             android:name=".Activity.LoginActivity"
             android:exported="false" />
-        <activity android:name=".Activity.CreateOrderActivity" android:exported="true" />
+        <activity android:name=".Activity.SaleCreateOrderActivity" android:exported="true" />
         <activity android:name=".Activity.SaleProductListActivity" android:exported="true" />
-        <activity android:name=".Activity.CreateCategoryActivity" android:exported="true" />
-        <activity android:name=".Activity.UpdateCategoryActivity" android:exported="true" />
-        <activity android:name=".Activity.DeleteCategoryActivity" android:exported="true" />
-        <activity android:name=".Activity.EditProductActivity" android:exported="true" />
-        <activity android:name=".Activity.CreateProductActivity" android:exported="true" />
-        <activity android:name=".Activity.OrderDetailActivity" android:exported="true" />
-        <activity android:name=".Activity.ProductCategoriesActivity" android:exported="true" />
-        <activity android:name=".Activity.UpdateOrderActivity" android:exported="true" />
-        <activity android:name=".Activity.OrderListActivity" android:exported="true" />
-        <activity android:name=".Activity.CreateUserActivity" android:exported="true" />
-        <activity android:name=".Activity.EditUserActivity" android:exported="true" />
-        <activity android:name=".Activity.UserListActivity" android:exported="true" />
-        <activity android:name=".Activity.ProductDetailActivity" android:exported="true" />
-        <activity android:name=".Activity.UserDetailActivity" android:exported="true" />
+        <activity android:name=".Activity.SaleCreateCategoryActivity" android:exported="true" />
+        <activity android:name=".Activity.SaleUpdateCategoryActivity" android:exported="true" />
+        <activity android:name=".Activity.SaleDeleteCategoryActivity" android:exported="true" />
+        <activity android:name=".Activity.SaleEditProductActivity" android:exported="true" />
+        <activity android:name=".Activity.SaleCreateProductActivity" android:exported="true" />
+        <activity android:name=".Activity.SaleOrderDetailActivity" android:exported="true" />
+        <activity android:name=".Activity.SaleProductCategoriesActivity" android:exported="true" />
+        <activity android:name=".Activity.SaleUpdateOrderActivity" android:exported="true" />
+        <activity android:name=".Activity.SaleOrderListActivity" android:exported="true" />
+        <activity android:name=".Activity.SaleCreateUserActivity" android:exported="true" />
+        <activity android:name=".Activity.SaleEditUserActivity" android:exported="true" />
+        <activity android:name=".Activity.SaleUserListActivity" android:exported="true" />
+        <activity android:name=".Activity.SaleProductDetailActivity" android:exported="true" />
+        <activity android:name=".Activity.SaleUserDetailActivity" android:exported="true" />
 
     </application>
 

@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.login.login.shop_sqlite.Api.ApiClient;
-import com.example.login.login.shop_sqlite.Api.ApiService;
+import com.example.login.login.shop_sqlite.Api.SaleApiService;
 import com.example.login.login.shop_sqlite.Models.RegisterRequestDto;
 import com.example.login.login.shop_sqlite.Models.LoginResponseDto;
 import com.example.login.login.shop_sqlite.R;
@@ -79,9 +79,9 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void register(String email, String password, String userName, String phone, String dob, String address) {
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        SaleApiService saleApiService = ApiClient.getClient().create(SaleApiService.class);
         RegisterRequestDto registerRequest = new RegisterRequestDto(email, password, userName, phone, dob, address);
-        Call<LoginResponseDto> call = apiService.register(registerRequest);
+        Call<LoginResponseDto> call = saleApiService.register(registerRequest);
         call.enqueue(new Callback<LoginResponseDto>() {
             @Override
             public void onResponse(Call<LoginResponseDto> call, Response<LoginResponseDto> response) {

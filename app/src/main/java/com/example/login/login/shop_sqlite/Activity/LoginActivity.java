@@ -7,7 +7,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.login.login.shop_sqlite.Api.ApiClient;
-import com.example.login.login.shop_sqlite.Api.ApiService;
+import com.example.login.login.shop_sqlite.Api.SaleApiService;
 import com.example.login.login.shop_sqlite.Models.LoginRequestDto;
 import com.example.login.login.shop_sqlite.Models.LoginResponseDto;
 import com.example.login.login.shop_sqlite.R;
@@ -45,9 +45,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(String email, String password) {
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        SaleApiService saleApiService = ApiClient.getClient().create(SaleApiService.class);
         LoginRequestDto loginRequest = new LoginRequestDto(email, password);
-        Call<LoginResponseDto> call = apiService.login(loginRequest);
+        Call<LoginResponseDto> call = saleApiService.login(loginRequest);
         call.enqueue(new Callback<LoginResponseDto>() {
             @Override
             public void onResponse(Call<LoginResponseDto> call, Response<LoginResponseDto> response) {
