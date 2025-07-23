@@ -95,6 +95,8 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent;
                         if (role != null && role.trim().equalsIgnoreCase("admin")) {
                             intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
+                        } else if (role != null && role.trim().equalsIgnoreCase("staff")) {
+                            intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
                         } else {
                             intent = new Intent(LoginActivity.this, ProductListActivity.class);
                         }
