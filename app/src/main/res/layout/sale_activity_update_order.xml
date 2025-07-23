@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cập nhật Đơn hàng"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"
+            android:textColor="@color/colorPrimary"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thông tin chung Đơn hàng"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/edtCustomerId"
+            android:hint="ID Khách hàng"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/edit_text_background"/>
+
+        <EditText
+            android:id="@+id/edtPaymentMethodId"
+            android:hint="ID Phương thức thanh toán"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/edit_text_background"/>
+
+        <EditText
+            android:id="@+id/edtOrderStatusId"
+            android:hint="ID Trạng thái đơn hàng (1-4)"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/edit_text_background"/>
+
+        <EditText
+            android:id="@+id/edtOrderNote"
+            android:hint="Ghi chú đơn hàng (tùy chọn)"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/edit_text_background"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chi tiết sản phẩm đầu tiên (Để demo)"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/edtProductId"
+            android:hint="ID Sản phẩm"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/edit_text_background"/>
+
+        <EditText
+            android:id="@+id/edtVariantId"
+            android:hint="ID Biến thể (tùy chọn)"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/edit_text_background"/>
+
+        <EditText
+            android:id="@+id/edtQuantity"
+            android:hint="Số lượng"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/edit_text_background"/>
+
+        <Button
+            android:id="@+id/btnUpdateOrder"
+            android:text="Cập nhật Đơn hàng"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?attr/colorPrimary"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:padding="12dp"/>
+
+    </LinearLayout>
+</ScrollView>
