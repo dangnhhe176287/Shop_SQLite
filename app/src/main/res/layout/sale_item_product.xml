@@ -27,7 +27,7 @@
             android:id="@+id/txtProductName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Name: Product X"
+            android:text="Tên sản phẩm: Product X"
             android:textSize="16sp"
             android:layout_marginBottom="2dp"/>
 
@@ -35,7 +35,7 @@
             android:id="@+id/txtProductDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Description: A cool product."
+            android:text="Mô tả: Một sản phẩm thú vị."
             android:textSize="14sp"
             android:maxLines="2"
             android:ellipsize="end"
@@ -45,7 +45,7 @@
             android:id="@+id/txtProductCategoryId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Category ID: 1"
+            android:text="ID Danh mục: 1"
             android:textSize="14sp"
             android:layout_marginBottom="2dp"/>
 
@@ -53,7 +53,7 @@
             android:id="@+id/txtBrand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Brand: BrandName"
+            android:text="Thương hiệu: BrandName"
             android:textSize="14sp"
             android:layout_marginBottom="2dp"/>
 
@@ -61,49 +61,9 @@
             android:id="@+id/txtProductPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Price: ₫99.99"
+            android:text="Giá: ₫99.99"
             android:textSize="14sp"
             android:layout_marginBottom="2dp"/>
-
-        <TextView
-            android:id="@+id/txtAvailableAttributes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Attributes: Size: S, M; Color: Red, Blue"
-            android:textSize="14sp"
-            android:layout_marginBottom="2dp"/>
-
-        <TextView
-            android:id="@+id/txtStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Status: 1"
-            android:textSize="14sp"
-            android:layout_marginBottom="2dp"/>
-
-        <TextView
-            android:id="@+id/txtIsDelete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Is Deleted: No"
-            android:textSize="14sp"
-            android:layout_marginBottom="2dp"/>
-
-        <TextView
-            android:id="@+id/txtCreatedAt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Created At: 01/01/2023 10:00:00"
-            android:textSize="12sp"
-            android:layout_marginTop="8dp"/>
-
-        <TextView
-            android:id="@+id/txtUpdatedAt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Updated At: 01/01/2023 10:00:00"
-            android:textSize="12sp"
-            android:layout_marginBottom="8dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"

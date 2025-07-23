@@ -29,8 +29,6 @@ public class SaleUserListActivity extends AppCompatActivity implements SaleUserA
     private static final String TAG = "UserListActivity";
     private static final int CREATE_USER_REQUEST_CODE = 1;
     private static final int EDIT_USER_REQUEST_CODE = 2;
-    // Define a request code for detail view if you ever need a result back (less common for detail views)
-    // private static final int DETAIL_USER_REQUEST_CODE = 3;
 
 
     private ListView lvUsers;

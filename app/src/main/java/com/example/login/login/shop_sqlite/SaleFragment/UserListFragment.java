@@ -32,8 +32,6 @@ public class UserListFragment extends Fragment implements SaleUserAdapter.OnUser
     private static final String TAG = "UserListFragment";
     private static final int REQUEST_CODE_CREATE_USER = 1;
     private static final int REQUEST_CODE_EDIT_USER = 2;
-    // Define a request code for detail view if needed (less common for fragments)
-    // private static final int REQUEST_CODE_DETAIL_USER = 3;
 
     private ListView lvUsers;
     private SaleApiService saleApiService;
@@ -55,7 +53,6 @@ public class UserListFragment extends Fragment implements SaleUserAdapter.OnUser
         saleUserAdapter = new SaleUserAdapter(getContext(), userList, this);
         lvUsers.setAdapter(saleUserAdapter);
 
-        // Assuming btnCreateUser is the FloatingActionButton ID as per UserListActivity
         view.findViewById(R.id.btnCreateUser).setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), SaleCreateUserActivity.class);
             startActivityForResult(intent, REQUEST_CODE_CREATE_USER);
@@ -120,7 +117,6 @@ public class UserListFragment extends Fragment implements SaleUserAdapter.OnUser
 
     @Override
     public void onDeleteClick(SaleUserResponseDto user) {
-        // Use AlertDialog from AppCompat for consistency with Activity
         new AlertDialog.Builder(getContext())
                 .setTitle("Xóa Người dùng")
                 .setMessage("Bạn có chắc chắn muốn xóa người dùng '" + (user.getUserName() != null ? user.getUserName() : "ID: " + user.getUserId()) + "' không?")
@@ -129,15 +125,14 @@ public class UserListFragment extends Fragment implements SaleUserAdapter.OnUser
                 .show();
     }
 
-    // --- Start of new implementation for onDetailClick ---
     @Override
     public void onDetailClick(SaleUserResponseDto user) {
         Log.d(TAG, "Đã nhấp xem chi tiết người dùng ID: " + user.getUserId());
         Intent intent = new Intent(getActivity(), SaleUserDetailActivity.class);
-        intent.putExtra("userId", user.getUserId()); // Ensure UserDetailActivity expects "userId"
-        startActivity(intent); // No need for startActivityForResult
+        intent.putExtra("userId", user.getUserId());
+        startActivity(intent);
     }
-    // --- End of new implementation for onDetailClick ---
+
 
     private void confirmDeleteUser(int userId) {
         saleApiService.deleteUser(userId).enqueue(new retrofit2.Callback<Void>() {
@@ -167,12 +162,11 @@ public class UserListFragment extends Fragment implements SaleUserAdapter.OnUser
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == AppCompatActivity.RESULT_OK) { // Check if the operation was successful
+        if (resultCode == AppCompatActivity.RESULT_OK) {
             if (requestCode == REQUEST_CODE_CREATE_USER || requestCode == REQUEST_CODE_EDIT_USER) {
-                fetchUsers();  // Tải lại danh sách khi tạo hoặc chỉnh sửa người dùng
+                fetchUsers();
                 Toast.makeText(getContext(), "Danh sách người dùng đã được cập nhật.", Toast.LENGTH_SHORT).show();
             }
-            // No specific handling for DETAIL_USER_REQUEST_CODE as it doesn't return a result
         }
     }
 }
