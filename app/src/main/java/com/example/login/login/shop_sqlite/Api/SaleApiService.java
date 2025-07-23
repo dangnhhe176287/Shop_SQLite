@@ -3,6 +3,7 @@ package com.example.login.login.shop_sqlite.Api;
 import com.example.login.login.shop_sqlite.Dto.SaleCreateOrderDto;
 import com.example.login.login.shop_sqlite.Dto.SaleCreateProductCategoryDto;
 import com.example.login.login.shop_sqlite.Dto.SaleCreateProductDto;
+import com.example.login.login.shop_sqlite.Dto.SaleOrderResponseDto;
 import com.example.login.login.shop_sqlite.Dto.SaleProductCategoryResponseDto;
 import com.example.login.login.shop_sqlite.Dto.SaleProductResponseDto; // Đảm bảo import này là ProductResponseDto, không phải ProductDetailResponseDto
 import com.example.login.login.shop_sqlite.Dto.SaleUpdateOrderDto;
@@ -42,7 +43,9 @@ public interface SaleApiService {
     Call<SaleOrder> createOrder(@Body SaleCreateOrderDto orderDto);
 
     @PUT("SaleOrder/{id}")
-    Call<SaleOrder> updateOrder(@Path("id") int orderId, @Body SaleUpdateOrderDto saleUpdateOrderDto);
+    //Call<SaleOrder> updateOrder(@Path("id") int orderId, @Body SaleUpdateOrderDto saleUpdateOrderDto);
+    Call<SaleOrderResponseDto> updateOrder(@Path("id") int orderId, @Body SaleUpdateOrderDto saleUpdateOrderDto);
+
 
     @DELETE("SaleOrder/{id}")
     Call<Void> deleteOrder(@Path("id") int id);

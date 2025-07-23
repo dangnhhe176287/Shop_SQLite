@@ -11,6 +11,7 @@ import com.example.login.login.shop_sqlite.Api.ApiClient;
 import com.example.login.login.shop_sqlite.Api.SaleApiService;
 import com.example.login.login.shop_sqlite.Dto.SaleOrderDetailRequestDto;
 import com.example.login.login.shop_sqlite.Dto.SaleOrderDetailResponseDto;
+import com.example.login.login.shop_sqlite.Dto.SaleOrderResponseDto;
 import com.example.login.login.shop_sqlite.Dto.SaleUpdateOrderDto;
 import com.example.login.login.shop_sqlite.Models.SaleOrder; // Model Order (ánh xạ OrderResponseDto từ backend)
 import com.example.login.login.shop_sqlite.R;
@@ -37,11 +38,10 @@ public class SaleUpdateOrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sale_activity_update_order);
 
-        // Ánh xạ các thành phần UI
         edtCustomerId = findViewById(R.id.edtCustomerId);
         edtPaymentMethodId = findViewById(R.id.edtPaymentMethodId);
         edtOrderNote = findViewById(R.id.edtOrderNote);
-        edtOrderStatusId = findViewById(R.id.edtOrderStatusId); // Ánh xạ trạng thái đơn hàng
+        edtOrderStatusId = findViewById(R.id.edtOrderStatusId);
         edtProductId = findViewById(R.id.edtProductId);
         edtVariantId = findViewById(R.id.edtVariantId);
         edtQuantity = findViewById(R.id.edtQuantity);
@@ -49,7 +49,6 @@ public class SaleUpdateOrderActivity extends AppCompatActivity {
 
         saleApiService = ApiClient.getClient().create(SaleApiService.class);
 
-        // Lấy OrderId từ Intent
         orderId = getIntent().getIntExtra("orderId", -1);
 
         if (orderId == -1) {
@@ -58,17 +57,10 @@ public class SaleUpdateOrderActivity extends AppCompatActivity {
             return;
         }
 
-        // Tải chi tiết đơn hàng hiện có để điền vào form
         fetchOrderDetails(orderId);
 
-        // Thiết lập sự kiện click cho nút cập nhật
         btnUpdateOrder.setOnClickListener(v -> updateOrder());
     }
-
-    /**
-     * Tải chi tiết đơn hàng từ API và điền vào các trường EditText.
-     * @param id OrderId của đơn hàng cần tải.
-     */
     private void fetchOrderDetails(int id) {
         Log.d(TAG, "Đang tải chi tiết đơn hàng với ID: " + id);
         saleApiService.getOrderById(id).enqueue(new Callback<SaleOrder>() {
@@ -84,8 +76,6 @@ public class SaleUpdateOrderActivity extends AppCompatActivity {
                     if (saleOrder.getOrderNote() != null) edtOrderNote.setText(saleOrder.getOrderNote());
                     if (saleOrder.getOrderStatusId() != null) edtOrderStatusId.setText(String.valueOf(saleOrder.getOrderStatusId())); // Điền trạng thái
 
-                    // Điền dữ liệu cho chi tiết sản phẩm đầu tiên (nếu có)
-                    // Lưu ý: Nếu có nhiều sản phẩm, bạn sẽ cần một cơ chế phức tạp hơn (ví dụ: RecyclerView)
                     if (saleOrder.getOrderDetails() != null && !saleOrder.getOrderDetails().isEmpty()) {
                         SaleOrderDetailResponseDto firstDetail = saleOrder.getOrderDetails().get(0);
                         if (firstDetail.getProductId() != null) edtProductId.setText(String.valueOf(firstDetail.getProductId()));
@@ -106,7 +96,7 @@ public class SaleUpdateOrderActivity extends AppCompatActivity {
                     }
                     Toast.makeText(SaleUpdateOrderActivity.this, errorMsg, Toast.LENGTH_LONG).show();
                     Log.e(TAG, "onResponse Error khi tải chi tiết: " + errorMsg);
-                    finish(); // Đóng Activity nếu không tải được chi tiết
+                    finish();
                 }
             }
 
@@ -114,38 +104,32 @@ public class SaleUpdateOrderActivity extends AppCompatActivity {
             public void onFailure(Call<SaleOrder> call, Throwable t) {
                 Log.e(TAG, "Lỗi kết nối khi tải chi tiết đơn hàng: " + t.getMessage(), t);
                 Toast.makeText(SaleUpdateOrderActivity.this, "Lỗi kết nối server khi tải chi tiết đơn hàng.", Toast.LENGTH_LONG).show();
-                finish(); // Đóng Activity nếu lỗi kết nối
+                finish();
             }
         });
     }
 
-    /**
-     * Thu thập dữ liệu từ các trường và gửi yêu cầu cập nhật lên API.
-     */
     private void updateOrder() {
-        // Lấy dữ liệu từ các EditText
         String customerIdStr = edtCustomerId.getText().toString();
         String paymentMethodIdStr = edtPaymentMethodId.getText().toString();
         String orderNote = edtOrderNote.getText().toString();
-        String orderStatusIdStr = edtOrderStatusId.getText().toString(); // Lấy trạng thái
+        String orderStatusIdStr = edtOrderStatusId.getText().toString();
         String productIdStr = edtProductId.getText().toString();
         String quantityStr = edtQuantity.getText().toString();
         String variantId = edtVariantId.getText().toString();
 
-        // Kiểm tra validation cơ bản
         if (customerIdStr.isEmpty() || paymentMethodIdStr.isEmpty() ||
                 productIdStr.isEmpty() || quantityStr.isEmpty() || orderStatusIdStr.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin bắt buộc!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Chuyển đổi sang kiểu dữ liệu phù hợp
         Integer customerId = Integer.parseInt(customerIdStr);
         Integer paymentMethodId = Integer.parseInt(paymentMethodIdStr);
-        Integer orderStatusId = Integer.parseInt(orderStatusIdStr); // Chuyển đổi trạng thái
+        Integer orderStatusId = Integer.parseInt(orderStatusIdStr);
 
         Integer productId = null;
-        if (!productIdStr.isEmpty()) { // ProductId có thể null trên backend, nhưng ở đây ta parse nó
+        if (!productIdStr.isEmpty()) {
             productId = Integer.parseInt(productIdStr);
         }
 
@@ -156,22 +140,19 @@ public class SaleUpdateOrderActivity extends AppCompatActivity {
             return;
         }
 
-        // Tạo danh sách OrderDetailRequestDto (hiện tại chỉ với một sản phẩm)
         List<SaleOrderDetailRequestDto> orderDetails = new ArrayList<>();
         orderDetails.add(new SaleOrderDetailRequestDto(productId, variantId.isEmpty() ? null : variantId, quantity));
 
-        // Tạo UpdateOrderDto
         SaleUpdateOrderDto dto = new SaleUpdateOrderDto(customerId, paymentMethodId, orderStatusId, orderNote, orderDetails);
 
-        // Gửi yêu cầu cập nhật lên API
         Log.d(TAG, "Đang gửi UpdateOrderDto cho OrderId " + orderId + ": " + new com.google.gson.Gson().toJson(dto));
 
-        saleApiService.updateOrder(orderId, dto).enqueue(new Callback<SaleOrder>() {
+        saleApiService.updateOrder(orderId, dto).enqueue(new Callback<SaleOrderResponseDto>() {
             @Override
-            public void onResponse(Call<SaleOrder> call, Response<SaleOrder> response) {
+            public void onResponse(Call<SaleOrderResponseDto> call, Response<SaleOrderResponseDto> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(SaleUpdateOrderActivity.this, "Cập nhật đơn hàng thành công!", Toast.LENGTH_SHORT).show();
-                    setResult(RESULT_OK); // Đặt kết quả thành công để Activity gọi biết
+                    setResult(RESULT_OK);
                     finish(); // Đóng Activity
                 } else {
                     String errorMsg = "Lỗi khi cập nhật đơn hàng: " + response.code();
@@ -192,7 +173,7 @@ public class SaleUpdateOrderActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<SaleOrder> call, Throwable t) {
+            public void onFailure(Call<SaleOrderResponseDto> call, Throwable t) {
                 Log.e(TAG, "Lỗi kết nối khi cập nhật đơn hàng: " + t.getMessage(), t);
                 Toast.makeText(SaleUpdateOrderActivity.this, "Không thể kết nối server", Toast.LENGTH_LONG).show();
             }

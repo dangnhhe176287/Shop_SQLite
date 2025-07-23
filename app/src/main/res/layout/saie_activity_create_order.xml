@@ -11,96 +11,88 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="Tạo Đơn hàng mới"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
             android:layout_marginBottom="24dp"
-            android:textColor="@color/colorPrimary"/>
-
-        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Thông tin chung Đơn hàng"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp"
-            android:textColor="@color/colorAccent"/>
+            android:layout_height="wrap_content" />
 
         <EditText
             android:id="@+id/edtCustomerId"
-            android:hint="Customer ID (Bắt buộc)"
+            android:hint="Customer ID"
             android:inputType="number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="12dp"
-            android:background="@drawable/edit_text_background"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/edit_text_background" />
 
         <EditText
             android:id="@+id/edtPaymentMethodId"
-            android:hint="Payment Method ID (Bắt buộc)"
+            android:hint="Payment Method ID"
             android:inputType="number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="12dp"
-            android:background="@drawable/edit_text_background"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/edit_text_background" />
 
         <EditText
             android:id="@+id/edtOrderNote"
-            android:hint="Ghi chú đơn hàng (Tùy chọn)"
+            android:hint="Ghi chú đơn hàng"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="12dp"
-            android:background="@drawable/edit_text_background"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/edit_text_background" />
 
-        <View
+        <EditText
+            android:id="@+id/edtShippingAddress"
+            android:hint="Địa chỉ giao hàng"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"/>
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/edit_text_background" />
+
+        <EditText
+            android:id="@+id/edtShippingFee"
+            android:hint="Phí vận chuyển"
+            android:inputType="numberDecimal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/edit_text_background" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chi tiết sản phẩm (Mặc định 1 sản phẩm)"
+            android:text="Chi tiết sản phẩm:"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:textSize="16sp"
+            android:textColor="@color/colorPrimary"
             android:layout_marginBottom="8dp"
-            android:textColor="@color/colorAccent"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-        <EditText
-            android:id="@+id/edtProductId"
-            android:hint="Product ID (Bắt buộc)"
-            android:inputType="number"
+        <LinearLayout
+            android:id="@+id/orderDetailsContainer"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="12dp"
-            android:background="@drawable/edit_text_background"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="16dp"/>
 
-        <EditText
-            android:id="@+id/edtQuantity"
-            android:hint="Số lượng (Bắt buộc)"
-            android:inputType="number"
+        <Button
+            android:id="@+id/btnAddProduct"
+            android:text="Thêm sản phẩm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
             android:padding="12dp"
-            android:background="@drawable/edit_text_background"
-            android:layout_marginBottom="8dp"/>
-
-        <EditText
-            android:id="@+id/edtVariantId"
-            android:hint="Variant ID (Tùy chọn)"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="12dp"
-            android:background="@drawable/edit_text_background"
-            android:layout_marginBottom="24dp"/>
+            android:layout_marginBottom="24dp" />
 
         <Button
             android:id="@+id/btnCreateOrder"
@@ -110,6 +102,6 @@
             android:backgroundTint="?attr/colorPrimary"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:padding="12dp"/>
+            android:padding="12dp" />
     </LinearLayout>
 </ScrollView>

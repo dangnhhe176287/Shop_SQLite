@@ -28,9 +28,9 @@ public class ApiClient {
                     .build();
 
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://10.0.2.2:5287/") // Backend URL
+                    .baseUrl("http://10.0.2.2:5287/")
                     .client(client)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create()).build();
             GsonBuilder gsonBuilder = new GsonBuilder();
 
             gsonBuilder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss");
