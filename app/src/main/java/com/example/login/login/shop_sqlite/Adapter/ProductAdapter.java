@@ -98,7 +98,6 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private TextView productPrice;
         private TextView brandBadge;
         private TextView categoryBadge;
-        // private Button addToCartButton; // Đã loại bỏ nút này khỏi layout
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -108,13 +107,11 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             productPrice = itemView.findViewById(R.id.productPrice);
             brandBadge = itemView.findViewById(R.id.brandBadge);
             categoryBadge = itemView.findViewById(R.id.categoryBadge);
-            // addToCartButton = itemView.findViewById(R.id.addToCartButton); // Đã loại bỏ nút này khỏi layout
 
 
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && listener != null) {
-                    // Mở ProductDetailActivity khi click vào sản phẩm
                     Product product = products.get(position);
                     android.content.Intent intent = new android.content.Intent(context, com.example.login.login.shop_sqlite.Activity.ProductDetailActivity.class);
                     intent.putExtra("product_id", product.getProductId());
@@ -127,15 +124,11 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     context.startActivity(intent);
                 }
             });
-
-            // Xoá hoặc comment toàn bộ logic/thao tác thêm vào giỏ hàng ở ProductList (nút addToCartButton, listener, v.v.)
         }
 
         public void bind(Product product) {
-            // Set product name
             productName.setText(product.getName());
 
-            // Set product description
             if (product.getDescription() != null && !product.getDescription().isEmpty()) {
                 productDescription.setText(product.getDescription());
                 productDescription.setVisibility(View.VISIBLE);
@@ -143,10 +136,8 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 productDescription.setVisibility(View.GONE);
             }
 
-            // Set product price (dùng formatPrice thay vì getFormattedPrice)
             productPrice.setText(formatPrice(product.getBasePrice()));
 
-            // Set brand badge
             if (product.getBrand() != null && !product.getBrand().isEmpty()) {
                 brandBadge.setText(product.getBrand());
                 brandBadge.setVisibility(View.VISIBLE);
@@ -154,7 +145,6 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 brandBadge.setVisibility(View.GONE);
             }
 
-            // Set category badge
             if (product.getCategoryName() != null && !product.getCategoryName().isEmpty()) {
                 categoryBadge.setText(product.getCategoryName());
                 categoryBadge.setVisibility(View.VISIBLE);
@@ -162,7 +152,6 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 categoryBadge.setVisibility(View.GONE);
             }
 
-            // Load product image
             loadProductImage(product);
         }
 
@@ -170,7 +159,6 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             String imageUrl = product.getImageUrl();
             
             if (imageUrl != null && !imageUrl.isEmpty()) {
-                // Load image using Glide
                 Glide.with(context)
                     .load(imageUrl)
                     .transition(DrawableTransitionOptions.withCrossFade())
@@ -178,7 +166,6 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     .error(R.drawable.ic_err_image_layy)
                     .into(productImage);
             } else {
-                // Set placeholder image
                 productImage.setImageResource(R.drawable.ic_err_image_layy);
             }
         }
@@ -190,7 +177,6 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    // Thêm hàm formatPrice để hiển thị giá dạng $50k, $1.2M
     private String formatPrice(double price) {
         if (price >= 1_000_000) {
             return String.format("$%.2fM", price / 1_000_000);

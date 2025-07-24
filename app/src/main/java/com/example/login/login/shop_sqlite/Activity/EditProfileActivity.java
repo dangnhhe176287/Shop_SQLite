@@ -34,7 +34,6 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        // Setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -43,7 +42,6 @@ public class EditProfileActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("Sửa thông tin cá nhân");
         }
 
-        // Initialize views
         etName = findViewById(R.id.etName);
         etEmail = findViewById(R.id.etEmail);
         etPhone = findViewById(R.id.etPhone);
@@ -55,7 +53,6 @@ public class EditProfileActivity extends AppCompatActivity {
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
         btnChangePassword = findViewById(R.id.btnChangePassword);
 
-        // Get user ID from SharedPreferences
         android.content.SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         userId = prefs.getInt("current_user_id", 0);
 
@@ -65,10 +62,8 @@ public class EditProfileActivity extends AppCompatActivity {
             return;
         }
 
-        // Load current user data
         loadUserProfile();
 
-        // Setup button listeners
         btnSave.setOnClickListener(v -> saveProfile());
         btnCancel.setOnClickListener(v -> finish());
         btnChangePassword.setOnClickListener(v -> handleChangePassword());
@@ -113,7 +108,6 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void saveProfile() {
-        // Validate input
         String name = etName.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
         String phone = etPhone.getText().toString().trim();
@@ -133,25 +127,20 @@ public class EditProfileActivity extends AppCompatActivity {
             etPhone.setError("Số điện thoại không được để trống");
             return;
         }
-
-        // Create updated user object
         UpdateUserDto updatedUser = new UpdateUserDto();
         updatedUser.userId = currentUser.userId;
         updatedUser.userName = name;
         updatedUser.email = email;
         updatedUser.phone = phone;
         updatedUser.address = address;
-        updatedUser.password = currentUser.password; // Keep existing password
+        updatedUser.password = currentUser.password;
         updatedUser.roleId = currentUser.roleId;
         updatedUser.status = currentUser.status;
         updatedUser.isDelete = currentUser.isDelete;
-        updatedUser.dateOfBirth = currentUser.dateOfBirth; // Keep existing date of birth
-        updatedUser.createDate = currentUser.createDate; // Keep existing create date
+        updatedUser.dateOfBirth = currentUser.dateOfBirth;
+        updatedUser.createDate = currentUser.createDate;
 
-        // Call API to update
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
-
-        // Log the request data
         Log.d(TAG, "Updating user with ID: " + userId);
         Log.d(TAG, "Updated user data: " + updatedUser.userName + ", " + updatedUser.email + ", " + updatedUser.phone
                 + ", " + updatedUser.address);
@@ -188,7 +177,6 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private boolean isValidPassword(String password) {
-        // At least 1 lowercase, 1 uppercase, 1 digit, 1 special char, length > 6
         return password != null && password.length() > 6 &&
                 password.matches(".*[a-z].*") &&
                 password.matches(".*[A-Z].*") &&
@@ -201,7 +189,6 @@ public class EditProfileActivity extends AppCompatActivity {
         String newPassword = etNewPassword.getText().toString().trim();
         String confirmPassword = etConfirmPassword.getText().toString().trim();
 
-        // Validate
         if (oldPassword.isEmpty()) {
             etOldPassword.setError("Vui lòng nhập mật khẩu cũ");
             return;
@@ -219,9 +206,7 @@ public class EditProfileActivity extends AppCompatActivity {
             etConfirmPassword.setError("Xác nhận mật khẩu không khớp");
             return;
         }
-        // Gọi API đổi mật khẩu
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
-        // Tạo request model
         ChangePasswordRequestDto req = new ChangePasswordRequestDto();
         req.userId = userId;
         req.oldPassword = oldPassword;

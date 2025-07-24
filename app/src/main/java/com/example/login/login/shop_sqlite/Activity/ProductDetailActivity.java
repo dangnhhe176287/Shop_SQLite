@@ -167,7 +167,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<Product> call, Throwable t) {
-                // Xử lý lỗi
+
             }
         });
     }
@@ -175,7 +175,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private void setupVariantUI() {
         LinearLayout variantLayout = findViewById(R.id.variantLayout);
         Button btnAddToCart = findViewById(R.id.btnAddToCart);
-        // Sử dụng LinkedHashMap để giữ thứ tự thuộc tính
+
         Map<String, Spinner> attributeSpinners = new LinkedHashMap<>();
         Map<String, ArrayAdapter<String>> attributeAdapters = new LinkedHashMap<>();
         List<String> attributeOrder = new ArrayList<>();
@@ -184,21 +184,21 @@ public class ProductDetailActivity extends AppCompatActivity {
             Type type = new TypeToken<Map<String, List<String>>>(){}.getType();
             Map<String, List<String>> availableAttributes = new Gson().fromJson(product.getAvailableAttributes(), type);
             attributeOrder.addAll(availableAttributes.keySet());
-            // Gộp tất cả variant value lại thành 1 list
+
             if (product.getVariants() != null) {
                 for (com.example.login.login.shop_sqlite.Models.ProductVariantDto variant : product.getVariants()) {
                     allVariants.addAll(variant.variants);
                 }
             }
-            // Tạo Spinner và Adapter cho từng thuộc tính
+
             for (String attr : attributeOrder) {
-                // Label
+
                 TextView attrLabel = new TextView(this);
                 attrLabel.setText(attr);
                 attrLabel.setTextSize(16);
                 attrLabel.setPadding(0, 8, 0, 4);
                 variantLayout.addView(attrLabel);
-                // Spinner
+
                 Spinner spinner = new Spinner(this);
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new ArrayList<>(availableAttributes.get(attr)));
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -207,7 +207,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 attributeSpinners.put(attr, spinner);
                 attributeAdapters.put(attr, adapter);
             }
-            // Đăng ký sự kiện chọn cho từng Spinner
+
             for (int i = 0; i < attributeOrder.size(); i++) {
                 final int index = i;
                 String attr = attributeOrder.get(i);
@@ -215,13 +215,13 @@ public class ProductDetailActivity extends AppCompatActivity {
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        // Lấy lựa chọn trước đó
+
                         Map<String, String> selected = new HashMap<>();
                         for (int j = 0; j <= index; j++) {
                             String prevAttr = attributeOrder.get(j);
                             selected.put(prevAttr, attributeSpinners.get(prevAttr).getSelectedItem().toString());
                         }
-                        // Cập nhật các Spinner phía sau
+
                         for (int j = index + 1; j < attributeOrder.size(); j++) {
                             String nextAttr = attributeOrder.get(j);
                             List<String> validValues = getValidValuesForAttribute(allVariants, selected, nextAttr);
@@ -229,10 +229,10 @@ public class ProductDetailActivity extends AppCompatActivity {
                             adapter.clear();
                             adapter.addAll(validValues);
                             adapter.notifyDataSetChanged();
-                            // Reset selection về vị trí đầu tiên
+
                             attributeSpinners.get(nextAttr).setSelection(0);
                         }
-                        // Cập nhật giá variant nếu đã chọn đủ
+
                         boolean allSelected = true;
                         Map<String, String> allSelectedMap = new HashMap<>();
                         for (String key : attributeOrder) {
@@ -280,13 +280,13 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         }
         btnAddToCart.setOnClickListener(v -> {
-            // Lấy các thuộc tính đã chọn
+
             Map<String, String> selected = new HashMap<>();
             for (String attr : attributeSpinners.keySet()) {
                 Spinner spinner = attributeSpinners.get(attr);
                 selected.put(attr, spinner.getSelectedItem().toString());
             }
-            // Tìm variant phù hợp
+
             Map<String, Object> matchedVariant = null;
             int variantId = 0;
             if (product.getVariants() != null) {
@@ -312,17 +312,17 @@ public class ProductDetailActivity extends AppCompatActivity {
                 Toast.makeText(this, "Vui lòng chọn đủ thuộc tính hợp lệ!", Toast.LENGTH_SHORT).show();
                 return;
             }
-            // Lấy giá và các thông tin cần thiết
+
             double price = matchedVariant.containsKey("price") ? Double.parseDouble(matchedVariant.get("price").toString()) : 0;
             double stock = matchedVariant.containsKey("stock") ? Double.parseDouble(matchedVariant.get("stock").toString()) : 0;
-            int quantity = 1; // hoặc cho người dùng chọn số lượng
+            int quantity = 1;
 
             // Gọi API thêm vào giỏ hàng
             ApiService apiService = ApiClient.getClient().create(ApiService.class);
             CartItemDto cartItem = new CartItemDto(product.getProductId(), quantity);
             cartItem.setVariantId(variantId);
             cartItem.setPrice(price);
-            // Thêm dòng này: set variantAttributes
+
             cartItem.setVariantAttributes(new Gson().toJson(selected));
             apiService.addToCart(userId, cartItem).enqueue(new Callback<Void>() {
                 @Override
@@ -341,7 +341,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
     }
 
-    // Hàm lọc giá trị hợp lệ cho thuộc tính tiếp theo
     private List<String> getValidValuesForAttribute(List<Map<String, Object>> allVariants, Map<String, String> selected, String nextAttr) {
         Set<String> validValues = new LinkedHashSet<>();
         for (Map<String, Object> v : allVariants) {
@@ -366,7 +365,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             etReviewContent.setError("Vui lòng nhập nhận xét và chọn số sao!");
             return;
         }
-        // Gửi review
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:5287/")
                 .addConverterFactory(GsonConverterFactory.create())

@@ -39,10 +39,8 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         holder.tvQuantity.setText("Số lượng: " + detail.getQuantity());
         holder.tvSubtotal.setText("Tổng: " + formatPrice(detail.getPrice() * detail.getQuantity()));
         
-        // Debug variant attributes
         Log.d(TAG, "Product: " + detail.getProductName() + ", VariantAttributes: " + detail.getVariantAttributes());
         
-        // Hiển thị variant attributes nếu có
         if (detail.getVariantAttributes() != null && !detail.getVariantAttributes().isEmpty()) {
             holder.tvVariantAttributes.setText("Thuộc tính: " + detail.getVariantAttributes());
             holder.tvVariantAttributes.setVisibility(View.VISIBLE);

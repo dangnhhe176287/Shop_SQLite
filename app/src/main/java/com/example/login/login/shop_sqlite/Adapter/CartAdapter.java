@@ -46,25 +46,20 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     @Override
     public void onBindViewHolder(@NonNull CartViewHolder holder, int position) {
         CartItemDto item = cartItems.get(position);
-        // Hiển thị tên sản phẩm nếu có, nếu không thì fallback sang ID
         String name = item.getProductName();
         if (name != null && !name.isEmpty()) {
             holder.name.setText(name);
         } else {
             holder.name.setText("ID: " + item.getProductId());
         }
-        // Hiển thị giá nếu có
         if (item.getPrice() != null) {
             holder.price.setText(formatPrice(item.getPrice()));
         } else {
             holder.price.setText("");
         }
-        // Hiển thị số lượng (chỉ số, không có ký tự thừa)
         holder.quantity.setText(String.valueOf(item.getQuantity()));
-        // Hiển thị thành tiền
         double total = (item.getPrice() != null ? item.getPrice() : 0) * item.getQuantity();
         holder.totalPrice.setText("Thành tiền: " + formatPrice(total));
-        // Hiển thị ảnh sản phẩm nếu có imageUrl
         if (item.getImageUrl() != null && !item.getImageUrl().isEmpty()) {
             Glide.with(holder.image.getContext())
                 .load(item.getImageUrl())
@@ -74,7 +69,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         } else {
             holder.image.setImageResource(R.drawable.ic_err_image_layy);
         }
-        // Hiển thị thông tin biến thể
         String variantText = "";
         android.util.Log.d("CartDebug", "Cart item: productId=" + item.getProductId() + ", variantId=" + item.getVariantId() + ", variantAttributes=" + item.getVariantAttributes());
         if (item.getVariantAttributes() != null && !item.getVariantAttributes().isEmpty()) {
@@ -88,11 +82,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 }
                 variantText = sb.toString();
             } catch (Exception e) {
-                variantText = item.getVariantAttributes(); // fallback nếu lỗi parse
+                variantText = item.getVariantAttributes();
             }
         }
         holder.variant.setText(variantText.isEmpty() ? "" : ("Sản phẩm: " + variantText));
-        // Không cần setText cho ImageButton nữa
         holder.btnIncrease.setOnClickListener(v -> {
             int newQuantity = item.getQuantity() + 1;
             updateCartItem(holder, item, newQuantity);
@@ -167,7 +160,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
         CartItemDto updateItem = new CartItemDto(item.getProductId(), newQuantity);
         updateItem.setVariantId(item.getVariantId());
-        updateItem.setVariantAttributes(item.getVariantAttributes()); // Truyền variantAttributes khi update
+        updateItem.setVariantAttributes(item.getVariantAttributes());
         android.util.Log.d("CartUpdate", "updateCartItem: userId=" + userId + ", productId=" + item.getProductId() + ", variantId=" + item.getVariantId() + ", quantity=" + newQuantity + ", variantAttributes=" + item.getVariantAttributes());
         apiService.updateCartItem(userId, updateItem).enqueue(new Callback<Void>() {
             @Override

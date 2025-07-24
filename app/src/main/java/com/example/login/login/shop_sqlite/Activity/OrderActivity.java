@@ -443,13 +443,13 @@ public class OrderActivity extends AppCompatActivity {
                             public void onResponse(Call<Void> call, Response<Void> response) {
                                 Log.d("OrderActivity", "Place order response: " + response.code());
                                 if (response.isSuccessful()) {
-                                    // Xóa cart sau khi đặt hàng thành công
+
                                     Log.d("OrderActivity", "Order placed successfully, clearing cart for user: " + userId);
                                     apiService.clearCart(userId).enqueue(new Callback<Void>() {
                                         @Override
                                         public void onResponse(Call<Void> clearCall, Response<Void> clearResponse) {
                                             Log.d("OrderActivity", "Clear cart response: " + clearResponse.code());
-                                            // Hiển thị thông báo thành công với AlertDialog
+                                          
                                             android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(OrderActivity.this);
                                             builder.setTitle("Đặt hàng thành công!")
                                                     .setMessage("Đơn hàng của bạn đã được đặt thành công và giỏ hàng đã được làm sạch.\n\n" +

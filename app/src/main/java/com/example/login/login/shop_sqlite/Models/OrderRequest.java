@@ -11,9 +11,8 @@ public class OrderRequest {
     private List<OrderDetail> items;
     private String shippingAddress;
     private String orderNote;
-    private int orderStatusId = 1; // Luôn mặc định là Pending khi tạo mới
+    private int orderStatusId = 1;
     
-    // getters, setters, constructor
     public OrderRequest(int customerId, String customerName, String phone, String address, double totalAmount, double shippingFee, List<OrderDetail> items, String shippingAddress, String orderNote) {
         this.customerId = customerId;
         this.customerName = customerName;
