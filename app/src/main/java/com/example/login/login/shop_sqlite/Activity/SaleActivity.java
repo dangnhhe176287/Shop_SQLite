@@ -42,7 +42,6 @@ public class SaleActivity extends AppCompatActivity implements
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Load Fragment mặc định khi Activity được tạo lần đầu
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new ProductListFragment()) // Mặc định hiển thị Sản phẩm
@@ -89,9 +88,6 @@ public class SaleActivity extends AppCompatActivity implements
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            // Khi chỉ hiển thị các Fragment chính từ Drawer, không cần Back Stack phức tạp.
-            // Nếu Drawer không mở, và không có Fragment nào trong back stack (tức là đang ở màn hình chính),
-            // thì thoát Activity.
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 getSupportFragmentManager().popBackStack();
             } else {
@@ -105,10 +101,4 @@ public class SaleActivity extends AppCompatActivity implements
             getSupportActionBar().setTitle(title);
         }
     }
-
-    // --- Các phương thức liên quan đến Create/Edit User đã được loại bỏ ở đây ---
-    // Vì SaleActivity giờ đây chỉ chịu trách nhiệm điều hướng các Fragment chính.
-    // Logic thêm/sửa/xóa user sẽ được xử lý hoàn toàn trong UserListFragment
-    // và các Fragment liên quan đến User mà không cần SaleActivity trung gian.
-    // Nếu bạn muốn tích hợp lại chúng, bạn sẽ cần thêm lại các interface và phương thức.
 }

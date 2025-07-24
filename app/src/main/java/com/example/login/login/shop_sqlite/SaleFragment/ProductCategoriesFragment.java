@@ -32,8 +32,8 @@ import retrofit2.Response;
 public class ProductCategoriesFragment extends Fragment implements SaleCategoryAdapter.OnCategoryActionListener {
 
     private static final String TAG = "ProductCategoriesFrag";
-    private static final int REQUEST_CODE_UPDATE_CATEGORY = 101; // Request code for update activity
-    private static final int REQUEST_CODE_CREATE_CATEGORY = 102; // New request code for create activity
+    private static final int REQUEST_CODE_UPDATE_CATEGORY = 101;
+    private static final int REQUEST_CODE_CREATE_CATEGORY = 102;
 
     private TextView txtHeader;
     private Button btnAddCategory;
@@ -64,9 +64,8 @@ public class ProductCategoriesFragment extends Fragment implements SaleCategoryA
         listViewCategories.setAdapter(saleCategoryAdapter);
 
         btnAddCategory.setOnClickListener(v -> {
-            // Launch CreateCategoryActivity when "Add New Category" button is clicked
             Intent intent = new Intent(getContext(), SaleCreateCategoryActivity.class);
-            startActivityForResult(intent, REQUEST_CODE_CREATE_CATEGORY); // Use the new request code
+            startActivityForResult(intent, REQUEST_CODE_CREATE_CATEGORY);
         });
 
         return view;
@@ -75,11 +74,11 @@ public class ProductCategoriesFragment extends Fragment implements SaleCategoryA
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fetchProductCategories(); // Initial load of categories
+        fetchProductCategories();
     }
 
     public void refreshProductCategoryList() {
-        fetchProductCategories(); // Call this when you need to refresh the list
+        fetchProductCategories();
     }
 
     private void fetchProductCategories() {
