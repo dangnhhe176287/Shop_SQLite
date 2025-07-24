@@ -24,7 +24,6 @@ import com.example.login.login.shop_sqlite.R;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.annotations.SerializedName; // Import này để đảm bảo mapping chính xác
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -90,7 +89,7 @@ public class SaleUpdateOrderActivity extends AppCompatActivity {
     }
 
     private void addOrderDetailField(SaleOrderDetailResponseDto detailData) {
-        View detailView = LayoutInflater.from(this).inflate(R.layout.item_order_detail, orderDetailsContainer, false);
+        View detailView = LayoutInflater.from(this).inflate(R.layout.sale_item_order_detail, orderDetailsContainer, false);
 
         EditText edtItemProductId = detailView.findViewById(R.id.edtItemProductId);
         EditText edtItemVariantId = detailView.findViewById(R.id.edtItemVariantId);

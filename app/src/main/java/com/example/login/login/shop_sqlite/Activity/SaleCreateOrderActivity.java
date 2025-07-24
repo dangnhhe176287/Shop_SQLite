@@ -67,7 +67,7 @@ public class SaleCreateOrderActivity extends AppCompatActivity {
     }
 
     private void addOrderDetailField() {
-        View detailView = LayoutInflater.from(this).inflate(R.layout.item_order_detail, orderDetailsContainer, false);
+        View detailView = LayoutInflater.from(this).inflate(R.layout.sale_item_order_detail, orderDetailsContainer, false);
 
         EditText edtItemProductId = detailView.findViewById(R.id.edtItemProductId);
         EditText edtItemVariantId = detailView.findViewById(R.id.edtItemVariantId);
