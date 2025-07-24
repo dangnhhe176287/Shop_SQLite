@@ -58,7 +58,7 @@ public class OrderListFragment extends Fragment implements SaleOrderAdapter.OnIt
         recyclerOrders = view.findViewById(R.id.recyclerOrders);
         recyclerOrders.setLayoutManager(new LinearLayoutManager(getContext()));
         saleOrderList = new ArrayList<>();
-        adapter = new SaleOrderAdapter(saleOrderList, this); // 'this' để truyền listener vào adapter
+        adapter = new SaleOrderAdapter(saleOrderList, this);
         recyclerOrders.setAdapter(adapter);
 
         saleApiService = ApiClient.getClient().create(SaleApiService.class);
@@ -134,11 +134,11 @@ public class OrderListFragment extends Fragment implements SaleOrderAdapter.OnIt
     }
 
     @Override
-    public void onDetailClick(int orderId) { // Implementation for the new detail click
+    public void onDetailClick(int orderId) {
         Log.d(TAG, "Đã nhấp xem chi tiết đơn hàng ID: " + orderId);
         Intent intent = new Intent(getContext(), SaleOrderDetailActivity.class);
-        intent.putExtra("orderId", orderId); // Pass the order ID
-        startActivity(intent); // No need for startActivityForResult as no result is expected back
+        intent.putExtra("orderId", orderId);
+        startActivity(intent);
     }
 
     private void confirmDeleteOrder(int orderId) {

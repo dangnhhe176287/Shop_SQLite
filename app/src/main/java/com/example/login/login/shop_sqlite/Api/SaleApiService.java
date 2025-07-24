@@ -44,7 +44,7 @@ public interface SaleApiService {
 
     @PUT("SaleOrder/{id}")
     //Call<SaleOrder> updateOrder(@Path("id") int orderId, @Body SaleUpdateOrderDto saleUpdateOrderDto);
-    Call<SaleOrderResponseDto> updateOrder(@Path("id") int orderId, @Body SaleUpdateOrderDto saleUpdateOrderDto);
+    Call<SaleOrderResponseDto> updateOrder(@Path("id") int id, @Body SaleUpdateOrderDto orderDto);
 
 
     @DELETE("SaleOrder/{id}")

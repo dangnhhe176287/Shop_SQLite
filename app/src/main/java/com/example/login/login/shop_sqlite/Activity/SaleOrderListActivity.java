@@ -101,8 +101,7 @@ public class SaleOrderListActivity extends AppCompatActivity implements SaleOrde
     @Override
     public void onDeleteClick(int orderId) {
         Log.d("OrderListActivity", "Yêu cầu xóa đơn hàng với ID: " + orderId);
-        // Hiển thị AlertDialog để xác nhận trước khi xóa
-        new AlertDialog.Builder(this) // Sử dụng 'this' vì là Activity
+        new AlertDialog.Builder(this)
                 .setTitle("Xác nhận xóa")
                 .setMessage("Bạn có chắc chắn muốn xóa đơn hàng này không?")
                 .setPositiveButton("Xóa", (dialog, which) -> confirmDeleteOrder(orderId))
@@ -110,15 +109,14 @@ public class SaleOrderListActivity extends AppCompatActivity implements SaleOrde
                 .show();
     }
 
-    // <-- THÊM PHƯƠNG THỨC onDetailClick VÀO ĐÂY
     @Override
     public void onDetailClick(int orderId) {
         Log.d("OrderListActivity", "Xem chi tiết đơn hàng với ID: " + orderId);
         Intent intent = new Intent(SaleOrderListActivity.this, SaleOrderDetailActivity.class);
         intent.putExtra("orderId", orderId);
-        startActivity(intent); // Dùng startActivity vì không cần kết quả trả về
+        startActivity(intent);
     }
-    // THÊM PHƯƠNG THỨC onDetailClick VÀO ĐÂY -->
+
 
     private void confirmDeleteOrder(int orderId) {
         saleApiService.deleteOrder(orderId).enqueue(new Callback<Void>() {
@@ -156,7 +154,7 @@ public class SaleOrderListActivity extends AppCompatActivity implements SaleOrde
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if ((requestCode == REQUEST_CODE_EDIT_ORDER || requestCode == REQUEST_CODE_CREATE_ORDER) && resultCode == RESULT_OK) {
-            fetchOrders(); // Tải lại danh sách sau khi tạo hoặc cập nhật thành công
+            fetchOrders();
             Toast.makeText(this, "Danh sách đơn hàng đã được cập nhật.", Toast.LENGTH_SHORT).show();
         }
     }

@@ -3,49 +3,42 @@ package com.example.login.login.shop_sqlite.Dto;
 import java.util.List;
 
 public class SaleOrderResponseDto {
-    private int orderId;
+    private Integer orderId;
     private Integer customerId;
-    private Integer totalQuantity;
-    private Double amountDue;
+    private double totalQuantity;
+    private double amountDue;
     private Integer paymentMethodId;
     private String orderNote;
     private Integer orderStatusId;
+    private String shippingAddress;
     private String createdAt;
     private String updatedAt;
-    private String shippingAddress;
     private List<SaleOrderDetailResponseDto> orderDetails;
+    public SaleOrderResponseDto(Integer orderId, Integer customerId, double totalQuantity, double amountDue,
+                                Integer paymentMethodId, String orderNote, Integer orderStatusId, String shippingAddress,
+                                String createdAt, String updatedAt, List<SaleOrderDetailResponseDto> orderDetails) {
+        this.orderId = orderId;
+        this.customerId = customerId;
+        this.totalQuantity = totalQuantity;
+        this.amountDue = amountDue;
+        this.paymentMethodId = paymentMethodId;
+        this.orderNote = orderNote;
+        this.orderStatusId = orderStatusId;
+        this.shippingAddress = shippingAddress;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.orderDetails = orderDetails;
+    }
 
-    // getters & setters
-    public int getOrderId() { return orderId; }
-    public void setOrderId(int orderId) { this.orderId = orderId; }
-
+    public Integer getOrderId() { return orderId; }
     public Integer getCustomerId() { return customerId; }
-    public void setCustomerId(Integer customerId) { this.customerId = customerId; }
-
-    public Integer getTotalQuantity() { return totalQuantity; }
-    public void setTotalQuantity(Integer totalQuantity) { this.totalQuantity = totalQuantity; }
-
-    public Double getAmountDue() { return amountDue; }
-    public void setAmountDue(Double amountDue) { this.amountDue = amountDue; }
-
+    public double getTotalQuantity() { return totalQuantity; }
+    public double getAmountDue() { return amountDue; }
     public Integer getPaymentMethodId() { return paymentMethodId; }
-    public void setPaymentMethodId(Integer paymentMethodId) { this.paymentMethodId = paymentMethodId; }
-
     public String getOrderNote() { return orderNote; }
-    public void setOrderNote(String orderNote) { this.orderNote = orderNote; }
-
     public Integer getOrderStatusId() { return orderStatusId; }
-    public void setOrderStatusId(Integer orderStatusId) { this.orderStatusId = orderStatusId; }
-
-    public String getCreatedAt() { return createdAt; }
-    public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
-
-    public String getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(String updatedAt) { this.updatedAt = updatedAt; }
-
     public String getShippingAddress() { return shippingAddress; }
-    public void setShippingAddress(String shippingAddress) { this.shippingAddress = shippingAddress; }
-
+    public String getCreatedAt() { return createdAt; }
+    public String getUpdatedAt() { return updatedAt; }
     public List<SaleOrderDetailResponseDto> getOrderDetails() { return orderDetails; }
-    public void setOrderDetails(List<SaleOrderDetailResponseDto> orderDetails) { this.orderDetails = orderDetails; }
 }

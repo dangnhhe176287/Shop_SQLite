@@ -28,11 +28,9 @@ public class SaleProductDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "ProductDetailActivity";
 
-    // Update TextViews to match new DTO fields and their display logic
     private TextView tvProductId, tvProductName, tvProductDescription,
             tvProductCategory, tvProductBrand, tvBasePrice, tvAvailableAttributes,
             tvProductStatus, tvProductIsDelete, tvProductCreatedDate, tvProductLastUpdated;
-    // private ImageView ivProductImage; // Uncomment if you add an ImageView and use Glide/Picasso
 
     private SaleApiService saleApiService;
     private int productId;
@@ -42,19 +40,17 @@ public class SaleProductDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sale_activity_product_detail);
 
-        // Initialize TextViews based on the new layout structure (assuming you'll update activity_product_detail.xml accordingly)
-        tvProductId = findViewById(R.id.tvProductId);
+         tvProductId = findViewById(R.id.tvProductId);
         tvProductName = findViewById(R.id.tvProductName);
         tvProductDescription = findViewById(R.id.tvProductDescription);
         tvProductCategory = findViewById(R.id.tvProductCategory);
-        tvProductBrand = findViewById(R.id.tvProductBrand); // New TextView for brand
-        tvBasePrice = findViewById(R.id.tvProductPrice); // Renamed from tvProductPrice to tvBasePrice if needed in layout
-        tvAvailableAttributes = findViewById(R.id.tvProductAvailableAttributes); // New TextView for attributes
-        tvProductStatus = findViewById(R.id.tvProductStatus); // New TextView for status
-        tvProductIsDelete = findViewById(R.id.tvProductIsDelete); // New TextView for isDelete
+        tvProductBrand = findViewById(R.id.tvProductBrand);
+        tvBasePrice = findViewById(R.id.tvProductPrice);
+        tvAvailableAttributes = findViewById(R.id.tvProductAvailableAttributes);
+        tvProductStatus = findViewById(R.id.tvProductStatus);
+        tvProductIsDelete = findViewById(R.id.tvProductIsDelete);
         tvProductCreatedDate = findViewById(R.id.tvProductCreatedDate);
         tvProductLastUpdated = findViewById(R.id.tvProductLastUpdated);
-        // ivProductImage = findViewById(R.id.ivProductImage); // Uncomment if you add an ImageView
 
         saleApiService = ApiClient.getClient().create(SaleApiService.class);
 
@@ -114,7 +110,6 @@ public class SaleProductDetailActivity extends AppCompatActivity {
         tvProductBrand.setText("Thương hiệu: " + (product.getBrand() != null ? product.getBrand() : "N/A")); // Display Brand
         tvBasePrice.setText(String.format(Locale.getDefault(), "Giá cơ bản: %.2f VNĐ", (product.getBasePrice()))); // Use getBasePrice()
 
-        // Handle availableAttributes (JSON string)
         if (product.getAvailableAttributes() != null && !product.getAvailableAttributes().isEmpty()) {
             try {
                 Gson gson = new Gson();
@@ -152,35 +147,5 @@ public class SaleProductDetailActivity extends AppCompatActivity {
         } else {
             tvProductLastUpdated.setText("Cập nhật lần cuối: N/A");
         }
-
-        // --- Handle Product Images (if you want to display them) ---
-        // You'll need an ImageView in your layout and an image loading library (e.g., Glide).
-        /*
-        if (product.getProductImages() != null && !product.getProductImages().isEmpty()) {
-            // Assuming ProductImageDto has a getImageUrl() method and you want to display the first image
-            String imageUrl = product.getProductImages().get(0).getImageUrl();
-            if (imageUrl != null && !imageUrl.isEmpty()) {
-                Glide.with(this).load(imageUrl).into(ivProductImage);
-            } else {
-                ivProductImage.setImageResource(R.drawable.default_product_image); // Set a default image
-            }
-        } else {
-            ivProductImage.setImageResource(R.drawable.default_product_image); // Set a default image
-        }
-        */
-
-        // --- Handle Product Variants (if you want to display them) ---
-        // You might need a dynamic way to add TextViews or a RecyclerView for variants
-        /*
-        if (product.getVariants() != null && !product.getVariants().isEmpty()) {
-            // Example: Log variants or display them in a dedicated view
-            for (ProductVariantDto variant : product.getVariants()) {
-                Log.d(TAG, "Variant ID: " + variant.getVariantId() +
-                          ", SKU: " + variant.getSKU() +
-                          ", Price: " + variant.getPrice());
-                // Add logic to display these, e.g., in a LinearLayout or another RecyclerView
-            }
-        }
-        */
     }
 }

@@ -23,7 +23,7 @@ public class SaleOrderAdapter extends RecyclerView.Adapter<SaleOrderAdapter.Orde
     public interface OnItemActionListener {
         void onEditClick(int orderId);
         void onDeleteClick(int orderId);
-        void onDetailClick(int orderId); // Added for detail view
+        void onDetailClick(int orderId);
     }
 
     public SaleOrderAdapter(List<SaleOrder> saleOrderList, OnItemActionListener listener) {
@@ -47,7 +47,9 @@ public class SaleOrderAdapter extends RecyclerView.Adapter<SaleOrderAdapter.Orde
         holder.tvTotalQuantity.setText("Tổng SP: " + (saleOrder.getTotalQuantity() != null ? saleOrder.getTotalQuantity() : 0));
         holder.tvAmountDue.setText(String.format(Locale.getDefault(), "Tổng tiền: %.2f VNĐ",
                 (saleOrder.getAmountDue() != null ? saleOrder.getAmountDue() : new java.math.BigDecimal("0.0"))));
-        holder.tvOrderStatus.setText("Trạng thái: " + (saleOrder.getOrderStatusId() != null ? getStatusName(saleOrder.getOrderStatusId()) : "N/A"));
+
+
+        holder.tvOrderStatus.setText("Trạng thái: " + (saleOrder.getOrderStatusId() != null ? getStatusName(saleOrder.getOrderStatusId()) : "Không xác định"));
 
         holder.btnEdit.setOnClickListener(v -> {
             if (listener != null) {
@@ -77,7 +79,7 @@ public class SaleOrderAdapter extends RecyclerView.Adapter<SaleOrderAdapter.Orde
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
         TextView tvOrderId, tvCustomerId, tvTotalQuantity, tvAmountDue, tvOrderStatus;
         Button btnEdit, btnDelete;
-        ImageView ivDetail; // Declare ImageView for detail icon
+        ImageView ivDetail;
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -88,17 +90,18 @@ public class SaleOrderAdapter extends RecyclerView.Adapter<SaleOrderAdapter.Orde
             tvOrderStatus = itemView.findViewById(R.id.tvOrderStatus);
             btnEdit = itemView.findViewById(R.id.btnEditOrder);
             btnDelete = itemView.findViewById(R.id.btnDeleteOrder);
-            ivDetail = itemView.findViewById(R.id.ivDetail); // Initialize ImageView
+            ivDetail = itemView.findViewById(R.id.ivDetail);
         }
     }
 
     private String getStatusName(int statusId) {
         switch (statusId) {
-            case 1: return "Chờ xử lý";
-            case 2: return "Đang xử lý";
-            case 3: return "Đã giao hàng";
-            case 4: return "Đã hủy";
-            default: return "Không xác định";
+            case 1: return "Pending";
+            case 2: return "Shipping";
+            case 3: return "Delivered";
+            case 4: return "Completed";
+            case 5: return "Canceled";
+            default: return "Không xác định (" + statusId + ")";
         }
     }
 }
