@@ -4,8 +4,6 @@ import com.example.login.login.shop_sqlite.Models.ForgotPasswordRequestDto;
 import com.example.login.login.shop_sqlite.Models.LoginRequestDto;
 import com.example.login.login.shop_sqlite.Models.LoginResponseDto;
 import com.example.login.login.shop_sqlite.Models.RegisterRequestDto;
-
-
 import com.example.login.login.shop_sqlite.Models.Product;
 import com.example.login.login.shop_sqlite.Models.CartResponse;
 import com.example.login.login.shop_sqlite.Models.CartItemDto;
@@ -13,49 +11,35 @@ import com.example.login.login.shop_sqlite.Models.OrderRequest;
 import com.example.login.login.shop_sqlite.Models.OrderView;
 import com.example.login.login.shop_sqlite.Models.ResetPasswordRequestDto;
 import com.example.login.login.shop_sqlite.Models.VerifyOtpRequestDto;
+import com.example.login.login.shop_sqlite.Models.UserProfileDto;
+import com.example.login.login.shop_sqlite.Models.UserDto;
 
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.*;
 
-import com.example.login.login.shop_sqlite.Models.ForgotPasswordRequestDto;
-import com.example.login.login.shop_sqlite.Models.VerifyOtpRequestDto;
-import com.example.login.login.shop_sqlite.Models.ResetPasswordRequestDto;
-import com.example.login.login.shop_sqlite.Models.ResetPasswordRequestDto;
-import com.example.login.login.shop_sqlite.Models.VerifyOtpRequestDto;
-import com.example.login.login.shop_sqlite.Models.UserDto;
-
-import java.util.List;
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.POST;
-import retrofit2.http.GET;
-import retrofit2.http.PUT;
-import retrofit2.http.DELETE;
-import retrofit2.http.Path;
-
-
 public interface ApiService {
-    @POST("api/Auth/login")
+    // Auth APIs
+    @POST("Auth/login")
     Call<LoginResponseDto> login(@Body LoginRequestDto loginRequest);
 
-    @POST("api/Auth/register")
+    @POST("Auth/register")
     Call<LoginResponseDto> register(@Body RegisterRequestDto registerRequest);
 
-    @POST("api/Auth/forgot-password")
+    @POST("Auth/forgot-password")
     Call<Void> forgotPassword(@Body ForgotPasswordRequestDto request);
 
-    @POST("api/Auth/verify-otp")
+    @POST("Auth/verify-otp")
     Call<Void> verifyOtp(@Body VerifyOtpRequestDto request);
 
-    @POST("api/Auth/reset-password")
+    @POST("Auth/reset-password")
     Call<Void> resetPassword(@Body ResetPasswordRequestDto request);
 
-
-    @GET("api/Product")
+    // Product APIs
+    @GET("Product")
     Call<List<Product>> getAllProducts(@Query("page") int page, @Query("pageSize") int pageSize);
 
-    @GET("api/Product/search")
+    @GET("Product/search")
     Call<List<Product>> searchProducts(
             @Query("name") String name,
             @Query("category") String category,
@@ -64,9 +48,10 @@ public interface ApiService {
             @Query("page") int page,
             @Query("pageSize") int pageSize);
 
-    @GET("api/Product/{id}")
+    @GET("Product/{id}")
     Call<Product> getProductById(@Path("id") int productId);
 
+    // Cart APIs
     @GET("cart/{userId}")
     Call<CartResponse> getCart(@Path("userId") int userId);
 
@@ -79,34 +64,23 @@ public interface ApiService {
     @DELETE("cart/{userId}/remove/{productId}/{variantId}")
     Call<Void> removeFromCart(@Path("userId") int userId, @Path("productId") int productId, @Path("variantId") int variantId);
 
-    @POST("api/orders")
+    @DELETE("cart/{userId}/clear")
+    Call<Void> clearCart(@Path("userId") int userId);
+
+    // Order APIs
+    @POST("orders")
     Call<Void> placeOrder(@Body OrderRequest orderRequest);
 
-    @GET("api/orders")
+    @GET("orders")
     Call<List<OrderView>> getOrders(@Query("customerId") int customerId);
 
-    @GET("api/orders/{orderId}")
+    @GET("orders/{orderId}")
     Call<OrderView> getOrderDetail(@Path("orderId") int orderId);
 
-    @GET("api/users/profile")
-    Call<com.example.login.login.shop_sqlite.Models.UserProfileDto> getProfile(@Header("Authorization") String token);
+    // User APIs
+    @GET("Users/{id}")
+    Call<UserProfileDto> getUserById(@Path("id") int userId);
 
-    @GET("api/users/{id}")
-    Call<com.example.login.login.shop_sqlite.Models.UserProfileDto> getUserById(@Path("id") int userId);
-
-    @GET("api/Users")
-    Call<List<UserDto>> getAllUsers();
-
-//    @GET("api/Users/{id}")
-//    Call<UserDto> getUserById(@Path("id") int id);
-
-    @POST("api/Users")
-    Call<UserDto> addUser(@Body UserDto user);
-
-    @PUT("api/Users/{id}")
+    @PUT("Users/{id}")
     Call<Void> updateUser(@Path("id") int id, @Body UserDto user);
-
-    @DELETE("api/Users/{id}")
-    Call<Void> deleteUser(@Path("id") int id);
-
 }

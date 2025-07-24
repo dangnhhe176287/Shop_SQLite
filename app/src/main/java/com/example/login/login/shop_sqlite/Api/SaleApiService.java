@@ -27,10 +27,10 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface SaleApiService {
-    @POST("api/Auth/login")
+    @POST("Auth/login")
     Call<LoginResponseDto> login(@Body LoginRequestDto loginRequest);
 
-    @POST("api/Auth/register")
+    @POST("Auth/register")
     Call<LoginResponseDto> register(@Body RegisterRequestDto registerRequest);
 
     @GET("SaleOrder")

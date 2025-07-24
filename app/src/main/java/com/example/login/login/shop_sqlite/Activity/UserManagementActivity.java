@@ -8,8 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.login.login.shop_sqlite.Api.ApiClient;
-import com.example.login.login.shop_sqlite.Api.ApiService;
+import com.example.login.login.shop_sqlite.Api.SaleApiService;
 import com.example.login.login.shop_sqlite.Models.UserDto;
+import com.example.login.login.shop_sqlite.Dto.SaleUserResponseDto;
+import com.example.login.login.shop_sqlite.Dto.SaleUserCreateDto;
+import com.example.login.login.shop_sqlite.Activity.SaleUserDetailActivity;
 import com.example.login.login.shop_sqlite.R;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +33,7 @@ public class UserManagementActivity extends AppCompatActivity {
     private RecyclerView rvUsers;
     private Button btnAddUser;
     private UserAdapter userAdapter;
-    private List<UserDto> userList = new ArrayList<>();
+    private List<SaleUserResponseDto> userList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +44,12 @@ public class UserManagementActivity extends AppCompatActivity {
 
         userAdapter = new UserAdapter(userList, new UserAdapter.OnUserActionListener() {
             @Override
-            public void onEdit(UserDto user) {
+            public void onEdit(SaleUserResponseDto user) {
                 showUserDialog(user);
             }
 
             @Override
-            public void onDelete(UserDto user) {
+            public void onDelete(SaleUserResponseDto user) {
                 new AlertDialog.Builder(UserManagementActivity.this)
                         .setTitle("Delete User")
                         .setMessage("Are you sure you want to delete this user?")
@@ -56,9 +59,9 @@ public class UserManagementActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onView(UserDto user) {
-                Intent intent = new Intent(UserManagementActivity.this, UserDetailActivity.class);
-                intent.putExtra("user", user);
+            public void onView(SaleUserResponseDto user) {
+                Intent intent = new Intent(UserManagementActivity.this, SaleUserDetailActivity.class);
+                intent.putExtra("userId", user.userId);
                 startActivity(intent);
             }
         });
@@ -71,10 +74,10 @@ public class UserManagementActivity extends AppCompatActivity {
     }
 
     private void loadUsers() {
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
-        apiService.getAllUsers().enqueue(new Callback<List<UserDto>>() {
+        SaleApiService saleApiService = ApiClient.getClient().create(SaleApiService.class);
+        saleApiService.getAllUsers().enqueue(new Callback<List<SaleUserResponseDto>>() {
             @Override
-            public void onResponse(Call<List<UserDto>> call, Response<List<UserDto>> response) {
+            public void onResponse(Call<List<SaleUserResponseDto>> call, Response<List<SaleUserResponseDto>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     userList.clear();
                     userList.addAll(response.body());
@@ -85,14 +88,14 @@ public class UserManagementActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<UserDto>> call, Throwable t) {
+            public void onFailure(Call<List<SaleUserResponseDto>> call, Throwable t) {
                 Toast.makeText(UserManagementActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT)
                         .show();
             }
         });
     }
 
-    private void showUserDialog(UserDto user) {
+    private void showUserDialog(SaleUserResponseDto user) {
         boolean isEdit = user != null;
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this,
                 R.style.ThemeOverlay_Material3_MaterialAlertDialog);
@@ -144,16 +147,16 @@ public class UserManagementActivity extends AppCompatActivity {
                     etPassword.requestFocus();
                     return;
                 }
-                ApiService apiService = ApiClient.getClient().create(ApiService.class);
+                SaleApiService saleApiService = ApiClient.getClient().create(SaleApiService.class);
                 if (isEdit) {
-                    UserDto editUser = user;
+                    SaleUserResponseDto editUser = user;
                     editUser.email = email;
                     editUser.password = password;
                     editUser.userName = userName;
                     editUser.phone = phone;
                     editUser.address = address;
                     editUser.dateOfBirth = dob;
-                    apiService.updateUser(editUser.userId, editUser).enqueue(new retrofit2.Callback<Void>() {
+                    saleApiService.updateUser(editUser.userId, editUser).enqueue(new retrofit2.Callback<Void>() {
                         @Override
                         public void onResponse(retrofit2.Call<Void> call, retrofit2.Response<Void> response) {
                             if (response.isSuccessful()) {
@@ -171,7 +174,7 @@ public class UserManagementActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    UserDto newUser = new UserDto();
+                    SaleUserCreateDto newUser = new SaleUserCreateDto();
                     newUser.email = email;
                     newUser.password = password;
                     newUser.userName = userName;
@@ -181,9 +184,9 @@ public class UserManagementActivity extends AppCompatActivity {
                     newUser.roleId = 2;
                     newUser.status = 1;
                     newUser.isDelete = false;
-                    apiService.addUser(newUser).enqueue(new retrofit2.Callback<UserDto>() {
+                    saleApiService.createUser(newUser).enqueue(new retrofit2.Callback<SaleUserResponseDto>() {
                         @Override
-                        public void onResponse(retrofit2.Call<UserDto> call, retrofit2.Response<UserDto> response) {
+                        public void onResponse(retrofit2.Call<SaleUserResponseDto> call, retrofit2.Response<SaleUserResponseDto> response) {
                             if (response.isSuccessful()) {
                                 Snackbar.make(rvUsers, "User added", Snackbar.LENGTH_SHORT).show();
                                 loadUsers();
@@ -200,7 +203,7 @@ public class UserManagementActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onFailure(retrofit2.Call<UserDto> call, Throwable t) {
+                        public void onFailure(retrofit2.Call<SaleUserResponseDto> call, Throwable t) {
                             Snackbar.make(rvUsers, "Network error: " + t.getMessage(), Snackbar.LENGTH_SHORT).show();
                         }
                     });
@@ -210,9 +213,9 @@ public class UserManagementActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void deleteUser(UserDto user) {
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
-        apiService.deleteUser(user.userId).enqueue(new retrofit2.Callback<Void>() {
+    private void deleteUser(SaleUserResponseDto user) {
+        SaleApiService saleApiService = ApiClient.getClient().create(SaleApiService.class);
+        saleApiService.deleteUser(user.userId).enqueue(new retrofit2.Callback<Void>() {
             @Override
             public void onResponse(retrofit2.Call<Void> call, retrofit2.Response<Void> response) {
                 if (response.isSuccessful()) {

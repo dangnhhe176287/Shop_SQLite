@@ -9,22 +9,23 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.login.login.shop_sqlite.Models.UserDto;
+import com.example.login.login.shop_sqlite.Dto.SaleUserResponseDto;
 import com.example.login.login.shop_sqlite.R;
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
-    private final List<UserDto> userList;
+    private final List<SaleUserResponseDto> userList;
     private final OnUserActionListener listener;
 
     public interface OnUserActionListener {
-        void onEdit(UserDto user);
+        void onEdit(SaleUserResponseDto user);
 
-        void onDelete(UserDto user);
+        void onDelete(SaleUserResponseDto user);
 
-        void onView(UserDto user);
+        void onView(SaleUserResponseDto user);
     }
 
-    public UserAdapter(List<UserDto> userList, OnUserActionListener listener) {
+    public UserAdapter(List<SaleUserResponseDto> userList, OnUserActionListener listener) {
         this.userList = userList;
         this.listener = listener;
     }
@@ -38,7 +39,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
-        UserDto user = userList.get(position);
+        SaleUserResponseDto user = userList.get(position);
         holder.tvUserName.setText(user.userName);
         holder.tvEmail.setText(user.email);
         holder.btnEdit.setOnClickListener(v -> listener.onEdit(user));
