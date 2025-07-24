@@ -41,7 +41,6 @@ public class SaleEditUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sale_activity_edit_user);
 
-        // Ánh xạ các thành phần UI
         edtUserId = findViewById(R.id.edtUserId);
         edtRoleId = findViewById(R.id.edtRoleId);
         edtEmail = findViewById(R.id.edtEmail);
