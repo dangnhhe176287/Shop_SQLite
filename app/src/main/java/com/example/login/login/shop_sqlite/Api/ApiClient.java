@@ -10,16 +10,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import java.util.concurrent.TimeUnit;
 
 public class ApiClient {
-    private static final String BASE_URL = "http://10.0.2.2:5287/api/";
+    private static final String SALE_BASE_URL = "http://10.0.2.2:5287/api/";
     private static Retrofit retrofit;
 
     public static Retrofit getClient() {
         if (retrofit == null) {
-            // Create logging interceptor
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-            // Create OkHttpClient with timeout
             OkHttpClient client = new OkHttpClient.Builder()
                     .addInterceptor(loggingInterceptor)
                     .connectTimeout(30, TimeUnit.SECONDS)
@@ -38,7 +36,7 @@ public class ApiClient {
             Gson gson = gsonBuilder.create();
 
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(SALE_BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
         }
