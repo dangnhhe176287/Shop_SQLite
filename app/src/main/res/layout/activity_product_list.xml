@@ -1,242 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/fashion_login_background">
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".Activity.ProductListActivity">
 
-    <androidx.cardview.widget.CardView
+    <!-- Custom Top Bar: Search + Filter + Cart -->
+    <LinearLayout
+        android:id="@+id/searchBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:background="@color/white"
+        android:elevation="2dp"
+        android:layout_marginBottom="12dp">
+
+        <EditText
+            android:id="@+id/searchEditText"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/search_background"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="8dp"
+            android:hint="Search products..."
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp"
+            android:textSize="14sp" />
+
+        <ImageButton
+            android:id="@+id/filterButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/button_rounded"
+            android:src="@drawable/ic_filter"
+            android:contentDescription="Filter"
+            android:tint="@android:color/black" />
+
+        <ImageButton
+            android:id="@+id/cartButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/button_rounded"
+            android:src="@drawable/ic_shopping_cart"
+            android:contentDescription="Cart"
+            android:tint="@android:color/black" />
+    </LinearLayout>
+
+    <!-- Tiêu đề danh sách sản phẩm -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Danh sách sản phẩm"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/fashion_primary"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Active Filter Indicator -->
+    <LinearLayout
+        android:id="@+id/activeFilterLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/fashion_accent"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:gravity="center_vertical"
+        android:visibility="gone"
+        android:layout_marginBottom="8dp">
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_filter"
+            android:tint="@color/fashion_primary"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:id="@+id/activeFilterText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Filter active"
+            android:textSize="12sp"
+            android:textColor="@color/fashion_primary" />
+
+        <Button
+            android:id="@+id/clearFilterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear"
+            android:textSize="10sp"
+            android:textColor="@android:color/darker_gray"
+            android:background="?android:attr/selectableItemBackground"
+            style="@style/Widget.Material3.Button.TextButton" />
+
+    </LinearLayout>
+
+    <!-- Products RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/productsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:padding="4dp"
+        tools:listitem="@layout/item_product" />
+
+    <!-- Pagination Info -->
+    <TextView
+        android:id="@+id/paginationInfoText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/fashion_accent"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="Page 1 - Showing 10 products per page"
+        android:textColor="@color/fashion_primary"
+        android:textSize="12sp"
+        android:visibility="gone"
+        android:layout_marginTop="8dp" />
+
+    <!-- Loading Progress -->
+    <ProgressBar
+        android:id="@+id/loadingProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:visibility="gone" />
+
+    <!-- Empty State -->
+    <LinearLayout
+        android:id="@+id/emptyStateLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginBottom="24dp"
-        android:elevation="8dp"
-        app:cardCornerRadius="28dp"
-        app:cardBackgroundColor="@color/white"
-        android:background="@drawable/fashion_card_background">
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="32dp">
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_err_image_layy"
+            android:contentDescription="No products" />
 
-            <!-- Custom Top Bar: Search + Filter + Cart -->
-            <LinearLayout
-                android:id="@+id/searchBarLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="8dp"
-                android:background="@color/white"
-                android:elevation="2dp"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="16dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="No products found"
+            android:textColor="@color/fashion_primary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/searchEditText"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/search_background"
-                    android:drawableStart="@drawable/ic_search"
-                    android:drawablePadding="8dp"
-                    android:hint="Search products..."
-                    android:paddingHorizontal="12dp"
-                    android:paddingVertical="8dp"
-                    android:textSize="14sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Try adjusting your search or filters"
+            android:textColor="@color/fashion_primary"
+            android:textSize="14sp" />
 
-                <ImageButton
-                    android:id="@+id/filterButton"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/button_rounded"
-                    android:src="@drawable/ic_filter"
-                    android:contentDescription="Filter"
-                    android:tint="@android:color/black" />
+    </LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/cartButton"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/button_rounded"
-                    android:src="@drawable/ic_shopping_cart"
-                    android:contentDescription="Cart"
-                    android:tint="@android:color/black" />
-            </LinearLayout>
+    <!-- Error State -->
+    <LinearLayout
+        android:id="@+id/errorStateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-            <!-- Tiêu đề danh sách sản phẩm -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Danh sách sản phẩm"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:textColor="@color/fashion_primary"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp" />
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_err_image_layy"
+            android:contentDescription="Error" />
 
-            <!-- Active Filter Indicator -->
-            <LinearLayout
-                android:id="@+id/activeFilterLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/fashion_accent"
-                android:orientation="horizontal"
-                android:padding="8dp"
-                android:gravity="center_vertical"
-                android:visibility="gone"
-                android:layout_marginBottom="8dp"
-                app:cardCornerRadius="12dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Something went wrong"
+            android:textColor="@color/fashion_primary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_filter"
-                    android:tint="@color/fashion_primary"
-                    android:layout_marginEnd="8dp" />
+        <TextView
+            android:id="@+id/errorMessageText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Please try again later"
+            android:textColor="@color/fashion_primary"
+            android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/activeFilterText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Filter active"
-                    android:textSize="12sp"
-                    android:textColor="@color/fashion_primary" />
+        <Button
+            android:id="@+id/retryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/button_rounded"
+            android:text="Retry"
+            android:textColor="@color/fashion_primary" />
 
-                <Button
-                    android:id="@+id/clearFilterButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Clear"
-                    android:textSize="10sp"
-                    android:textColor="@android:color/darker_gray"
-                    android:background="?android:attr/selectableItemBackground"
-                    style="@style/Widget.Material3.Button.TextButton" />
-
-            </LinearLayout>
-
-            <!-- Products RecyclerView -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/productsRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:clipToPadding="false"
-                android:padding="4dp"
-                tools:listitem="@layout/item_product" />
-
-            <!-- Pagination Info -->
-            <TextView
-                android:id="@+id/paginationInfoText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/fashion_accent"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="Page 1 - Showing 10 products per page"
-                android:textColor="@color/fashion_primary"
-                android:textSize="12sp"
-                android:visibility="gone"
-                android:layout_marginTop="8dp" />
-
-            <!-- Loading Progress -->
-            <ProgressBar
-                android:id="@+id/loadingProgressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="16dp"
-                android:visibility="gone" />
-
-            <!-- Empty State -->
-            <LinearLayout
-                android:id="@+id/emptyStateLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:src="@drawable/ic_err_image_layy"
-                    android:contentDescription="No products" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="No products found"
-                    android:textColor="@color/fashion_primary"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Try adjusting your search or filters"
-                    android:textColor="@color/fashion_primary"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-            <!-- Error State -->
-            <LinearLayout
-                android:id="@+id/errorStateLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:src="@drawable/ic_err_image_layy"
-                    android:contentDescription="Error" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Something went wrong"
-                    android:textColor="@color/fashion_primary"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/errorMessageText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Please try again later"
-                    android:textColor="@color/fashion_primary"
-                    android:textSize="14sp" />
-
-                <Button
-                    android:id="@+id/retryButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/button_rounded"
-                    android:text="Retry"
-                    android:textColor="@color/fashion_primary" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabMenu"
@@ -248,4 +227,4 @@
         android:contentDescription="Menu"
         app:backgroundTint="#1976D2" />
 
-</FrameLayout> 
+</LinearLayout> 
