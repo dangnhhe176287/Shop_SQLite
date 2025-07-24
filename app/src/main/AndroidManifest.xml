@@ -90,8 +90,8 @@
         <activity android:name=".Activity.BlogListActivity" android:exported="false" />
         <activity android:name=".Activity.BlogDetailActivity" android:exported="false" />
         <activity android:name=".Activity.ProfileActivity" android:exported="false" />
-            android:name=".Activity.LoginActivity"
-            android:exported="false" />
+        <activity android:name=".Activity.LoginActivity" android:exported="false" />
+
         <activity android:name=".Activity.SaleCreateOrderActivity" android:exported="true" />
         <activity android:name=".Activity.SaleProductListActivity" android:exported="true" />
         <activity android:name=".Activity.SaleCreateCategoryActivity" android:exported="true" />

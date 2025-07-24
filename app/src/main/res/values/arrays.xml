@@ -7,4 +7,23 @@
         <item>4 - Completed</item>
         <item>5 - Canceled</item>
     </string-array>
+
+    <string-array name="is_deleted_options">
+        <item>Không xóa</item>
+        <item>Đã xóa</item>
+    </string-array>
+
+    <string-array name="status_options">
+        <item>Off</item>
+        <item>Active</item>
+    </string-array>
+
+    <string-array name="role_options_values">
+        <item>1</item> <item>2</item> <item>3</item> </string-array>
+
+    <string-array name="role_options_display">
+        <item>Admin</item>
+        <item>Customer</item>
+        <item>Staff</item>
+    </string-array>
 </resources>
