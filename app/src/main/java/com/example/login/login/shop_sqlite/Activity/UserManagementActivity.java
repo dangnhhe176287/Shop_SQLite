@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.login.login.shop_sqlite.Api.ApiClient;
 import com.example.login.login.shop_sqlite.Api.ApiService;
 import com.example.login.login.shop_sqlite.Models.UserDto;
-import com.example.login.login.shop_sqlite.Models.UpdateUserDto;
 import com.example.login.login.shop_sqlite.R;
 import java.util.ArrayList;
 import java.util.List;
@@ -147,18 +146,13 @@ public class UserManagementActivity extends AppCompatActivity {
                 }
                 ApiService apiService = ApiClient.getClient().create(ApiService.class);
                 if (isEdit) {
-                    UpdateUserDto editUser = new UpdateUserDto();
-                    editUser.userId = user.userId;
+                    UserDto editUser = user;
                     editUser.email = email;
                     editUser.password = password;
                     editUser.userName = userName;
                     editUser.phone = phone;
                     editUser.address = address;
                     editUser.dateOfBirth = dob;
-                    editUser.roleId = user.roleId;
-                    editUser.status = user.status;
-                    editUser.isDelete = user.isDelete;
-                    editUser.createDate = user.createDate;
                     apiService.updateUser(editUser.userId, editUser).enqueue(new retrofit2.Callback<Void>() {
                         @Override
                         public void onResponse(retrofit2.Call<Void> call, retrofit2.Response<Void> response) {

@@ -35,17 +35,6 @@
             android:ellipsize="end" />
 
         <TextView
-            android:id="@+id/cartItemVariant"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sản phẩm: ..."
-            android:textColor="#1976D2"
-            android:textSize="13sp"
-            android:layout_marginTop="2dp"
-            android:maxLines="2"
-            android:ellipsize="end" />
-
-        <TextView
             android:id="@+id/cartItemPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -72,38 +61,33 @@
 
             <ImageButton
                 android:id="@+id/btnDecrease"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:src="@drawable/ic_launcher_foreground"
                 android:background="@drawable/button_background"
                 android:contentDescription="Giảm"
-                android:layout_marginEnd="4dp"
+                android:layout_marginEnd="8dp"
                 android:tint="#FFFFFF" />
 
             <TextView
                 android:id="@+id/cartItemQuantity"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:gravity="center"
                 android:text="1"
-                android:textSize="14sp"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp" />
+                android:textSize="15sp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp" />
 
             <ImageButton
                 android:id="@+id/btnIncrease"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:src="@drawable/ic_add"
                 android:background="@drawable/button_background"
                 android:contentDescription="Tăng"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="8dp"
                 android:tint="#FFFFFF" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
 
             <ImageButton
                 android:id="@+id/btnRemove"
@@ -112,10 +96,7 @@
                 android:src="@android:drawable/ic_menu_delete"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="Xóa"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="0dp"
-                android:tint="#D81B60"
-                android:layout_gravity="end|center_vertical" />
+                android:layout_marginStart="12dp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout> 

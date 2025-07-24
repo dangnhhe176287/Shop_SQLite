@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.login.login.shop_sqlite.Api.ApiClient;
-import com.example.login.login.shop_sqlite.Api.ApiService;
+import com.example.login.login.shop_sqlite.Api.SaleApiService;
 import com.example.login.login.shop_sqlite.Models.LoginRequestDto;
 import com.example.login.login.shop_sqlite.Models.LoginResponseDto;
 import com.example.login.login.shop_sqlite.R;
@@ -79,26 +79,23 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(String email, String password) {
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        SaleApiService saleApiService = ApiClient.getClient().create(SaleApiService.class);
         LoginRequestDto loginRequest = new LoginRequestDto(email, password);
-        Call<LoginResponseDto> call = apiService.login(loginRequest);
+        Call<LoginResponseDto> call = saleApiService.login(loginRequest);
         call.enqueue(new Callback<LoginResponseDto>() {
             @Override
             public void onResponse(Call<LoginResponseDto> call, Response<LoginResponseDto> response) {
                 Log.d("LoginActivity", "onResponse: code=" + response.code());
                 if (response.isSuccessful() && response.body() != null) {
-                    int userId = response.body().userId; // Lấy userId từ response
                     String token = response.body().token;
                     String role = response.body().roleName;
-                    // Lưu userId vào SharedPreferences
-                    SharedPreferences.Editor editor = getSharedPreferences("user_prefs", MODE_PRIVATE).edit();
-                    editor.putInt("current_user_id", userId);
-                    editor.apply();
-                    Log.d("LoginActivity", "userId saved to SharedPreferences: " + userId);
+                    Log.d("LoginActivity", "Role nhận được: '" + role + "'");
                     Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                     try {
                         Intent intent;
                         if (role != null && role.trim().equalsIgnoreCase("admin")) {
+                            intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
+                        } else if (role != null && role.trim().equalsIgnoreCase("staff")) {
                             intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
                         } else {
                             intent = new Intent(LoginActivity.this, ProductListActivity.class);

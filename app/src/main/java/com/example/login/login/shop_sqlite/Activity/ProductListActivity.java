@@ -77,6 +77,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
         setupApiService();
         loadProducts();
 
+        // Thêm xử lý cho cartButton
         ImageButton cartButton = findViewById(R.id.cartButton);
         cartButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, CartActivity.class);
@@ -87,8 +88,9 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
         fabMenu.setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(ProductListActivity.this, fabMenu);
             popup.getMenu().add("Xem đơn hàng");
-            popup.getMenu().add("Xem blog");
-            popup.getMenu().add("Xem profile");
+            popup.getMenu().add("Xem blog"); // Thêm mục xem blog
+            popup.getMenu().add("Xem profile"); // Thêm mục xem profile
+            // Có thể add thêm các chức năng khác ở đây
             popup.setOnMenuItemClickListener(item -> {
                 if (item.getTitle().equals("Xem đơn hàng")) {
                     Intent intent = new Intent(ProductListActivity.this, OrderListActivity.class);
@@ -122,6 +124,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
         activeFilterText = findViewById(R.id.activeFilterText);
         clearFilterButton = findViewById(R.id.clearFilterButton);
         
+        // Initialize lists
         allProducts = new ArrayList<>();
         filteredProducts = new ArrayList<>();
     }
@@ -130,9 +133,12 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
         productAdapter = new ProductAdapter(this, filteredProducts);
         productAdapter.setOnProductClickListener(this);
         
+        // Use GridLayoutManager for better product display
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         productsRecyclerView.setLayoutManager(layoutManager);
         productsRecyclerView.setAdapter(productAdapter);
+        
+        // Add scroll listener for pagination
         productsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -185,6 +191,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
     private void loadProducts() {
         if (isLoading) return;
         
+        // Reset pagination for fresh load
         currentPage = 1;
         hasMoreData = true;
         allProducts.clear();
@@ -204,6 +211,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
                 if (response.isSuccessful() && response.body() != null) {
                     List<Product> newProducts = response.body();
                     
+                    // Check if we have more data
                     if (newProducts.size() < pageSize) {
                         hasMoreData = false;
                     }
@@ -217,6 +225,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
                         updatePaginationInfo();
                     }
                     
+                    // Increment page for next load
                     currentPage++;
                 } else {
                     showError("Failed to load products. Please try again.");
@@ -248,21 +257,28 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
                 if (response.isSuccessful() && response.body() != null) {
                     List<Product> newProducts = response.body();
                     
+                    // Check if we have more data
                     if (newProducts.size() < pageSize) {
                         hasMoreData = false;
                     }
                     
+                    // Add new products to the list
                     int startPosition = allProducts.size();
                     allProducts.addAll(newProducts);
                     
+                    // Update filtered products
                     filterProducts(searchEditText.getText().toString());
                     
+                    // Notify adapter about new items
                     productAdapter.notifyItemRangeInserted(startPosition, newProducts.size());
                     
+                    // Update pagination info
                     updatePaginationInfo();
                     
+                    // Increment page for next load
                     currentPage++;
                 } else {
+                    // If failed, we might want to retry or show error
                     Toast.makeText(ProductListActivity.this, "Failed to load more products", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -283,6 +299,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
             boolean matchesSearch = true;
             boolean matchesFilter = true;
             
+            // Apply search filter
             if (!query.isEmpty()) {
                 String lowerQuery = query.toLowerCase();
                 matchesSearch = product.getName().toLowerCase().contains(lowerQuery) ||
@@ -291,22 +308,26 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
                     (product.getCategoryName() != null && product.getCategoryName().toLowerCase().contains(lowerQuery));
             }
             
+            // Apply price filter
             if (currentFilter.hasPriceFilter()) {
                 double productPrice = product.getBasePrice();
                 matchesFilter = productPrice >= currentFilter.getMinPrice() && 
                                productPrice <= currentFilter.getMaxPrice();
             }
             
+            // Apply category filter
             if (currentFilter.hasCategoryFilter() && matchesFilter) {
                 matchesFilter = product.getCategoryName() != null && 
                                product.getCategoryName().equals(currentFilter.getCategory());
             }
             
+            // Apply brand filter
             if (currentFilter.hasBrandFilter() && matchesFilter) {
                 matchesFilter = product.getBrand() != null && 
                                product.getBrand().equals(currentFilter.getBrand());
             }
             
+            // Add product if it matches both search and filter
             if (matchesSearch && matchesFilter) {
                 filteredProducts.add(product);
             }
@@ -320,6 +341,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
             hideEmpty();
         }
         
+        // Update pagination info after filtering
         updatePaginationInfo();
         updateActiveFilterIndicator();
     }
@@ -379,7 +401,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
         
         // Setup price range slider
         priceRangeSlider.setValueFrom(0f);
-        priceRangeSlider.setValueTo(1000f);
+        priceRangeSlider.setValueTo(10000000f);
         priceRangeSlider.setValues((float) currentFilter.getMinPrice(), (float) currentFilter.getMaxPrice());
         
         // Update price text when slider changes
@@ -417,7 +439,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
         // Clear filter button
         btnClearFilter.setOnClickListener(v -> {
             currentFilter.clear();
-            priceRangeSlider.setValues(0f, 1000f);
+            priceRangeSlider.setValues(0f, 10000000f);
             categorySpinner.setSelection(0);
             brandSpinner.setSelection(0);
         });
@@ -446,6 +468,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
             
             currentFilter.setActive(true);
             
+            // Reset pagination and reload products with filter
             resetPaginationAndReload();
             updateActiveFilterIndicator();
             
@@ -456,6 +479,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
     }
     
     private void setupCategorySpinner(Spinner spinner) {
+        // Extract unique categories from products
         categories.clear();
         for (Product product : allProducts) {
             if (product.getCategoryName() != null && !product.getCategoryName().isEmpty()) {
@@ -476,6 +500,7 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
     }
     
     private void setupBrandSpinner(Spinner spinner) {
+        // Extract unique brands from products
         brands.clear();
         for (Product product : allProducts) {
             if (product.getBrand() != null && !product.getBrand().isEmpty()) {
@@ -529,11 +554,13 @@ public class ProductListActivity extends AppCompatActivity implements ProductAda
 
     @Override
     public void onProductClick(Product product) {
+        // TODO: Navigate to product detail activity
         Toast.makeText(this, "Product: " + product.getName(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onAddToCartClick(Product product) {
+        // TODO: Add to cart functionality
         Toast.makeText(this, "Added to cart: " + product.getName(), Toast.LENGTH_SHORT).show();
     }
 
