@@ -28,7 +28,8 @@
             android:layout_height="wrap_content"
             android:padding="12dp"
             android:background="@drawable/edit_text_background"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:enabled="false" />
 
         <EditText
             android:id="@+id/edtEmail"
@@ -50,10 +51,17 @@
             android:background="@drawable/edit_text_background"
             android:layout_marginBottom="8dp"/>
 
-        <EditText
-            android:id="@+id/edtRoleId"
-            android:hint="Role ID (Bắt buộc)"
-            android:inputType="number"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vai trò:"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerRoleId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="12dp"
@@ -82,7 +90,7 @@
 
         <EditText
             android:id="@+id/edtDateOfBirth"
-            android:hint="Ngày sinh (YYYY-MM-DDTHH:MM:SS)"
+            android:hint="Ngày sinh (YYYY-MM-DD)"
             android:inputType="date"
             android:focusable="false"
             android:clickable="true"
@@ -105,27 +113,43 @@
         <EditText
             android:id="@+id/edtCreateDate"
             android:hint="Ngày tạo"
-            android:enabled="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:clickable="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="12dp"
             android:background="@drawable/edit_text_background"
             android:layout_marginBottom="8dp"/>
 
-        <EditText
-            android:id="@+id/edtStatus"
-            android:hint="Status (Bắt buộc, ví dụ: 1 cho Active)"
-            android:inputType="number"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Trạng thái tài khoản:"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="12dp"
             android:background="@drawable/edit_text_background"
             android:layout_marginBottom="8dp"/>
 
-        <EditText
-            android:id="@+id/edtIsDelete"
-            android:hint="Is Deleted (true/false)"
-            android:inputType="text"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Trạng thái xóa:"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerIsDeleted"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="12dp"

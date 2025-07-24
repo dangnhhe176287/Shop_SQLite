@@ -2,103 +2,357 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="@color/white">
+    android:background="#F5F7FA"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="20dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chi tiết Người dùng"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="24dp"
-            android:textColor="@color/colorPrimary"/>
-
-        <TextView
-            android:id="@+id/tvUserId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ID Người dùng: #ID"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
-
-        <TextView
-            android:id="@+id/tvUserNameDetail"
+        <!-- Header Section -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tên người dùng: "
-            android:textSize="16sp"
-            android:layout_marginBottom="4dp"/>
+            android:orientation="vertical"
+            android:background="@drawable/card_background"
+            android:padding="24dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center">
 
-        <TextView
-            android:id="@+id/tvUserEmailDetail"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chi tiết Người dùng"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginBottom="12dp"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/tvUserId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID Người dùng: #ID"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorAccent"
+                android:background="@drawable/id_badge_background"
+                android:padding="8dp"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+        <!-- Personal Information Card -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Email: "
-            android:textSize="16sp"
-            android:layout_marginBottom="4dp"/>
+            android:orientation="vertical"
+            android:background="@drawable/card_background"
+            android:padding="20dp"
+            android:layout_marginBottom="16dp">
 
-        <TextView
-            android:id="@+id/tvUserPhoneDetail"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thông tin cá nhân"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"/>
+
+            <!-- Name Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp"
+                android:padding="8dp"
+                android:background="@drawable/info_row_background">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Tên người dùng:"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#666666"/>
+
+                <TextView
+                    android:id="@+id/tvUserNameDetail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:gravity="end"/>
+
+            </LinearLayout>
+
+            <!-- Email Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp"
+                android:padding="8dp"
+                android:background="@drawable/info_row_background">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Email:"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#666666"/>
+
+                <TextView
+                    android:id="@+id/tvUserEmailDetail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:gravity="end"/>
+
+            </LinearLayout>
+
+            <!-- Phone Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp"
+                android:padding="8dp"
+                android:background="@drawable/info_row_background">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Số điện thoại:"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#666666"/>
+
+                <TextView
+                    android:id="@+id/tvUserPhoneDetail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:gravity="end"/>
+
+            </LinearLayout>
+
+            <!-- Date of Birth Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp"
+                android:padding="8dp"
+                android:background="@drawable/info_row_background">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Ngày sinh:"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#666666"/>
+
+                <TextView
+                    android:id="@+id/tvUserDateOfBirth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:gravity="end"/>
+
+            </LinearLayout>
+
+            <!-- Address Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:background="@drawable/info_row_background">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Địa chỉ:"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#666666"/>
+
+                <TextView
+                    android:id="@+id/tvUserAddress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:gravity="end"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Account Information Card -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Số điện thoại: "
-            android:textSize="16sp"
-            android:layout_marginBottom="4dp"/>
+            android:orientation="vertical"
+            android:background="@drawable/card_background"
+            android:padding="20dp">
 
-        <TextView
-            android:id="@+id/tvUserRoleDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ID Vai trò: "
-            android:textSize="16sp"
-            android:layout_marginBottom="4dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thông tin tài khoản"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"/>
 
-        <TextView
-            android:id="@+id/tvUserDateOfBirth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ngày sinh: "
-            android:textSize="16sp"
-            android:layout_marginBottom="4dp"/>
+            <!-- Role Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp"
+                android:padding="8dp"
+                android:background="@drawable/info_row_background">
 
-        <TextView
-            android:id="@+id/tvUserAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Địa chỉ: "
-            android:textSize="16sp"
-            android:layout_marginBottom="4dp"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ID Vai trò:"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#666666"/>
 
-        <TextView
-            android:id="@+id/tvUserCreateDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ngày tạo tài khoản: "
-            android:textSize="14sp"
-            android:layout_marginTop="8dp"/>
+                <TextView
+                    android:id="@+id/tvUserRoleDetail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:gravity="end"/>
 
-        <TextView
-            android:id="@+id/tvUserStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Trạng thái: "
-            android:textSize="14sp"
-            android:layout_marginBottom="4dp"/>
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvUserIsDelete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Đã xóa: "
-            android:textSize="14sp"
-            android:layout_marginBottom="16dp"/>
+            <!-- Create Date Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp"
+                android:padding="8dp"
+                android:background="@drawable/info_row_background">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Ngày tạo:"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#666666"/>
+
+                <TextView
+                    android:id="@+id/tvUserCreateDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:gravity="end"/>
+
+            </LinearLayout>
+
+            <!-- Status Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp"
+                android:padding="8dp"
+                android:background="@drawable/info_row_background">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Trạng thái:"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#666666"/>
+
+                <TextView
+                    android:id="@+id/tvUserStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:gravity="end"/>
+
+            </LinearLayout>
+
+            <!-- Delete Status Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:background="@drawable/info_row_background">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Đã xóa:"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#666666"/>
+
+                <TextView
+                    android:id="@+id/tvUserIsDelete"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:gravity="end"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

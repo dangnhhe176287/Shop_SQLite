@@ -4,8 +4,8 @@ package com.example.login.login.shop_sqlite.Dto;
  import java.util.Date;
 
 public class SaleUserResponseDto {
-    private int userId;
-    private int roleId;
+    private Integer userId;
+    private Integer roleId;
     private String email;
     private String password;
     private String phone;
@@ -14,12 +14,12 @@ public class SaleUserResponseDto {
     private Date dateOfBirth;
     private String address;
     private Date createDate;
-    private int status;
+    private Integer status;
     private boolean isDelete;
 
     public SaleUserResponseDto() {
     }
-    public SaleUserResponseDto(int userId, int roleId, String email, String password, String phone, String userName, Date dateOfBirth, String address, Date createDate, int status, boolean isDelete) {
+    public SaleUserResponseDto(Integer userId, Integer roleId, String email, String password, String phone, String userName, Date dateOfBirth, String address, Date createDate, Integer status, boolean isDelete) {
         this.userId = userId;
         this.roleId = roleId;
         this.email = email;
@@ -34,19 +34,19 @@ public class SaleUserResponseDto {
     }
 
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    public int getRoleId() {
+    public Integer getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(int roleId) {
+    public void setRoleId(Integer roleId) {
         this.roleId = roleId;
     }
 
@@ -106,11 +106,11 @@ public class SaleUserResponseDto {
         this.createDate = createDate;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
